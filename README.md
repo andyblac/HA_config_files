@@ -1,2 +1,2 @@
-# HA_Templates
+# HA Templates & Sensors
 Home Assistant Template sensors
