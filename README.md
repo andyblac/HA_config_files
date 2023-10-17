@@ -1,2 +1,3 @@
-# HA Templates & Sensors
-Home Assistant Template sensors
+# Home Assistant Configuration files
+
+My configuration, tmeplates, sensors, dashboard
