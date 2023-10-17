@@ -1,0 +1,227 @@
+title: Kitchen
+path: kitchen
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(5, fit-content(100%))
+  grid-template-areas: |
+    "header    header    .         .        "
+    "scene1    scene2    scene3    scene4   "
+    "fridge    fridge    freezer   freezer  "
+    ".         shade     lights    .   "
+    ".         sockets   sockets   .        "
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: repeat(8, fit-content(100%))
+      grid-template-areas: |
+        "header       header     "
+        "scene1       scene2     "
+        "scene3       scene4     "
+        "fridge       fridge     "
+        "freezer      freezer    "
+        "shade        shade      "
+        "lights       lights     "
+        "sockets      sockets    "
+
+cards:
+  - type: custom:mushroom-chips-card
+    view_layout:
+      grid-area: header
+    chips:
+      - type: back
+      - type: entity
+        entity: sensor.kitchen_motion_sensor_device_temperature
+      - type: template
+        entity: binary_sensor.kitchen_motion_sensor_occupancy
+        icon: mdi:motion-sensor
+        content: ""
+        icon_color: >-
+          {% if
+          is_state('binary_sensor.kitchen_motion_sensor_occupancy',
+          'on') %}
+            blue
+          {% endif %}
+        tap_action:
+          action: more-info
+      - type: template
+        icon: mdi:power-socket-uk
+        content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Kitchen'] }}"
+      - type: template
+        icon: mdi:lightbulb
+        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Kitchen'] }}"
+
+  - type: horizontal-stack
+    view_layout:
+      grid-area: scene1
+    cards:
+      - type: custom:mushroom-entity-card
+        entity: scene.tea_time
+        tap_action:
+          action: toggle
+
+  - type: custom:tabbed-card
+    view_layout:
+      grid-area: fridge
+    tabs:
+      - attributes:
+          label: Tempreature
+        card:
+          type: custom:mini-graph-card
+          # lower_bound: 0
+          # upper_bound: 10
+          line_width: 2
+          points_per_hour: 2
+          entities:
+            - entity: sensor.kitchen_fridge_sensor_temperature
+              name: Fridge
+      - attributes:
+          label: Humidity
+        card:
+          type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          entities:
+            - entity: sensor.kitchen_fridge_sensor_humidity
+              name: Fridge
+  - type: custom:tabbed-card
+    view_layout:
+      grid-area: freezer
+    tabs:
+      - attributes:
+          label: Tempreature
+        card:
+          type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          # lower_bound: -25
+          # upper_bound: 0
+          entities:
+            - entity: sensor.kitchen_freezer_sensor_temperature
+              name: Freezer
+      - attributes:
+          label: Humidity
+        card:
+          type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          entities:
+            - entity: sensor.kitchen_freezer_sensor_humidity
+              name: Freezer
+
+  - type: tile
+    view_layout:
+      grid-area: shade
+    entity: cover.kitchen_window_shade
+    name: Window Shade
+    icon: mdi:roller-shade
+    vertical: false
+    features:
+      - type: cover-open-close
+
+  - type: "custom:button-card"
+    view_layout:
+      grid-area: lights
+    template: card_title
+    name: Lights
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: lights
+    mode: horizontal
+    cards:
+      - type: tile
+        entity: light.kitchen_lights
+        name: Spots
+        vertical: true
+      - type: tile
+        entity: light.kitchen_cabinets
+        vertical: true
+      - type: tile
+        entity: light.kitchen_floor_led
+        vertical: true
+
+  # - type: "custom:button-card"
+  #   view_layout:
+  #     grid-area: sockets
+  #   template: card_title
+  #   name: Sockets
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: sockets
+    mode: vertical
+    cards:
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.kitchen_sockets_1_left
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_sockets_1_right
+            name: "Water Heater"
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_sockets_2_left
+            name: "Air Fryer"
+            color: blue
+            vertical: true
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              box-shadow: none;
+            }
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.kitchen_sockets_2_right
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_sockets_3_left
+            name: "Bread Maker"
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_sockets_3_right
+            name: "Vacume Sealer"
+            vertical: true
+            color: blue
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              box-shadow: none;
+            }
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.kitchen_sockets_4_left
+            name: "Microwave"
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_sockets_4_right
+            name: "Tin Opener"
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.kitchen_washing_machine_socket
+            name: "Washing Machine"
+            vertical: true
+            color: blue
+        card_mod:
+          style: |
+            ha-card {
+              --ha-card-background: none;
+              box-shadow: none;
+            }

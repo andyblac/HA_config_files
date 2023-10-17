@@ -1,0 +1,318 @@
+type: vertical-stack
+view_layout:
+  grid-area: sidebar
+cards:
+  - type: custom:stack-in-card
+    mode: vertical
+    cards:
+      - type: custom:state-switch
+        entity: mediaquery
+        states:
+          "(max-width: 800px)":
+            type: custom:clock-weather-card
+            entity: weather.high_croft_daily
+            locale: en-GB
+            date_pattern: ccc, DDD
+            animated_icon: true
+            hide_forecast_section: true
+            use_browser_time: true
+            card_mod:
+              style: |
+                ha-card {
+                  height: 110px !important;
+                }
+                .card-content {
+                  padding-top: 0px !important;
+                  padding-bottom: 0px !important;
+                }
+      - type: custom:state-switch
+        entity: mediaquery
+        states:
+          "(min-width: 800px)":
+            type: custom:clock-weather-card
+            entity: weather.high_croft_daily
+            locale: en-GB
+            date_pattern: ccc, DDD
+            animated_icon: true
+            hide_forecast_section: true
+            use_browser_time: true
+            card_mod:
+              style: |
+                .card-content {
+                  margin-top: -10px !important;
+                  padding-top: 0px !important;
+                  padding-bottom: 0px !important;
+                }
+      - type: custom:state-switch
+        entity: mediaquery
+        states:
+          "(min-width: 800px)":
+            type: custom:hourly-weather
+            entity: weather.high_croft
+            num_segments: 8 # optional, defaults to 12
+            label_spacing: 1
+            # offset: "{{ 24 - now().hour }}"
+            name: "" # optional, defaults to "Hourly Weather"
+            # show_wind: true
+            show_precipitation_amounts: true
+            show_precipitation_probability: true
+            card_mod:
+              style: |
+                ha-card {
+                  height: 140px !important;
+                }
+                .card-content {
+                  padding-top: 0px !important;
+                  padding-bottom: 0px !important;
+                }
+      - type: custom:state-switch
+        entity: mediaquery
+        states:
+          "(min-width: 1200px)":
+            type: custom:clock-weather-card
+            entity: weather.high_croft_daily
+            sun_entity: sun.sun
+            forecast_rows: 7
+            locale: en-GB
+            hide_today_section: true
+            card_mod:
+              style: |
+                .card-content {
+                  padding-top: 0px !important;
+                  padding-bottom: 0px !important;
+                }
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        template: custom_card_andyblac_scene
+        entity: scene.good_morning
+        variables:
+          ulm_custom_card_andyblac_scene_color: yellow
+      - type: custom:button-card
+        template: custom_card_andyblac_scene
+        entity: scene.good_night
+        variables:
+          ulm_custom_card_andyblac_scene_color: blue
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        template: custom_card_andyblac_person
+        entity: person.andrew_blackburn
+        variables:
+          ulm_card_person_use_entity_picture: true
+          ulm_address: sensor.andys_iphone_icloudv3_zone_name
+          ulm_card_person_eta: sensor.andys_iphone_icloudv3_zone_distance
+          battery:
+            entity_id: sensor.andys_iphone_icloudv3_battery
+      - type: custom:button-card
+        template: custom_card_andyblac_person
+        entity: person.christine_leek
+        variables:
+          ulm_card_person_use_entity_picture: false
+          ulm_card_person_icon: mdi:face-woman
+          ulm_address: sensor.christines_iphone_icloudv3_zone_name
+          ulm_card_person_eta: sensor.christines_iphone_icloudv3_zone_distance
+          battery:
+            entity_id: sensor.christines_iphone_icloudv3_battery
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        entity: sensor.security_state
+        template:
+          - custom_card_andyblac_status
+        tap_action:
+          action: navigate
+        variables:
+          button:
+            popup_title: "Security"
+            popup_content: !include popups/security.yaml
+            templates:
+              - custom_popup_andyblac_tap
+      - type: custom:button-card
+        entity: sensor.heating_state
+        template:
+          - custom_card_andyblac_status
+        variables:
+          button:
+            tap_action:
+              action: navigate
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        entity: sensor.number_of_lights_on
+        template:
+          - custom_card_andyblac_count_info
+          - custom_popup_andyblac_tap
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: yellow
+          popup_title: "Lights"
+          popup_content: !include popups/lights.yaml
+          # hold_action:
+          #   action: navigate
+      - type: custom:button-card
+        entity: sensor.number_of_sockets_on
+        template:
+          - custom_card_andyblac_count_info
+          - custom_popup_andyblac_tap
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: blue
+          popup_title: "Sockets"
+          popup_content: !include popups/sockets.yaml
+          # hold_action:
+          #   action: navigate
+      - type: custom:button-card
+        entity: sensor.number_of_doors_open
+        template:
+          - custom_card_andyblac_count_info
+          - custom_popup_andyblac_tap
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: blue
+          popup_title: "Doors"
+          popup_content: !include popups/doors.yaml
+
+      # - type: custom:button-card
+      #   entity: sensor.number_of_doors_open
+      #   # aspect_ratio: "1/1"
+      #   show_icon: true
+      #   show_label: false
+      #   show_name: false
+      #   tap_action:
+      #     action: "more-info"
+      #     entity: "[[[ return entity.entity_id; ]]]"
+      #   styles:
+      #     img_cell:
+      #       - justify-content: start
+      #       - left: "-20%"
+      #       - top: "20%"
+
+      - type: custom:button-card
+        entity: sensor.number_of_motion_detected
+        template:
+          - custom_card_andyblac_count_info
+          - custom_popup_andyblac_tap
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: blue
+          popup_title: "Motion"
+          popup_content: !include popups/motion.yaml
+      - type: custom:button-card
+        entity: sensor.devices_with_low_battery
+        template:
+          - custom_card_andyblac_count_info
+          - custom_popup_andyblac_tap
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: blue
+          popup_title: "Low Batteries"
+          popup_content: !include popups/battery.yaml
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        entity: sensor.rubbish_collection
+        label: "[[[ return entity.attributes.daysTo ]]]"
+        template:
+          - custom_card_andyblac_count_info
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: green
+      - type: custom:button-card
+        entity: sensor.recycle_collection
+        label: "[[[ return entity.attributes.daysTo ]]]"
+        template:
+          - custom_card_andyblac_count_info
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: green
+      - type: custom:button-card
+        entity: sensor.garden_waste_collection
+        label: "[[[ return entity.attributes.daysTo ]]]"
+        template:
+          - custom_card_andyblac_count_info
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: green
+      - type: custom:button-card
+        entity: sensor.cleaner_due
+        state_display: "[[[ return entity.attributes.DaysTo ]]]"
+        label: "[[[ return entity.attributes.DaysTo ]]]"
+        template:
+          - custom_card_andyblac_count_info
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: green
+      - type: custom:button-card
+        entity: sensor.next_shower
+        state_display: "[[[ return entity.attributes.DaysTo ]]]"
+        label: "[[[ return entity.attributes.DaysTo ]]]"
+        template:
+          - custom_card_andyblac_count_info
+        variables:
+          ulm_custom_card_andyblac_count_info_color_on: green
+
+  - type: custom:stack-in-card
+    mode: horizontal
+    cards:
+      - type: gauge
+        entity: sensor.octopus_energy_electricity_22j0006288_1591022098690_current_demand
+        name: "Elec"
+        min: 0
+        needle: false
+        severity:
+          green: 0
+          yellow: 600
+          red: 1700
+        max: 5000
+        card_mod:
+          style: |
+            ha-card {
+              padding-left: 0px !important;
+              padding-right: 0px !important;
+            }
+      - type: gauge
+        entity: sensor.boiler_relative_consumption
+        name: Boiler
+        min: 0
+        needle: false
+        severity:
+          green: 0
+          yellow: 15
+          red: 22
+        max: 30
+        card_mod:
+          style: |
+            ha-card {
+              padding-left: 0px !important;
+              padding-right: 0px !important;
+            }
+      - type: gauge
+        entity: sensor.octopus_energy_electricity_22j0006288_1591022098690_current_accumulative_consumption
+        name: "Electric"
+        min: 0
+        needle: false
+        severity:
+          green: 0
+          yellow: 7
+          red: 8.5
+        max: 10
+        card_mod:
+          style: |
+            ha-card {
+              padding-left: 0px !important;
+              padding-right: 0px !important;
+            }
+      - type: gauge
+        entity: sensor.octopus_energy_gas_e6f23377622200_1354260601_current_accumulative_consumption
+        name: "Gas"
+        min: 0
+        needle: false
+        severity:
+          green: 0
+          yellow: 40
+          red: 60
+        max: 80
+        card_mod:
+          style: |
+            ha-card {
+              padding-left: 0px !important;
+              padding-right: 0px !important;
+            }
+

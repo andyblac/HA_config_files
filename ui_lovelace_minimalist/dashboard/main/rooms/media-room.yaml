@@ -1,0 +1,218 @@
+title: Media Room
+path: media-room
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(6, fit-content(100%))
+  grid-template-areas: |
+    "header       header      .          .           "
+    "graphs       graphs      graphs     graphs      "
+    "tv           shade       stat       sockets    "
+    "homepod      lights      stat       sockets "
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: repeat(9, fit-content(100%))
+      grid-template-areas: |
+        "header       header     "
+        "scene1       scene2     "
+        "scene3       scene4     "
+        "graphs       graphs     "
+        "stat         stat       "
+        "shade        shade      "
+        "lights       lights     "
+        "tv           homepod    "
+        "sockets      sockets    "
+
+cards:
+  - type: custom:mushroom-chips-card
+    view_layout:
+      grid-area: header
+    chips:
+      - type: back
+      - type: entity
+        entity: binary_sensor.media_room_door_contact
+        content_info: none
+        tap_action:
+          action: more-info
+      - type: template
+        icon: mdi:motion-sensor
+        content: ""
+        icon_color: >-
+          {% if is_state('binary_sensor.media_room_motion_sensor_occupancy', 'on') %}
+            blue
+          {% endif %}
+        entity: binary_sensor.media_room_motion_sensor_occupancy
+        tap_action:
+          action: more-info
+      - type: template
+        icon: mdi:power-socket-uk
+        content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Media Room'] }}"
+      - type: template
+        icon: mdi:lightbulb
+        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Media Room'] }}"
+
+
+  - type: custom:state-switch
+    view_layout:
+      grid-area: graphs
+    entity: mediaquery
+    states:
+      "(max-width: 800px)": # iPhone
+        type: custom:tabbed-card
+        tabs:
+          - attributes:
+              label: Temperature
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              entities:
+                - entity: sensor.wiser_lts_temperature_media_room
+                  name: Temperature
+          - attributes:
+              label: Humidity
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              lower_bound: 0
+              upper_bound: 100
+              entities:
+                - entity: sensor.wiser_lts_humidity_media_room
+                  name: Humidity
+      "(min-width: 800px)": # Desktop / Tablet
+        type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            line_width: 2
+            points_per_hour: 2
+            entities:
+              - entity: sensor.wiser_lts_temperature_media_room
+                name: Temperature
+          - type: custom:mini-graph-card
+            line_width: 2
+            points_per_hour: 2
+            lower_bound: 0
+            upper_bound: 100
+            entities:
+              - entity: sensor.wiser_lts_humidity_media_room
+                name: Humidity
+
+
+  - type: tile
+    view_layout:
+      grid-area: stat
+    entity: climate.wiser_media_room
+    name: Heating
+    vertical: true
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - "off"
+    card_mod:
+      style: |
+        ha-card {
+          height: 240px !important;
+        }
+
+
+  - type: tile
+    view_layout:
+      grid-area: shade
+    entity: cover.media_room_window_shade
+    name: Window Shade
+    icon: mdi:roller-shade
+    vertical: true
+    features:
+      - type: cover-open-close
+    # card_mod:
+    #   style: |
+    #     ha-card {
+    #       height: 150px !important;
+    #     }
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: lights
+    mode: horizontal
+    cards:
+      - type: tile
+        entity: light.media_room_dimmer2
+        name: Spots
+        vertical: true
+        features:
+          - type: light-brightness
+      - type: tile
+        entity: light.media_room_sideboard_lamps
+        name: Sideboard Lamps
+        vertical: true
+        features:
+          - type: light-brightness
+
+  - type: custom:mushroom-media-player-card
+    view_layout:
+      grid-area: homepod
+    entity: media_player.media_room_homepod
+    volume_controls:
+      - volume_buttons
+    media_controls:
+      - play_pause_stop
+    layout: vertical
+    fill_container: false
+    icon: phu:homepod-mini
+    collapsible_controls: false
+    use_media_info: true
+    name: HomePod mini
+  - type: custom:mushroom-media-player-card
+    view_layout:
+      grid-area: tv
+    entity: media_player.media_room_tv
+    volume_controls:
+      - volume_mute
+      - volume_buttons
+    media_controls: []
+    layout: vertical
+  # - type: custom:mini-media-player
+  #   view_layout:
+  #     grid-area: appletv
+  #   entity: media_player.lounge_appletv
+  #   name: AppleTV
+
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: sockets
+    mode: vertical
+    cards:
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            name: Socket 1 Left
+            entity: switch.media_room_sockets_1_left
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_sockets_1_right
+            name: Subwoofer
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_sockets_2_left
+            name: Sofa
+            vertical: true
+            color: blue
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.media_room_sockets_2_right
+            name: HomePod
+            vertical: true
+            color: blue
+

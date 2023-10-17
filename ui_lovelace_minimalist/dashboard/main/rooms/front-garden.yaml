@@ -1,0 +1,65 @@
+title: Front Garden
+path: front-garden
+icon: mdi:flower
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: back
+          - type: entity
+            entity: binary_sensor.front_door
+            content_info: none
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:motion-sensor
+            content: ""
+            icon_color: >-
+              {% if
+              is_state('binary_sensor.front_garden_motion_sensor_occupancy',
+              'on') %}
+                blue
+              {% endif %}
+            entity: binary_sensor.front_garden_motion_sensor_occupancy
+            tap_action:
+              action: more-info
+          - type: entity
+            entity: sensor.front_garden_motion_sensor_temperature
+            tap_action:
+              action: more-info
+          - type: entity
+            entity: sensor.front_garden_motion_sensor_illuminance_lux
+            tap_action:
+              action: more-info
+
+      - type: custom:tabbed-card
+        tabs:
+          - attributes:
+              label: Temperature
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              entities:
+                - entity: sensor.front_garden_motion_sensor_temperature
+                  name: Temperature
+          - attributes:
+              label: Humidity
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              lower_bound: 0
+              upper_bound: 100
+              entities:
+                - entity: sensor.front_garden_soil_sensor_humidity
+                  name: Humidity
+
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: light.front_garden_light
+            vertical: true
+          - type: tile
+            name: Sprinkler
+            entity: switch.front_garden_water_control
+            vertical: true

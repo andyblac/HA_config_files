@@ -1,0 +1,68 @@
+title: Garage
+path: garage
+icon: mdi:garage
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: back
+          - type: entity
+            entity: binary_sensor.garage_door
+            content_info: none
+            tap_action:
+              action: more-info
+          - type: entity
+            entity: cover.roller_door
+            content_info: none
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:motion-sensor
+            content: ""
+            icon_color: |-
+              {% if is_state('binary_sensor.garage_motion_sensor_occupancy', 'on') %}
+                blue
+              {% endif %}
+            entity: binary_sensor.garage_motion_sensor_occupancy
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:motion
+            content: ""
+            icon_color: >-
+              {% if is_state('binary_sensor.garage_roller_door_beam', 'on')
+              %}
+                blue
+              {% endif %}
+            entity: binary_sensor.garage_roller_door_beam
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:lightbulb
+        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['|Garage'] }}"
+
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: alarm_control_panel.garage_alarm
+            vertical: true
+            features:
+              - type: alarm-modes
+                modes:
+                  - armed_away
+                  - disarmed
+          - type: tile
+            entity: cover.roller_door
+            vertical: true
+            features:
+              - type: cover-open-close
+
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: light.garage_lights
+            vertical: true
+          - type: tile
+            entity: light.garage_wall_light
+            vertical: true

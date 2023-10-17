@@ -1,0 +1,46 @@
+- sensor:
+  - name: "Security State"
+    unique_id: 84c316cb-2b49-4d12-883c-b4268cf91e6f
+    state: >
+      {%- set doors = namespace(door_open = false,door_list = ['cover.roller_door','binary_sensor.garage_door','binary_sensor.back_door','binary_sensor.front_door']) -%}
+      {%- for door in doors.door_list -%}
+        {%- if states(door) in ['open','on'] -%}
+        {%- set doors.door_open = state_attr(door,'friendly_name') -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if doors.door_open -%}
+      {{ doors.door_open|replace(' ','_')|lower + '_open'}}
+      {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') and is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+      fully_armed
+      {%- elif 'armed_away' in [states('alarm_control_panel.house_alarm'), states('alarm_control_panel.garage_alarm')] -%}
+        {%- if is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+        garage_armed
+        {%- else -%}
+        house_armed
+        {%- endif -%}
+      {%- else -%}
+      disarmed
+      {%- endif -%}
+    icon: >
+      {%- if this.state == 'fully_armed' -%}
+      mdi:shield-lock
+      {%- elif this.state in ['garage_armed', 'house_armed'] -%}
+      mdi:shield-lock-outline
+      {%- elif this.state.endswith("open")-%}
+      mdi:door-open
+      {%- else -%}
+      mdi:shield-off
+      {%- endif -%}
+    attributes:
+      navigation: "security"
+      label: "{{ this.state|replace('_',' ')|title }}"
+      color: >
+        {%- if this.state == 'fully_armed' -%}
+        green
+        {%- elif this.state in ['garage_armed', 'house_armed'] -%}
+        blue
+        {%- elif this.state.endswith("open")-%}
+        red
+        {%- else -%}
+        theme
+        {%- endif -%}

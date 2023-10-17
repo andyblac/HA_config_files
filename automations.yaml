@@ -1,0 +1,1153 @@
+- id: '1680432456017'
+  alias: House Alarm Switch
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 85a4ae1129fd0bfdef36fd0c76eaf054
+    domain: shelly
+    type: single
+    subtype: button
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.house_alarm
+        state: disarmed
+      sequence:
+      - service: alarm_control_panel.alarm_arm_away
+        data: {}
+        target:
+          entity_id:
+          - alarm_control_panel.house_alarm
+          - alarm_control_panel.garage_alarm
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.house_alarm
+        state: armed_away
+      sequence:
+      - service: alarm_control_panel.alarm_disarm
+        data: {}
+        target:
+          entity_id:
+          - alarm_control_panel.house_alarm
+  mode: single
+- id: '1680434611408'
+  alias: House Alarm State Changes
+  description: Activate scene based on Alarm State.
+  trigger:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.house_alarm
+    to: armed_away
+    id: away
+  - platform: state
+    entity_id:
+    - alarm_control_panel.house_alarm
+    to: disarmed
+    id: diarmed
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - away
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.house_alarm_switch
+      - service: scene.turn_on
+        data: {}
+        target:
+          entity_id: scene.good_night
+    - conditions:
+      - condition: trigger
+        id:
+        - diarmed
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.house_alarm_switch
+      - service: scene.turn_on
+        data: {}
+        target:
+          entity_id: scene.good_morning
+  mode: single
+- id: '1680538297612'
+  alias: Garage Alarm button
+  description: Arm / Disarm Garage
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 2acaf72336d7fd4200e2b48a8659e3b4
+    type: action
+    subtype: single
+    discovery_id: 0x00158d0007013f0e action_single
+    id: single
+  - platform: device
+    domain: mqtt
+    device_id: 2acaf72336d7fd4200e2b48a8659e3b4
+    type: action
+    subtype: double
+    discovery_id: 0x00158d0007013f0e action_double
+    id: double
+  - platform: device
+    domain: mqtt
+    device_id: 2acaf72336d7fd4200e2b48a8659e3b4
+    type: action
+    subtype: hold
+    discovery_id: 0x00158d0007013f0e action_hold
+    id: hold
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: single
+      sequence:
+      - service: alarm_control_panel.alarm_disarm
+        data: {}
+        target:
+          entity_id: alarm_control_panel.garage_alarm
+    - conditions:
+      - condition: trigger
+        id: double
+      sequence:
+      - service: alarm_control_panel.alarm_arm_away
+        data: {}
+        target:
+          entity_id: alarm_control_panel.garage_alarm
+    - conditions:
+      - condition: trigger
+        id: hold
+      sequence:
+      - choose:
+        - conditions:
+          - condition: device
+            device_id: 0a8be4a0a520cc8c9ae26bb290cc5c43
+            domain: cover
+            entity_id: cover.roller_door
+            type: is_open
+          sequence:
+          - device_id: 0a8be4a0a520cc8c9ae26bb290cc5c43
+            domain: cover
+            entity_id: cover.roller_door
+            type: close
+        - conditions:
+          - condition: device
+            device_id: 0a8be4a0a520cc8c9ae26bb290cc5c43
+            domain: cover
+            entity_id: cover.roller_door
+            type: is_closed
+          sequence:
+          - device_id: 0a8be4a0a520cc8c9ae26bb290cc5c43
+            domain: cover
+            entity_id: cover.roller_door
+            type: open
+  mode: single
+- id: '1680548017225'
+  alias: Mums Bedroom Lamp Button
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 1d92c51dee0084fcf5092745811add2a
+    type: action
+    subtype: single
+    discovery_id: 0x00158d0007f5e746 action_single
+    id: single
+  - platform: device
+    domain: mqtt
+    device_id: 1d92c51dee0084fcf5092745811add2a
+    type: action
+    subtype: hold
+    discovery_id: 0x00158d0007f5e746 action_hold
+    id: hold
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: single
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: light.mums_bedroom_lamp
+            state: 'off'
+          sequence:
+          - service: light.turn_on
+            data: {}
+            target:
+              entity_id: light.mums_bedroom_lamp
+        - conditions:
+          - condition: state
+            entity_id: light.mums_bedroom_lamp
+            state: 'on'
+          sequence:
+          - service: light.turn_off
+            data: {}
+            target:
+              entity_id: light.mums_bedroom_lamp
+    - conditions:
+      - condition: trigger
+        id: hold
+      - condition: state
+        entity_id: light.mums_bedroom_light
+        state: 'on'
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id:
+          - light.mums_bedroom_lamp
+          - light.mums_bedroom_light
+  mode: single
+- id: '1680548379167'
+  alias: Mums Bedroom Door
+  description: Turn ON Lights
+  trigger:
+  - type: opened
+    platform: device
+    device_id: ee64f6bbf46796c872ad96f7ba0024f0
+    entity_id: binary_sensor.mums_bedroom_door_contact
+    domain: binary_sensor
+    id: door opened
+  - type: not_opened
+    platform: device
+    device_id: ee64f6bbf46796c872ad96f7ba0024f0
+    entity_id: binary_sensor.mums_bedroom_door_contact
+    domain: binary_sensor
+    id: door closed
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+    enabled: true
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - door opened
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.mums_bedroom_light
+          - light.mums_bedroom_lamp
+    - conditions:
+      - condition: trigger
+        id:
+        - door closed
+      - condition: state
+        entity_id: alarm_control_panel.house_alarm
+        state: disarmed
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id:
+          - light.mums_bedroom_light
+          - light.mums_bedroom_lamp
+  mode: single
+- id: '1680604900822'
+  alias: Kitchen Motion Light
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.kitchen_motion_sensor_occupancy
+      include_light_control: dont_use_brightness
+      include_sun: sun_enabled
+      time_delay: 1.5
+      end_scenes:
+      - scene.kitchen_motion_light_off
+      include_night_lights: night_lights_disabled
+      light_switch:
+        entity_id: scene.kitchen_motion_light_on
+      sun_elevation: 0
+      light_transition_on: 0.5
+      motion_bypass_lights_off: []
+      motion_bypass_lights_on:
+      - light.kitchen_lights
+      include_bypass:
+      - bypass_enabled_turn_on
+- id: '1680607147832'
+  alias: Andys Bedroom Window Shade Switch
+  description: Open/Close Andys Bedroom Window Shade
+  trigger:
+  - platform: device
+    device_id: 4dbb9f86dd46dcdb425262d0769f27a7
+    domain: shelly
+    type: single
+    subtype: button
+  condition: []
+  action:
+  - service: cover.toggle
+    data: {}
+    target:
+      entity_id: cover.andys_bedroom_window_shade
+  mode: single
+- id: '1680619745222'
+  alias: Andys Bedroom Door Opens
+  description: Turn On Lights
+  trigger:
+  - type: opened
+    platform: device
+    device_id: dfb09010c783989de19d21b023334023
+    entity_id: binary_sensor.andys_bedroom_door_contact
+    domain: binary_sensor
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - type: turn_on
+    device_id: 4e6aa19a170ea70af7a31ff35c88d3d5
+    entity_id: light.andys_bedroom_lights
+    domain: light
+    brightness_pct: 3
+  mode: single
+- id: '1680623752337'
+  alias: Kitchen LED'S sync with main lights
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: 1966005c8fe540eb6e1042431370b5fd
+    entity_id: light.kitchen_lights
+    domain: light
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 1966005c8fe540eb6e1042431370b5fd
+        entity_id: light.kitchen_lights
+        domain: light
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.kitchen_cabinets
+      - service: light.turn_on
+        data:
+          brightness: 50
+        target:
+          entity_id: light.kitchen_floor_led
+    - conditions:
+      - condition: device
+        type: is_off
+        device_id: 1966005c8fe540eb6e1042431370b5fd
+        entity_id: light.kitchen_lights
+        domain: light
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.kitchen_cabinets
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.kitchen_floor_led
+  mode: single
+- id: '1680630755249'
+  alias: Motion detected outside.
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: e95ce4810243dc93f5c5d49826368fc7
+    entity_id: binary_sensor.front_garden_motion_sensor_occupancy
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: b2ade35b312996e38a8e56f17d98fc89
+    entity_id: binary_sensor.back_garden_motion_sensor_occupancy
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: '19:00:00'
+    before: 08:00:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - service: notify.mobile_app_andys_iphone
+    data:
+      message: In {{area_name(trigger.entity_id)}}.
+      title: Motion Detected
+  mode: single
+- id: '1680632717179'
+  alias: Patio Shade (CLOSE)
+  description: Back Garden Raised Bed turns Off
+  trigger:
+  - platform: device
+    device_id: c12abb29c6eeccb5576fe2c0e6c15fd3
+    domain: cover
+    entity_id: cover.lounge_patio_window_shade
+    type: closed
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.back_garden_raised_bed_led
+  mode: single
+- id: '1680633369142'
+  alias: Media Room Doors Open
+  description: Turn on Sideboard Lights
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 3741c3b78fae3b8c9d9bfa4dd0d2bdee
+    entity_id: binary_sensor.media_room_door_contact
+    domain: binary_sensor
+  - type: opened
+    platform: device
+    device_id: 2cf41f63f34bb2e5a412e33d0e8ccd48
+    entity_id: binary_sensor.lounge_door_contact
+    domain: binary_sensor
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  - condition: state
+    entity_id: light.media_room_sideboard_lamps
+    state: 'off'
+    enabled: true
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 35
+    target:
+      entity_id: light.media_room_sideboard_lamps
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.media_room_sideboard_lamps
+  mode: single
+- id: '1680634071576'
+  alias: Media Room TV turns On/Off
+  description: Set switches
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: 0a9c576e884719dc1e132ab9557992c2
+    entity_id: media_player.media_room_tv
+    domain: media_player
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 0a9c576e884719dc1e132ab9557992c2
+        domain: media_player
+        entity_id: media_player.media_room_tv
+        type: is_on
+      sequence:
+      - choose:
+        - conditions:
+          - condition: sun
+            before: sunrise
+            after: sunset
+          - condition: device
+            device_id: d2f20607d5ee0e26a00154fa88cec75d
+            domain: media_player
+            entity_id: media_player.lounge_tv
+            type: is_off
+          sequence:
+          - device_id: c12abb29c6eeccb5576fe2c0e6c15fd3
+            domain: cover
+            entity_id: cover.lounge_patio_window_shade
+            type: set_position
+            position: 0
+      - choose:
+        - conditions:
+          - condition: sun
+            before: sunrise
+            after: sunset
+          sequence:
+          - service: switch.turn_off
+            data: {}
+            target:
+              entity_id: switch.office_socket_1_left
+            enabled: false
+          - service: light.turn_on
+            data:
+              brightness_pct: 50
+            target:
+              entity_id: light.media_room_sideboard_lamps
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.kitchen_sockets_2_left
+          - switch.kitchen_sockets_3_left
+          - switch.kitchen_sockets_3_right
+          - switch.kitchen_sockets_4_left
+          - switch.kitchen_sockets_4_right
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_sockets_1_right
+          - switch.media_room_sockets_2_left
+    - conditions:
+      - condition: device
+        device_id: 0a9c576e884719dc1e132ab9557992c2
+        domain: media_player
+        entity_id: media_player.media_room_tv
+        type: is_off
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_sockets_1_right
+          - switch.media_room_sockets_2_left
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.media_room_sideboard_lamps
+  mode: single
+- id: '1680684039521'
+  alias: Ofice Door open
+  description: Turn on Office Lights 3%
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 02defcc11edab426f8f340092086ca0c
+    entity_id: binary_sensor.office_door_contact
+    domain: binary_sensor
+  condition:
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - type: turn_on
+    device_id: 331e02c058ee883bccdd8f38f055e1cf
+    entity_id: light.office_dimmer
+    domain: light
+    brightness_pct: 3
+  mode: single
+- id: '1680684948469'
+  alias: Hall Motion
+  description: Turn on Hall Lights
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.hall_motion_sensor_occupancy
+      include_light_control: use_brightness
+      include_sun: sun_enabled
+      time_delay: 0.5
+      end_scenes: []
+      include_night_lights: night_lights_disabled
+      light_brightness: 5
+      light_switch:
+        entity_id: light.hall_lights
+      sun_elevation: 0
+- id: '1680685109285'
+  alias: Landing Motion
+  description: Turn on Landing Lights
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.landing_motion_sensor_occupancy
+      include_light_control: use_brightness
+      include_sun: sun_enabled
+      time_delay: 0.5
+      end_scenes: []
+      include_night_lights: night_lights_enabled
+      light_brightness: 5
+      light_switch:
+        entity_id: light.landing_lights
+      sun_elevation: 0
+      night_lights:
+        entity_id: light.landing_lights
+      night_time_delay: 0.5
+      include_night_light_control:
+      - use_brightness
+      night_light_brightness: 2
+      night_lights_conditions:
+      - time_enabled
+      night_lights_sun_elevation: -6.5
+      night_light_transition_on: 0
+      night_light_transition_off: 0
+      light_transition_on: 0.5
+      light_transition_off: 0
+      night_lights_before_time: 06:00:00
+- id: '1680805974926'
+  alias: Evening
+  description: Activate Evening Scene
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 00:10:00
+  condition: []
+  action:
+  - service: scene.turn_on
+    data: {}
+    target:
+      entity_id: scene.evening
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: d2f20607d5ee0e26a00154fa88cec75d
+        domain: media_player
+        entity_id: media_player.lounge_tv
+        type: is_on
+      - condition: state
+        entity_id: cover.lounge_patio_window_shade
+        state: open
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.back_garden_raised_bed_led
+    enabled: false
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.media_room_tv
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 50
+        target:
+          entity_id: light.media_room_sideboard_lamps
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.office_socket_1_left
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.office_socket_1_left
+        state: 'on'
+      - condition: state
+        entity_id: media_player.media_room_tv
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.office_dimmer
+  mode: single
+- id: '1681322393347'
+  alias: Alarm Notification
+  description: Send Notification when Alarm's are Armed/Disarmed
+  trigger:
+  - platform: device
+    device_id: e3fc54e9d00a383bb2b8d4fcc48621a0
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.garage_alarm
+    type: armed_away
+  - platform: device
+    device_id: e3fc54e9d00a383bb2b8d4fcc48621a0
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.garage_alarm
+    type: disarmed
+  - platform: device
+    device_id: e6cd815aa3d360578c6c3e735fcdd764
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.house_alarm
+    type: disarmed
+  - platform: device
+    device_id: e6cd815aa3d360578c6c3e735fcdd764
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.house_alarm
+    type: armed_away
+  - platform: device
+    device_id: e3fc54e9d00a383bb2b8d4fcc48621a0
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.garage_alarm
+    type: triggered
+  condition: []
+  action:
+  - service: notify.mobile_app_andys_iphone
+    data:
+      message: Is now {{states(trigger.entity_id)|replace('_',' ')|title}}
+      title: '{{trigger.from_state.attributes.friendly_name}}'
+  - service: notify.mobile_app_imac
+    data:
+      message: Is now {{states(trigger.entity_id)|replace('_',' ')|title}}
+      title: '{{trigger.from_state.attributes.friendly_name}}'
+  mode: single
+- id: '1681568218130'
+  alias: Mums Bedroom Windows Shade Switch
+  description: Open/Close Mums Bedroom Window Shade
+  trigger:
+  - platform: device
+    device_id: 1c5f5affe98bfa96dc8dc15b3fd24e73
+    domain: shelly
+    type: single
+    subtype: button2
+  condition: []
+  action:
+  - service: cover.toggle
+    data: {}
+    target:
+      entity_id: cover.mums_bedroom_window_shade
+  mode: single
+- id: '1681649608321'
+  alias: Back Garden Sensor Light
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.back_garden_motion_sensor_occupancy
+      light_switch:
+        entity_id: scene.back_garden_sesnor_light
+      include_sun: sun_enabled
+      sun_elevation: 0
+      ambient_light_sensor: sensor.back_garden_motion_sensor_illuminance_lux
+      end_scenes:
+      - scene.back_garden_sesnor_light_off
+      time_delay: 2
+- id: '1682436018601'
+  alias: Lounge TV turns On/Off
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: d2f20607d5ee0e26a00154fa88cec75d
+    entity_id: media_player.lounge_tv
+    domain: media_player
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: d2f20607d5ee0e26a00154fa88cec75d
+        domain: media_player
+        entity_id: media_player.lounge_tv
+        type: is_on
+      sequence:
+      - type: turn_on
+        device_id: 37df1db29d585bdf02a3f4520199ad5e
+        entity_id: switch.lounge_socket_3_left
+        domain: switch
+        enabled: false
+      - type: turn_on
+        device_id: cab7ecb463477607b5f3598890660633
+        entity_id: switch.lounge_extension_socket_2
+        domain: switch
+      - type: turn_on
+        device_id: cab7ecb463477607b5f3598890660633
+        entity_id: switch.lounge_extension_socket_3
+        domain: switch
+        enabled: false
+      - choose:
+        - conditions:
+          - condition: device
+            type: is_off
+            device_id: cab7ecb463477607b5f3598890660633
+            entity_id: switch.lounge_extension_socket_1
+            domain: switch
+          sequence:
+          - type: turn_on
+            device_id: cab7ecb463477607b5f3598890660633
+            entity_id: switch.lounge_extension_socket_1
+            domain: switch
+      - choose:
+        - conditions:
+          - condition: sun
+            before: sunrise
+            after: sunset
+          - condition: state
+            entity_id: cover.lounge_patio_window_shade
+            state: open
+          sequence:
+          - service: light.turn_on
+            data: {}
+            target:
+              entity_id: light.back_garden_raised_bed_led
+        enabled: false
+    - conditions:
+      - condition: device
+        device_id: d2f20607d5ee0e26a00154fa88cec75d
+        domain: media_player
+        entity_id: media_player.lounge_tv
+        type: is_off
+      sequence:
+      - type: turn_off
+        device_id: 37df1db29d585bdf02a3f4520199ad5e
+        entity_id: switch.lounge_socket_3_left
+        domain: switch
+        enabled: false
+      - type: turn_off
+        device_id: cab7ecb463477607b5f3598890660633
+        entity_id: switch.lounge_extension_socket_3
+        domain: switch
+        enabled: false
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - type: turn_off
+        device_id: cab7ecb463477607b5f3598890660633
+        entity_id: switch.lounge_extension_socket_2
+        domain: switch
+  mode: single
+- id: '1683723244370'
+  alias: Mums Geo Location
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.christine_leek
+    zone: zone.home
+    event: enter
+    enabled: true
+    id: mum_arrives_home
+  - platform: zone
+    entity_id: person.christine_leek
+    zone: zone.home
+    event: leave
+    enabled: true
+    id: mum_leaves_home
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: mum_leaves_home
+      sequence:
+      - service: media_player.turn_off
+        data: {}
+        target:
+          entity_id: media_player.lounge_tv
+        enabled: true
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+        enabled: true
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.lounge_socket_1_left
+          - switch.lounge_socket_4_right
+    - conditions:
+      - condition: trigger
+        id:
+        - mum_arrives_home
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.lounge_socket_1_left
+          - switch.lounge_socket_4_right
+    enabled: true
+  mode: single
+- id: '1685119313232'
+  alias: Suns Too Bright
+  description: close Office and Lounge Windows Shades
+  trigger:
+  - type: illuminance
+    platform: device
+    device_id: b2ade35b312996e38a8e56f17d98fc89
+    entity_id: sensor.back_garden_motion_sensor_illuminance_lux
+    domain: sensor
+    above: 18000
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: cover.office_window_shade
+        state: open
+      sequence:
+      - service: button.press
+        data: {}
+        target:
+          entity_id: button.office_somfy_window_shade_my_position
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 4c65b7dfd2fa3fcb73d82cad561969f3
+        domain: cover
+        entity_id: cover.lounge_window_shade
+        type: is_open
+      sequence:
+      - service: scene.turn_on
+        data: {}
+        target:
+          entity_id: scene.it_s_too_bright
+  mode: single
+- id: '1686928965767'
+  alias: Wetroom Humidity Fan
+  description: ''
+  use_blueprint:
+    path: Blackshome/bathroom-humidity-exhaust-fan.yaml
+    input:
+      trigger: sensor.wetroom_humidity_derivative
+      fan_switch:
+        entity_id: fan.wetroom_extractor
+      rising_humidity: 1.5
+      max_humidity: 90
+      include_max_humidity: maximum_humidity_disabled
+      bathroom_humidity_sensor: sensor.wetroom_sensor_humidity
+      falling_humidity: -0.9
+      time_out: 20
+      include_winter_mode: winter_mode_enabled
+      month_winter_mode:
+      - '10'
+      - '11'
+      - '12'
+      - '1'
+      - '2'
+      - '3'
+      - '9'
+      winter_falling_humidity: -0.9
+      winter_time_out: 25
+      time_delay: 10
+      winter_rising_humidity: 1
+      winter_include_max_humidity: maximum_humidity_enabled
+      winter_max_humidity: 90
+- id: '1689002161659'
+  alias: Low Battery Window Shades
+  description: ''
+  use_blueprint:
+    path: andyblac/low-battery-and-unavailable-check.yaml
+    input:
+      threshold: 60
+      include:
+        entity_id:
+        - sensor.lounge_patio_window_shade_battery
+        - sensor.lounge_window_shade_battery
+        - sensor.media_room_window_shade_battery
+      actions: []
+      time: '10:00:00'
+      include_unavailable: enabled
+      unavailable: battery
+      notify_device:
+      - 471bd108a9239fff6834cfa4b7fc4c91
+      - 43b8822568e31d7fb941511a100d6155
+- id: '1689002241553'
+  alias: Low Battery and Device Unavailable Check
+  description: ''
+  use_blueprint:
+    path: andyblac/low-battery-and-unavailable-check.yaml
+    input:
+      threshold: 20
+      actions:
+      - service: notify.mobile_app_andys_iphone
+        data:
+          title: Low Battery
+          message: '{{sensors}}'
+      - service: notify.mobile_app_imac
+        data:
+          title: Low Battery
+          message: '{{sensors}}'
+      exclude:
+        entity_id:
+        - sensor.lounge_patio_window_shade_battery
+        - sensor.lounge_window_shade_battery
+        - sensor.media_room_window_shade_battery
+      time: '10:00:00'
+      include_unavailable: enabled
+      unavailable: battery
+      notify_device:
+      - 471bd108a9239fff6834cfa4b7fc4c91
+      - 43b8822568e31d7fb941511a100d6155
+- id: '1692013433351'
+  alias: Charge Patio Window Shade Battery
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.lounge_patio_window_shade_battery
+    above: 99
+    id: Fully Charged
+  - platform: numeric_state
+    entity_id: sensor.lounge_patio_window_shade_battery
+    below: 60
+    id: Needs Charging
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Fully Charged
+      - condition: state
+        entity_id: binary_sensor.lounge_patio_window_shade_charging_status
+        state: 'off'
+      - condition: sun
+        after: sunrise
+        before: sunset
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.lounge_extension_socket_usb
+      - service: cover.open_cover
+        data: {}
+        target:
+          entity_id: cover.lounge_patio_window_shade
+    - conditions:
+      - condition: trigger
+        id:
+        - Needs Charging
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.lounge_extension_socket_usb
+  mode: single
+- id: '1693229528903'
+  alias: Boiler MAX Temp
+  description: This sets the MAX Ch Heating Set Point depending on outside temps.
+  trigger:
+  - minutes: /30
+    platform: time_pattern
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temperature
+        above: 15
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 45
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temperature
+        above: 10
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 50
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temperature
+        above: 5
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 55
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temperature
+        above: 0.01
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 60
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temperature
+        below: 0.01
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 80
+  mode: single
+- id: '1693391532622'
+  alias: Shower Hot Water
+  description: Turn run automation to change hot water temperature.
+  trigger:
+  - platform: time
+    at:
+    - '19:00:00'
+    - '23:00:00'
+  - platform: homeassistant
+    event: start
+  condition:
+  - condition: template
+    value_template: '{{ (now() - as_datetime(''19700101T00Z'')).days % 2 == 0 }}'
+  action:
+  - service: input_boolean.turn_{{ 'on' if 19 <= now().hour < 23 else 'off' }}
+    data: {}
+    target:
+      entity_id: input_boolean.hot_water_toggle
+  mode: single
+- id: '1693391820403'
+  alias: Shower Hot Water Temperature
+  description: Set shower Hot water
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.hot_water_toggle
+    to:
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.hot_water_toggle
+        state: 'on'
+      sequence:
+      - service: opentherm_gw.set_hot_water_setpoint
+        data:
+          gateway_id: otgw
+          temperature: 48
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.hot_water_toggle
+        state: 'off'
+      sequence:
+      - service: opentherm_gw.set_hot_water_setpoint
+        data:
+          gateway_id: otgw
+          temperature: 45
+  mode: single
+- id: '1697099795389'
+  alias: OpenTherm Outside Temperature
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.outside_temperature
+  condition: []
+  action:
+  - service: opentherm_gw.set_outside_temperature
+    data:
+      gateway_id: otgw
+      temperature: '{{trigger.to_state.state|float(0)}}'
+  mode: single

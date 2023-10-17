@@ -1,0 +1,46 @@
+title: Hall
+path: hall
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: back
+          - type: entity
+            entity: binary_sensor.front_door
+            icon: mdi:door
+            tap_action:
+              action: more-info
+          - type: entity
+            entity: sensor.hall_motion_sensor_device_temperature
+          - type: entity
+            entity: sensor.landing_motion_sensor_illuminance_lux
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:motion-sensor
+            content: ""
+            icon_color: >-
+              {% if is_state('binary_sensor.hall_motion_sensor_occupancy',
+              'on') %}
+                blue
+              {% endif %}
+            entity: binary_sensor.hall_motion_sensor_occupancy
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:power-socket-uk
+            content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Hall'] }}"
+          - type: template
+            icon: mdi:lightbulb
+            content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Hall'] }}"
+
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: light.hall_lights
+            vertical: true
+          - type: tile
+            entity: switch.hall_socket
+            vertical: true
+            color: blue

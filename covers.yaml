@@ -1,0 +1,181 @@
+- platform: template
+  covers:
+    andys_bedroom_window_shade:
+      unique_id: dcb9f6e3-f1f2-46d6-9d06-6f52a3222681
+      device_class: blind
+      friendly_name: "Andys Bedroom Window Shade"
+      value_template: >
+        {% if states('cover.andys_bedroom_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.andys_bedroom_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.andys_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.andys_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.andys_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.andys_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.andys_bedroom_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}
+
+    mums_bedroom_window_shade:
+      unique_id: 595d368a-498d-4fc4-b938-5eea13d2cd9d
+      device_class: blind
+      friendly_name: "Mums Bedroom Window Shade"
+      value_template: >
+        {% if states('cover.mums_bedroom_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.mums_bedroom_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.mums_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.mums_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.mums_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.mums_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.mums_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.mums_bedroom_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.mums_bedroom_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}
+
+    kitchen_window_shade:
+      unique_id: 872520ae-ba0b-40ca-bfe4-fcb18474de78
+      device_class: blind
+      friendly_name: "Kitchen Window Shade"
+      value_template: >
+        {% if states('cover.kitchen_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.kitchen_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.kitchen_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.kitchen_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.kitchen_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.kitchen_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.kitchen_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.kitchen_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.kitchen_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}
+
+    office_window_shade:
+      unique_id: ea08a123-4c1a-4c68-9575-d14bf21bd34e
+      device_class: blind
+      friendly_name: "Office Window Shade"
+      value_template: >
+        {% if states('cover.office_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.office_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.office_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.office_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.office_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.office_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.office_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.office_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.office_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}

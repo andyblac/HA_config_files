@@ -1,0 +1,1045 @@
+- id: "1680683299949"
+  name: Kitchen motion light on
+  entities:
+    light.kitchen_cabinets:
+      effect_list:
+        - Flash
+        - Gradual Change
+        - Meteor Shower
+        - "Off"
+      supported_color_modes:
+        - rgbw
+      entity_id:
+        - light.kitchen_cabinet_1
+        - light.kitchen_cabinet_2
+      icon: phu:light-strip
+      friendly_name: Kitchen Cabinets
+      supported_features: 36
+      color_mode: rgbw
+      brightness: 255
+      hs_color:
+        - 0
+        - 0
+      rgb_color:
+        - 255
+        - 255
+        - 255
+      rgbw_color:
+        - 0
+        - 0
+        - 0
+        - 255
+      xy_color:
+        - 0.323
+        - 0.329
+      effect: "Off"
+      state: "on"
+    light.kitchen_floor_led:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: phu:light-strip
+      friendly_name: Kitchen Floor LED
+      supported_features: 36
+      color_mode: rgbw
+      brightness: 89
+      hs_color:
+        - 0
+        - 0
+      rgb_color:
+        - 255
+        - 255
+        - 255
+      rgbw_color:
+        - 0
+        - 0
+        - 0
+        - 255
+      xy_color:
+        - 0.323
+        - 0.329
+      effect: "Off"
+      state: "on"
+  icon: mdi:motion-sensor
+  metadata:
+    light.kitchen_floor_led:
+      entity_only: true
+- id: "1680683341164"
+  name: Kitchen motion light off
+  entities:
+    light.kitchen_cabinets:
+      effect_list:
+        - Flash
+        - Gradual Change
+        - Meteor Shower
+        - "Off"
+      supported_color_modes:
+        - rgbw
+      entity_id:
+        - light.kitchen_cabinet_1
+        - light.kitchen_cabinet_2
+      icon: phu:light-strip
+      friendly_name: Kitchen Cabinets
+      supported_features: 36
+      state: "off"
+    light.kitchen_floor_led:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: phu:light-strip
+      friendly_name: Kitchen Floor LED
+      supported_features: 36
+      state: "off"
+  icon: mdi:motion-sensor-off
+  metadata:
+    light.kitchen_floor_led:
+      entity_only: true
+- id: "1680692962907"
+  name: Good Morning
+  entities:
+    light.front_garden_light:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: mdi:outdoor-lamp
+      friendly_name: Light
+      supported_features: 36
+      state: "off"
+    light.back_garden_raised_bed_led:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6666
+      min_mireds: 150
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - candle
+        - channel_change
+        - colorloop
+        - finish_effect
+        - fireplace
+        - okay
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      icon: phu:light-strip
+      friendly_name: Raised Bed LED
+      supported_features: 44
+      state: unavailable
+    light.media_room_sideboard_lamps:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - candle
+        - channel_change
+        - colorloop
+        - finish_effect
+        - fireplace
+        - okay
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      entity_id:
+        - light.media_room_sideboard_lamp_left
+        - light.media_room_sideboard_lamp_right
+      icon: mdi:lamp
+      friendly_name: Sideboard Lamps
+      supported_features: 44
+      state: "off"
+    light.lounge_lamps:
+      supported_color_modes:
+        - onoff
+      entity_id:
+        - light.lounge_lamp_1
+        - light.lounge_lamp_2
+        - light.lounge_lamp_3
+      icon: mdi:lamp
+      friendly_name: Lamps
+      supported_features: 0
+      state: "off"
+    switch.lounge_extension_socket_3:
+      device_class: outlet
+      icon: phu:apple-iphone
+      friendly_name: Lounge iPhone Charger
+      state: "off"
+    switch.lounge_socket_3_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:laptop
+      friendly_name: MacBook
+      state: "off"
+    light.kitchen_floor_led:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: phu:light-strip
+      friendly_name: Floor LED
+      supported_features: 36
+      state: "off"
+    light.kitchen_cabinets:
+      effect_list:
+        - Flash
+        - Gradual Change
+        - Meteor Shower
+        - "Off"
+      supported_color_modes:
+        - rgbw
+      entity_id:
+        - light.kitchen_cabinet_1
+        - light.kitchen_cabinet_2
+      icon: phu:light-strip
+      friendly_name: Cabinet LED's
+      supported_features: 36
+      state: "off"
+    switch.kitchen_sockets_1_right:
+      device_class: outlet
+      icon: mdi:coffee-maker
+      friendly_name: Kitchen Water Heater
+      state: "on"
+    switch.lounge_socket_1_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:television
+      friendly_name: Lounge TV
+      state: "on"
+    switch.lounge_socket_4_right:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Lounge Socket 4 Right
+      state: "on"
+    switch.office_socket_1_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: phu:imac
+      friendly_name: Office iMac
+      state: "on"
+    switch.andys_bedroom_sockets_right:
+      device_class: outlet
+      icon: phu:homepod-mini
+      friendly_name: Andys Bedroom HomePod
+      state: "off"
+    cover.kitchen_window_shade:
+      device_class: blind
+      icon: phu:shutter-20
+      friendly_name: Kitchen Window Shade
+      supported_features: 11
+      state: open
+    cover.lounge_patio_window_shade:
+      current_position: 100
+      device_class: blind
+      friendly_name: Lounge Patio Window Shade
+      supported_features: 15
+      state: open
+    cover.lounge_window_shade:
+      current_position: 100
+      device_class: blind
+      friendly_name: Lounge Window Shade
+      supported_features: 15
+      state: open
+    cover.media_room_window_shade:
+      current_position: 80
+      device_class: blind
+      friendly_name: Media Room Window Shade
+      supported_features: 15
+      state: open
+    cover.office_window_shade:
+      device_class: blind
+      icon: phu:shutter-20
+      friendly_name: Office Window Shade
+      supported_features: 11
+      state: open
+  icon: mdi:weather-sunset-up
+  metadata:
+    light.front_garden_light:
+      entity_only: true
+    light.back_garden_raised_bed_led:
+      entity_only: true
+    light.media_room_sideboard_lamps:
+      entity_only: true
+    light.kitchen_floor_led:
+      entity_only: true
+    light.kitchen_cabinets:
+      entity_only: true
+    switch.kitchen_sockets_1_right:
+      entity_only: true
+    switch.lounge_socket_1_left:
+      entity_only: true
+    switch.lounge_socket_4_right:
+      entity_only: true
+    switch.office_socket_1_left:
+      entity_only: true
+    switch.andys_bedroom_sockets_right:
+      entity_only: true
+    light.lounge_lamps:
+      entity_only: true
+    switch.lounge_extension_socket_3:
+      entity_only: true
+    switch.lounge_socket_3_left:
+      entity_only: true
+    cover.kitchen_window_shade:
+      entity_only: true
+    cover.lounge_patio_window_shade:
+      entity_only: true
+    cover.lounge_window_shade:
+      entity_only: true
+    cover.media_room_window_shade:
+      entity_only: true
+    cover.office_window_shade:
+      entity_only: true
+- id: "1680694926421"
+  name: Good Night
+  entities:
+    light.front_garden_light:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: mdi:outdoor-lamp
+      friendly_name: Light
+      supported_features: 36
+      state: "off"
+    light.back_garden_raised_bed_led:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6666
+      min_mireds: 150
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - candle
+        - channel_change
+        - colorloop
+        - finish_effect
+        - fireplace
+        - okay
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      entity_id:
+        - light.back_garden_led_strip_1
+        - light.back_garden_led_strip_2
+      icon: phu:light-strip
+      friendly_name: Raised Bed LED
+      supported_features: 44
+      state: "off"
+    light.garage_lights:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lightbulb-fluorescent-tube
+      friendly_name: Lights
+      supported_features: 0
+      state: "off"
+    light.kitchen_lights:
+      supported_color_modes:
+        - onoff
+      icon: mdi:light-recessed
+      friendly_name: Kitchen Lights
+      supported_features: 0
+      state: "off"
+    light.kitchen_floor_led:
+      effect_list:
+        - "Off"
+        - Meteor Shower
+        - Gradual Change
+        - Flash
+      supported_color_modes:
+        - rgbw
+      icon: phu:light-strip
+      friendly_name: Floor LED
+      supported_features: 36
+      state: "off"
+    light.kitchen_cabinets:
+      effect_list:
+        - Flash
+        - Gradual Change
+        - Meteor Shower
+        - "Off"
+      supported_color_modes:
+        - rgbw
+      entity_id:
+        - light.kitchen_cabinet_1
+        - light.kitchen_cabinet_2
+      icon: phu:light-strip
+      friendly_name: Cabinet LED's
+      supported_features: 36
+      state: "off"
+    switch.kitchen_sockets_1_left:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Socket 1 Left
+      state: "off"
+    switch.kitchen_sockets_1_right:
+      device_class: outlet
+      icon: mdi:coffee-maker
+      friendly_name: Kitchen Water Heater
+      state: "off"
+    switch.kitchen_sockets_2_left:
+      device_class: outlet
+      icon: mdi:french-fries
+      friendly_name: Air Fryer
+      state: "off"
+    switch.kitchen_sockets_2_right:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Socket 2 Right
+      state: "off"
+    switch.kitchen_sockets_3_left:
+      device_class: outlet
+      icon: mdi:bread-slice
+      friendly_name: Bread Maker
+      state: "off"
+    switch.kitchen_sockets_3_right:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Vacuum Sealer
+      state: "off"
+    switch.kitchen_sockets_4_left:
+      device_class: outlet
+      icon: mdi:microwave
+      friendly_name: Microwave
+      state: "off"
+    switch.kitchen_sockets_4_right:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Tin Opener
+      state: "off"
+    switch.kitchen_washing_machine_socket:
+      device_class: outlet
+      icon: mdi:washing-machine
+      friendly_name: Washing Machine
+      state: "off"
+    light.lounge_table_light:
+      supported_color_modes:
+        - onoff
+      icon: mdi:ceiling-light
+      friendly_name: Table Light
+      supported_features: 0
+      state: "off"
+    light.lounge_extention_lights:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Extension Spots
+      supported_features: 32
+      state: "off"
+    light.lounge_lamp_1:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 1
+      supported_features: 0
+      state: "off"
+    light.lounge_lamp_2:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 2
+      supported_features: 0
+      state: "off"
+    light.lounge_lamp_3:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 3
+      supported_features: 0
+      state: "off"
+    switch.lounge_socket_1_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:television
+      friendly_name: Lounge TV
+      state: "off"
+    switch.lounge_socket_1_right:
+      outlet_in_use: true
+      device_class: outlet
+      icon: phu:apple-tv-box
+      friendly_name: AppleTV UK
+      state: "off"
+    switch.lounge_socket_2_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: phu:apple-tv-box
+      friendly_name: AppleTV US
+      state: "off"
+    switch.lounge_socket_2_right:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Lounge Socket 2 Right
+      state: "off"
+    switch.lounge_socket_3_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:laptop
+      friendly_name: MacBook
+      state: "on"
+    switch.lounge_extension_socket_3:
+      device_class: outlet
+      icon: phu:apple-iphone
+      friendly_name: Lounge iPhone Charger
+      state: "on"
+    switch.lounge_extension_socket_4:
+      device_class: outlet
+      icon: mdi:iron
+      friendly_name: Iron
+      state: "off"
+    switch.lounge_extension_socket_usb:
+      device_class: outlet
+      icon: mdi:usb
+      friendly_name: USB
+      state: "off"
+    light.media_room_dimmer2:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Media Room Spots
+      supported_features: 32
+      state: "off"
+    switch.media_room_sockets_1_right:
+      device_class: outlet
+      icon: mdi:speaker
+      friendly_name: Subwoofer
+      state: "off"
+    switch.media_room_sockets_2_left:
+      device_class: outlet
+      icon: mdi:sofa
+      friendly_name: Sofa
+      state: "off"
+    switch.media_room_sockets_2_right:
+      device_class: outlet
+      icon: phu:homepod-mini
+      friendly_name: HomePod
+      state: "off"
+    light.hall_lights:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Hall Spots
+      supported_features: 32
+      state: "off"
+    light.landing_lights:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Landing Spots
+      supported_features: 32
+      state: "off"
+    light.wetroom_light:
+      supported_color_modes:
+        - onoff
+      icon: mdi:light-recessed
+      friendly_name: Wetroom Spots
+      supported_features: 0
+      state: "off"
+    switch.wetroom_extractor:
+      friendly_name: Wetroom Extractor
+      state: "off"
+    light.office_dimmer:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Office Spots
+      supported_features: 32
+      state: "off"
+    switch.office_socket_1_left:
+      outlet_in_use: true
+      device_class: outlet
+      icon: phu:imac
+      friendly_name: Office iMac
+      state: "off"
+    switch.mums_bedroom_sockets_left:
+      device_class: outlet
+      icon: mdi:hair-dryer
+      friendly_name: Hair Dryer
+      state: "off"
+    switch.mums_bedroom_sockets_right:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Hair Curlers
+      state: "off"
+    switch.andys_bedroom_sockets_left:
+      device_class: outlet
+      icon: mdi:toothbrush-electric
+      friendly_name: Toothbrush
+      state: "off"
+    cover.andys_bedroom_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Andys Bedroom Window Shade
+      supported_features: 11
+      state: closed
+    cover.kitchen_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Kitchen Window Shade
+      supported_features: 11
+      state: closed
+    cover.lounge_patio_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Lounge Patio Window Shade
+      supported_features: 15
+      state: closed
+    cover.lounge_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Lounge Window Shade
+      supported_features: 15
+      state: closed
+    cover.media_room_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Media Room Window Shade
+      supported_features: 15
+      state: closed
+    cover.mums_bedroom_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Mums Bedroom Window Shade
+      supported_features: 11
+      state: closed
+    cover.office_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Office Window Shade
+      supported_features: 11
+      state: closed
+    switch.lounge_extension_socket_1:
+      device_class: outlet
+      icon: phu:homepod
+      friendly_name: Lounge HomePod
+      state: "off"
+    light.media_room_sideboard_lamps:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - candle
+        - channel_change
+        - colorloop
+        - finish_effect
+        - fireplace
+        - okay
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      entity_id:
+        - light.media_room_sideboard_lamp_left
+        - light.media_room_sideboard_lamp_right
+      icon: mdi:lamp
+      friendly_name: Sideboard Lamps
+      supported_features: 44
+      state: "off"
+    switch.lounge_socket_5_left:
+      outlet_in_use: false
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Lounge Socket 5 Left
+      state: "off"
+    switch.lounge_socket_4_right:
+      outlet_in_use: true
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Lounge Socket 4 Right
+      state: "on"
+  icon: mdi:weather-sunset-down
+  metadata:
+    light.front_garden_light:
+      entity_only: true
+    light.back_garden_raised_bed_led:
+      entity_only: true
+    light.garage_lights:
+      entity_only: true
+    light.kitchen_lights:
+      entity_only: true
+    light.kitchen_floor_led:
+      entity_only: true
+    light.kitchen_cabinets:
+      entity_only: true
+    switch.kitchen_sockets_1_left:
+      entity_only: true
+    switch.kitchen_sockets_1_right:
+      entity_only: true
+    switch.kitchen_sockets_2_left:
+      entity_only: true
+    switch.kitchen_sockets_2_right:
+      entity_only: true
+    switch.kitchen_sockets_3_left:
+      entity_only: true
+    switch.kitchen_sockets_3_right:
+      entity_only: true
+    switch.kitchen_sockets_4_left:
+      entity_only: true
+    switch.kitchen_sockets_4_right:
+      entity_only: true
+    light.lounge_table_light:
+      entity_only: true
+    light.lounge_extention_lights:
+      entity_only: true
+    light.lounge_lamp_1:
+      entity_only: true
+    light.lounge_lamp_2:
+      entity_only: true
+    light.lounge_lamp_3:
+      entity_only: true
+    switch.lounge_socket_1_left:
+      entity_only: true
+    switch.lounge_socket_1_right:
+      entity_only: true
+    switch.lounge_socket_2_left:
+      entity_only: true
+    switch.lounge_socket_2_right:
+      entity_only: true
+    switch.lounge_socket_3_left:
+      entity_only: true
+    switch.lounge_extension_socket_3:
+      entity_only: true
+    switch.lounge_extension_socket_4:
+      entity_only: true
+    light.media_room_dimmer2:
+      entity_only: true
+    switch.media_room_sockets_2_left:
+      entity_only: true
+    switch.media_room_sockets_2_right:
+      entity_only: true
+    light.hall_lights:
+      entity_only: true
+    light.landing_lights:
+      entity_only: true
+    light.wetroom_light:
+      entity_only: true
+    switch.wetroom_extractor:
+      entity_only: true
+    light.office_dimmer:
+      entity_only: true
+    switch.office_socket_1_left:
+      entity_only: true
+    switch.mums_bedroom_sockets_left:
+      entity_only: true
+    switch.mums_bedroom_sockets_right:
+      entity_only: true
+    switch.andys_bedroom_sockets_left:
+      entity_only: true
+    cover.andys_bedroom_window_shade:
+      entity_only: true
+    cover.kitchen_window_shade:
+      entity_only: true
+    cover.lounge_patio_window_shade:
+      entity_only: true
+    cover.lounge_window_shade:
+      entity_only: true
+    cover.media_room_window_shade:
+      entity_only: true
+    cover.mums_bedroom_window_shade:
+      entity_only: true
+    cover.office_window_shade:
+      entity_only: true
+    switch.lounge_extension_socket_1:
+      entity_only: true
+    light.media_room_sideboard_lamps:
+      entity_only: true
+    switch.lounge_socket_5_left:
+      entity_only: true
+    switch.lounge_socket_4_right:
+      entity_only: true
+- id: "1680805676442"
+  name: Evening
+  entities:
+    light.lounge_lamps:
+      supported_color_modes:
+        - onoff
+      entity_id:
+        - light.lounge_lamp_1
+        - light.lounge_lamp_2
+        - light.lounge_lamp_3
+      icon: mdi:lamp
+      friendly_name: Lamps
+      supported_features: 0
+      color_mode: onoff
+      state: "on"
+    cover.kitchen_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Kitchen Window Shade
+      supported_features: 11
+      state: closed
+    cover.lounge_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Lounge Window Shade
+      supported_features: 15
+      state: closed
+    cover.lounge_patio_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Lounge Patio Window Shade
+      supported_features: 15
+      state: closed
+    cover.media_room_window_shade:
+      current_position: 0
+      device_class: blind
+      friendly_name: Media Room Window Shade
+      supported_features: 15
+      state: closed
+    cover.office_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Office Window Shade
+      supported_features: 11
+      state: closed
+    cover.mums_bedroom_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Mums Bedroom Window Shade
+      supported_features: 11
+      state: closed
+    cover.andys_bedroom_window_shade:
+      device_class: blind
+      icon: phu:shutter-100
+      friendly_name: Andys Bedroom Window Shade
+      supported_features: 11
+      state: closed
+  icon: mdi:sofa
+  metadata:
+    light.lounge_lamps:
+      entity_only: true
+    cover.kitchen_window_shade:
+      entity_only: true
+    cover.lounge_window_shade:
+      entity_only: true
+    cover.lounge_patio_window_shade:
+      entity_only: true
+    cover.media_room_window_shade:
+      entity_only: true
+    cover.office_window_shade:
+      entity_only: true
+    cover.mums_bedroom_window_shade:
+      entity_only: true
+    cover.andys_bedroom_window_shade:
+      entity_only: true
+- id: "1680807030475"
+  name: Lamps On
+  entities:
+    light.lounge_lamp_1:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 1
+      supported_features: 0
+      state: "on"
+    light.lounge_lamp_2:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 2
+      supported_features: 0
+      state: "on"
+    light.lounge_lamp_3:
+      supported_color_modes:
+        - onoff
+      icon: mdi:lamp
+      friendly_name: Lounge Lamp 3
+      supported_features: 0
+      state: "on"
+  icon: mdi:lamp
+  metadata:
+    light.lounge_lamp_1:
+      entity_only: true
+    light.lounge_lamp_2:
+      entity_only: true
+    light.lounge_lamp_3:
+      entity_only: true
+- id: "1680885897259"
+  name: It's Too Bright
+  entities:
+    cover.lounge_window_shade:
+      current_position: 40
+      friendly_name: Lounge Window Shade
+      supported_features: 15
+      state: open
+  icon: mdi:roller-shade
+  metadata: {}
+- id: "1680886444622"
+  name: Patio Sun
+  entities:
+    cover.lounge_patio_window_shade:
+      current_position: 65
+      friendly_name: Lounge Window Shade
+      supported_features: 15
+      state: open
+  icon: mdi:roller-shade
+  metadata: {}
+- id: "1680944908491"
+  name: Tea Time
+  entities:
+    switch.kitchen_sockets_2_left:
+      device_class: outlet
+      icon: mdi:french-fries
+      friendly_name: Kitchen Air Fryer
+      state: "on"
+    switch.kitchen_sockets_4_left:
+      device_class: outlet
+      icon: mdi:microwave
+      friendly_name: Kitchen Microwave
+      state: "on"
+    switch.kitchen_sockets_4_right:
+      device_class: outlet
+      icon: mdi:power-socket-uk
+      friendly_name: Kitchen Tin Opener
+      state: "on"
+  icon: mdi:food
+  metadata:
+    switch.kitchen_sockets_2_left:
+      entity_only: true
+    switch.kitchen_sockets_4_left:
+      entity_only: true
+    switch.kitchen_sockets_4_right:
+      entity_only: true
+- id: "1681136235983"
+  name: Open mums bedroom shade
+  entities:
+    cover.mums_bedroom_window_shade:
+      device_class: blind
+      icon: phu:shutter-20
+      friendly_name: Mums Bedroom Window Shade
+      supported_features: 11
+      state: open
+  icon: mdi:roller-shade
+  metadata:
+    cover.mums_bedroom_window_shade:
+      entity_only: true
+- id: "1681136331369"
+  name: Close mums bedroom shade
+  entities:
+    cover.mums_bedroom_window_shade:
+      friendly_name: Mums Bedroom Window Shade
+      device_class: blind
+      icon: phu:shutter-100
+      supported_features: 11
+      state: closed
+  icon: mdi:roller-shade-closed
+  metadata:
+    cover.mums_bedroom_window_shade:
+      entity_only: true
+- id: "1681649435196"
+  name: Back Garden Sensor Light
+  entities:
+    light.garage_wall_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - okay
+        - channel_change
+        - candle
+        - fireplace
+        - colorloop
+        - finish_effect
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      icon: mdi:outdoor-lamp
+      friendly_name: Garage Wall Light
+      supported_features: 44
+      color_mode: color_temp
+      brightness: 255
+      color_temp_kelvin: 5025
+      color_temp: 199
+      hs_color:
+        - 27.028
+        - 18.905
+      rgb_color:
+        - 255
+        - 228
+        - 206
+      xy_color:
+        - 0.371
+        - 0.349
+      state: "on"
+  metadata:
+    light.garage_wall_light:
+      entity_only: true
+- id: "1681722423147"
+  name: Back Garden Sensor Light (Off)
+  entities:
+    light.garage_wall_light:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+        - blink
+        - breathe
+        - okay
+        - channel_change
+        - candle
+        - fireplace
+        - colorloop
+        - finish_effect
+        - stop_effect
+        - stop_hue_effect
+      supported_color_modes:
+        - color_temp
+        - xy
+      icon: mdi:outdoor-lamp
+      friendly_name: Garage Wall Light
+      supported_features: 44
+      state: "off"
+  metadata:
+    light.garage_wall_light:
+      entity_only: true
+- id: "1694353926631"
+  name: scene test
+  entities:
+    light.office_dimmer:
+      supported_color_modes:
+        - brightness
+      icon: mdi:light-recessed
+      friendly_name: Spots
+      supported_features: 32
+      color_mode: brightness
+      brightness: 8
+      state: "on"
+  metadata:
+    light.office_dimmer:
+      entity_only: true

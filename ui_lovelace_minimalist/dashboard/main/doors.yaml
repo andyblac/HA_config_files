@@ -1,0 +1,94 @@
+title: "Doors"
+path: "doors"
+icon: mdi:door
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: 10% repeat(3, 1fr) 10%
+  grid-template-rows: repeat(5, fit-content(100%))
+  grid-template-areas: |
+    ".   header    header  header  ."
+    ".   .         roller  .       ."
+    ".   garage    back    front   ."
+    ".   lounge    media   office  ."
+    ".   andys     mums    .       ."
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(3, 33%) 0
+      grid-template-rows: repeat(5, fit-content(100%))
+      grid-template-areas: |
+        "header    header  header  ."
+        "roller    roller  roller  ."
+        "garage    back    front   ."
+        "lounge    media   office  ."
+        "andys     mums    .       ."
+cards:
+  - type: "custom:button-card"
+    view_layout:
+      grid-area: header
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+  - type: custom:mushroom-cover-card
+    view_layout:
+      grid-area: roller
+    entity: cover.roller_door
+    layout: vertical
+    tap_action:
+      action: more-info
+    show_position_control: false
+    show_buttons_control: true
+
+  - type: tile
+    view_layout:
+      grid-area: garage
+    entity: binary_sensor.garage_door
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: back
+    entity: binary_sensor.back_door
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: front
+    entity: binary_sensor.front_door
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: lounge
+    entity: binary_sensor.lounge_door_contact
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: media
+    entity: binary_sensor.media_room_door_contact
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: office
+    entity: binary_sensor.office_door_contact
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: mums
+    entity: binary_sensor.mums_bedroom_door_contact
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: andys
+    entity: binary_sensor.andys_bedroom_door_contact
+    vertical: true
+    color: blue

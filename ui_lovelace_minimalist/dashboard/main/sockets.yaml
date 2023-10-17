@@ -1,0 +1,419 @@
+title: Sockets
+path: sockets
+icon: mdi:power-socket-uk
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(3, 1fr) 0
+  grid-template-rows: repeat(3, fit-content(100%)) 0fr
+  grid-template-areas: |
+    "header   header   header"
+    "kitchen  lounge   media"
+    "office   andys    mums"
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(1, 1fr) 0
+      grid-template-rows: repeat(7, fit-content(100%))
+      grid-template-areas: |
+        "header  "
+        "kitchen "
+        "lounge  "
+        "media   "
+        "office  "
+        "andys   "
+        "mums    "
+
+cards:
+  - type: "custom:button-card"
+    view_layout:
+      grid-area: header
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+  # Kitchen
+  - type: vertical-stack
+    view_layout:
+      grid-area: kitchen
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Kitchen
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.kitchen_sockets_1_left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_sockets_1_right
+                name: "Water Heater"
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_sockets_2_left
+                name: "Air Fryer"
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.kitchen_sockets_2_right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_sockets_3_left
+                name: "Bread Maker"
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_sockets_3_right
+                name: "Vacume Sealer"
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.kitchen_sockets_4_left
+                name: "Microwave"
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_sockets_4_right
+                name: "Tin Opener"
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.kitchen_washing_machine_socket
+                name: "Washing Machine"
+                vertical: true
+                color: blue
+              # - type: custom:mushroom-template-card
+              #   entity: switch.kitchen_washing_machine_socket
+              #   icon: mdi:washing-machine
+              #   icon_color: "{% if states('switch.kitchen_washing_machine_socket') == 'on' %} blue {% endif %}"
+              #   primary: Washing Machine
+              #   layout: vertical
+              #   card_mod:
+              #     style: |
+              #       ha-state-icon {
+              #         {% if states('switch.kitchen_washing_machine_socket') == 'on' %}
+              #           animation: shake 400ms ease-in-out infinite, drum 2s ease infinite;
+              #           transform-origin: 50% 110%;
+              #         }
+              #         @keyframes shake {
+              #           0%, 100% { transform: translate(0, 0) rotate(0); }
+              #           20%  { transform: translate(0.4px, -0.4px) rotate(-4deg); }
+              #           40%  { transform: translate(-0.4px, 0.4px) rotate(4deg); }
+              #           60%  { transform: translate(0.4px, 0.4px) rotate(-4deg); }
+              #           80%  { transform: translate(-0.4px, -0.4px) rotate(4deg); }
+              #         }
+              #         @keyframes drum {
+              #           50%  { clip-path: polygon(0 0, 0 100%, 35% 100%, 34% 68%, 60% 41%, 71% 56%, 65% 74%, 47% 79%, 32% 69%, 35% 100%, 100% 100%, 100% 0); }
+              #         }
+              #       {% endif %}
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+
+  - type: vertical-stack
+    view_layout:
+      grid-area: lounge
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Lounge
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.lounge_socket_1_left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_socket_1_right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_socket_2_left
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.lounge_socket_2_right
+                name: Socket 2 Right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_socket_3_left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_socket_4_right
+                name: Socket 4 Right
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.lounge_socket_5_left
+                name: Socket 5 Left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_extension_socket_1
+                name: HomePod Power
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_extension_socket_2
+                name: Sofa
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.lounge_extension_socket_3
+                name: iPhone Charger
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_extension_socket_4
+                name: Iron
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.lounge_extension_socket_usb
+                name: USB
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+
+  # Media Room
+  - type: vertical-stack
+    view_layout:
+      grid-area: media
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Media Room
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.media_room_sockets_1_left
+                name: Socket 1 Left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_sockets_1_right
+                name: Subwoffer
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_sockets_2_left
+                name: Sofa
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.media_room_sockets_2_right
+                name: HomePod
+                vertical: true
+                color: blue
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+
+      # Hall
+      - type: "custom:button-card"
+        template: card_title
+        name: Hall
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.hall_socket
+            vertical: true
+            color: blue
+          - type: markdown
+            content: " "
+          - type: markdown
+            content: " "
+
+  # Office
+  - type: vertical-stack
+    view_layout:
+      grid-area: office
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Office
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.office_socket_1_left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.office_socket_1_right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.office_socket_2_left
+                vertical: true
+                color: blue
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.office_socket_2_right
+                vertical: true
+                color: blue
+              - type: markdown
+                content: " "
+              - type: markdown
+                content: " "
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+
+  # Andys Bedroom
+  - type: vertical-stack
+    view_layout:
+      grid-area: andys
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Andys Bedroom
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.andys_bedroom_sockets_left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.andys_bedroom_sockets_right
+                name: HomePod Power
+                vertical: true
+                color: blue
+              - type: markdown
+                content: " "
+
+  # Mums Bedroom
+  - type: vertical-stack
+    view_layout:
+      grid-area: mums
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Mums Bedroom
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.mums_bedroom_sockets_left
+                name: Hair Dryer
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.mums_bedroom_sockets_right
+                name: Hair Curlers
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.mums_bedroom_blanket
+                name: Blanket
+                vertical: true
+                color: blue

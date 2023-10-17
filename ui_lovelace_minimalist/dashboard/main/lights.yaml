@@ -1,0 +1,264 @@
+title: Lights
+path: lights
+icon: mdi:lightbulb
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(3, 1fr)
+  grid-template-rows: repeat(4, fit-content(100%))
+  grid-template-areas: |
+    "header   .        . "
+    "outside  lounge        media"
+    "kitchen  hall-landing  wetroom-office"
+    "mums     andys         .      "
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(1, 1fr)
+      grid-template-rows: repeat(6, fit-content(100%)) 0fr
+      grid-template-areas: |
+        "header  "
+        "outside "
+        "kitchen "
+        "lounge  "
+        "media   "
+        "hall-landing    "
+        "wetroom-office  "
+        "andys   "
+        "mums    "
+        ".       "
+
+cards:
+  - type: horizontal-stack
+    view_layout:
+      grid-area: header
+    cards:
+      - type: "custom:button-card"
+        template: chip_back
+        variables:
+          ulm_chip_back_path: home
+
+  # Outside
+  - type: vertical-stack
+    view_layout:
+      grid-area: outside
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Outside
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: light.garage_lights
+                name: Garage Lights
+                vertical: true
+              - type: tile
+                entity: light.garage_wall_light
+                name: Garage Wall Light
+                vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              # - type: tile
+              #   entity: light.back_garden_raised_bed_led
+              #   name: Back Garden Raised Bed LED
+              #   vertical: true
+              - type: tile
+                entity: light.front_garden_light
+                name: Front Garden Light
+                vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+  # Kitchen
+  - type: vertical-stack
+    view_layout:
+      grid-area: kitchen
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Kitchen
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: light.kitchen_lights
+            name: Spots
+            vertical: true
+          - type: tile
+            entity: light.kitchen_cabinets
+            vertical: true
+          - type: tile
+            entity: light.kitchen_floor_led
+            vertical: true
+
+  - type: vertical-stack
+    view_layout:
+      grid-area: lounge
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Lounge
+      - type: custom:stack-in-card
+        mode: vertical
+        cards:
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: light.lounge_table_light
+                name: Table Light
+                color: amber
+                vertical: true
+              - type: tile
+                entity: light.lounge_extention_lights
+                # name: Floor LED
+                color: amber
+                vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: light.lounge_lamp_1
+                name: Lamp 1
+                color: green
+                vertical: true
+              - type: tile
+                entity: light.lounge_lamp_2
+                name: Lamp 2
+                color: amber
+                vertical: true
+              - type: tile
+                entity: light.lounge_lamp_3
+                name: Lamp 3
+                color: green
+                vertical: true
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: none;
+                  box-shadow: none;
+                }
+
+  - type: vertical-stack
+    view_layout:
+      grid-area: media
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Media Room
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: light.media_room_dimmer2
+            name: Spots
+            color: amber
+            vertical: true
+          - type: tile
+            entity: light.media_room_sideboard_lamps
+            # color: amber
+            vertical: true
+
+  - type: horizontal-stack
+    view_layout:
+      grid-area: hall-landing
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Hall
+          - type: tile
+            entity: light.hall_lights
+            name: Spots
+            color: amber
+            vertical: true
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Landing
+          - type: tile
+            entity: light.landing_lights
+            name: Spots
+            color: amber
+            vertical: true
+
+  - type: horizontal-stack
+    view_layout:
+      grid-area: wetroom-office
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Wetroom
+          - type: tile
+            entity: light.wetroom_light
+            name: Spots
+            color: amber
+            vertical: true
+      - type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: card_title
+            name: Office
+          - type: tile
+            entity: light.office_dimmer
+            name: Spots
+            color: amber
+            vertical: true
+
+  - type: vertical-stack
+    view_layout:
+      grid-area: mums
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Mums Bedroom
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: light.mums_bedroom_light
+            name: Light
+            color: amber
+            vertical: true
+          - type: tile
+            entity: light.mums_bedroom_lamp
+            vertical: true
+  - type: vertical-stack
+    view_layout:
+      grid-area: andys
+    cards:
+      - type: "custom:button-card"
+        template: card_title
+        name: Andys Bedroom
+      - type: tile
+        entity: light.andys_bedroom_lights
+        name: Spots
+        color: amber
+        vertical: true

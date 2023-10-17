@@ -1,0 +1,26 @@
+---
+button_card_templates: !include_dir_merge_named "../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+title: "Main Dashboard"
+
+views:
+  - !include main/home.yaml
+  - !include main/security.yaml
+  - !include main/heating.yaml
+  - !include main/lights.yaml
+  - !include main/sockets.yaml
+  - !include main/doors.yaml
+  - !include main/motion-sensors.yaml
+  - !include main/batteries.yaml
+  - !include main/rooms/front-garden.yaml
+  - !include main/rooms/back-garden.yaml
+  - !include main/rooms/garage.yaml
+  - !include main/rooms/kitchen.yaml
+  - !include main/rooms/wetroom.yaml
+  - !include main/rooms/lounge.yaml
+  - !include main/rooms/media-room.yaml
+  - !include main/rooms/hall.yaml
+  - !include main/rooms/landing.yaml
+  - !include main/rooms/office.yaml
+  - !include main/rooms/andys-bedroom.yaml
+  - !include main/rooms/mums-bedroom.yaml

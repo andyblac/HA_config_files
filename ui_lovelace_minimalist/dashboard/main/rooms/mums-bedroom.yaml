@@ -1,0 +1,151 @@
+title: Mums Bedroom
+path: mums-bedroom
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(5, fit-content(100%))
+  grid-template-areas: |
+    ".    header      header    ."
+    ".    scene1      scene2    ."
+    ".    graphs      graphs    ."
+    ".    stat        shade     ."
+    ".    stat        lights    ."
+    ".    sockets     sockets   ."
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: repeat(8, fit-content(100%))
+      grid-template-areas: |
+        "header       header     "
+        "scene1       scene2     "
+        "scene3       scene4     "
+        "graphs       graphs     "
+        "stat         stat       "
+        "shade        shade      "
+        "lights       lights     "
+        "sockets      sockets    "
+
+cards:
+  - type: custom:mushroom-chips-card
+    view_layout:
+      grid-area: header
+    chips:
+      - type: back
+      - type: entity
+        entity: binary_sensor.mums_bedroom_door_contact
+        content_info: none
+        tap_action:
+          action: more-info
+      - type: entity
+        entity: sensor.wiser_lts_temperature_mums_bedroom
+      - type: template
+        icon: mdi:power-socket-uk
+        content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Mums Bedroom'] }}"
+      - type: template
+        icon: mdi:lightbulb
+        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Mums Bedroom'] }}"
+
+  - type: custom:tabbed-card
+    view_layout:
+      grid-area: graphs
+    tabs:
+      - attributes:
+          label: Temperature
+        card:
+          type: custom:mini-graph-card
+          points_per_hour: 2
+          entities:
+            - entity: sensor.wiser_lts_temperature_mums_bedroom
+              name: Temperature
+      - attributes:
+          label: Humidity
+        card:
+          type: custom:mini-graph-card
+          points_per_hour: 2
+          lower_bound: 0
+          upper_bound: 100
+          entities:
+            - entity: sensor.wiser_lts_humidity_mums_bedroom
+              name: Humidity
+
+  - type: tile
+    view_layout:
+      grid-area: stat
+    entity: climate.wiser_mums_bedroom
+    name: Heating
+    vertical: true
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - "off"
+
+  - type: tile
+    view_layout:
+      grid-area: shade
+    entity: cover.mums_bedroom_window_shade
+    name: Window Shade
+    # vertical: true
+    features:
+      - type: cover-open-close
+
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: lights
+    mode: horizontal
+    cards:
+      - type: custom:mushroom-light-card
+        entity: light.mums_bedroom_light
+        icon: mdi:ceiling-light
+        # layout: vertical
+        show_brightness_control: false
+        name: Ceiling
+        icon_color: amber
+      - type: custom:mushroom-light-card
+        entity: light.mums_bedroom_lamp
+        fill_container: false
+        # show_brightness_control: true
+        # layout: vertical
+        name: Lamp
+        use_light_color: true
+
+  # - type: custom:mushroom-media-player-card
+  #   view_layout:
+  #     grid-area: homepod
+  #   entity: media_player.mums_bedroom_homepod
+  #   name: HomePod mini
+  #   layout: vertical
+  #   volume_controls:
+  #     - volume_buttons
+  #   media_controls:
+  #     - play_pause_stop
+  #   use_media_info: true
+  #   fill_container: true
+  #   collapsible_controls: true
+
+  - type: horizontal-stack
+    view_layout:
+      grid-area: sockets
+    cards:
+      - type: tile
+        entity: switch.mums_bedroom_sockets_left
+        name: Hair Dryer
+        vertical: true
+        color: blue
+      - type: tile
+        entity: switch.mums_bedroom_sockets_right
+        name: Hair Curlers
+        vertical: true
+        color: blue
+      - type: tile
+        entity: switch.mums_bedroom_blanket
+        name: Blanket
+        vertical: true
+        color: blue

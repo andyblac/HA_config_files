@@ -1,0 +1,53 @@
+title: "Security"
+path: "security"
+icon: mdi:shield-lock
+cards:
+  - type: vertical-stack
+    cards:
+      - type: "custom:button-card"
+        template: chip_back
+        variables:
+          ulm_chip_back_path: home
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: alarm_control_panel.house_alarm
+            vertical: true
+            features:
+              - type: alarm-modes
+                modes:
+                  - armed_away
+                  - disarmed
+          - type: tile
+            entity: alarm_control_panel.garage_alarm
+            vertical: true
+            features:
+              - type: alarm-modes
+                modes:
+                  - armed_away
+                  - disarmed
+      - type: tile
+        entity: cover.roller_door
+        vertical: true
+        features:
+          - type: cover-open-close
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: binary_sensor.garage_door
+            vertical: true
+            features:
+              - type: cover-open-close
+            color: red
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: binary_sensor.back_door
+                vertical: true
+                color: red
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: binary_sensor.front_door
+                vertical: true
+                color: red

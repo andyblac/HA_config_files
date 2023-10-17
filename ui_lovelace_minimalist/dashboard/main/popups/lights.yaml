@@ -1,0 +1,23 @@
+type: custom:auto-entities
+card:
+  type: entities
+  show_header_toggle: true
+  state_color: true
+  card_mod:
+    style: |
+      ha-card {
+        --ha-card-background: none;
+        box-shadow: none;
+      }
+      .card-content {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+      }
+show_empty: false
+filter:
+  template: |
+    {% for entity in state_attr('sensor.number_of_lights_on','entities') %}
+      {{ entity.entity_id }}
+    {% endfor %}
+sort:
+  method: friendly_name

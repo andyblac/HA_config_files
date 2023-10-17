@@ -1,0 +1,48 @@
+- sensor:
+    - name: "Heating State"
+      unique_id: 8f8d798f-8e2c-42c2-812c-be4df3548fac
+      state: >
+        {%- if is_state('sensor.wiser_heating', 'On') -%}
+          {%- if states('sensor.ch_water_temp_boiler_otgw')|float > 60 -%}
+          high
+          {%- elif states('sensor.ch_water_temp_boiler_otgw')|float > 30 -%}
+          med
+          {%- else -%}
+          low
+          {%- endif -%}
+        {%- else -%}
+        off
+        {%- endif -%}
+      icon: >
+        {%- if is_state('binary_sensor.slave_flame_on_boiler_otgw', 'on') %}
+        mdi:radiator
+        {%- else -%}
+        mdi:radiator-disabled
+        {%- endif -%}
+      attributes:
+        navigation: heating
+        label: >
+          {%- if this.state in ['high','med','low'] -%}
+          {{states('sensor.wiser_lts_heating_demand_channel_1')}}% - {{states('sensor.ch_water_temp_boiler_otgw')}}˚C
+          {%- else -%}
+          Off
+          {%- endif -%}
+        color: >
+          {%- if this.state == 'high' -%}
+          red
+          {%- elif this.state == 'med' -%}
+          yellow
+          {%- elif this.state == 'low' -%}
+          blue
+          {%- else -%}
+          theme
+          {%- endif -%}
+        fault: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(1) %}on{% else %}off{% endif %}"
+        ch1_mode: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(2) %}on{% else %}off{% endif %}"
+        dhw_mode: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(4) %}on{% else %}off{% endif %}"
+        flame_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(8) %}on{% else %}off{% endif %}"
+        cooling_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(16) %}on{% else %}off{% endif %}"
+        diagnostic: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(64) %}on{% else %}off{% endif %}"
+        flow_temp: "{% if states('sensor.ch_water_temp_boiler_otgw') | int(0) %}{{states('sensor.ch_water_temp_boiler_otgw')}}{% else %}0{% endif %}"
+        max_flow_temp: "{% if states('sensor.max_ch_setpoint_boiler_otgw') | int(0) %}{{states('sensor.max_ch_setpoint_boiler_otgw')}}{% else %}0{% endif %}"
+        consumption: "{% if states('sensor.boiler_relative_consumption') | float(0) %}{{states('sensor.boiler_relative_consumption')}}{% else %}0{% endif %}"

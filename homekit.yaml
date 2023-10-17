@@ -1,0 +1,219 @@
+- name: Main HA Bridge
+  port: 51828
+  filter:
+    include_domains:
+      # - alarm_control_panel
+      # - climate
+      # - cover
+      - light
+      - switch
+      - fan
+    exclude_entity_globs:
+      - cover.*_somfy_window_shade
+      - light.*_screen
+      - switch.wiser_*
+      - switch.*_trigger_indicator
+      - switch.overkiz_*
+      - switch.*_window_shade_sw
+      - switch.*_water_control
+      - light.lounge_lamp_*
+    exclude_entities:
+      - climate.otgw
+      - cover.roller_door
+      - light.back_garden_led_strip_1
+      - light.back_garden_led_strip_2
+      - light.media_room_sideboard_lamp_left
+      - light.media_room_sideboard_lamp_right
+    include_entities:
+      # - scene.good_morning
+      - scene.it_s_too_bright
+      - scene.patio_sun
+      # - scene.tea_time
+      - scene.open_mums_bedroom_shade
+      - scene.close_mums_bedroom_shade
+  entity_config:
+    switch.house_alarm_switch:
+      type: outlet
+    switch.andys_bedroom_sockets_left:
+      type: outlet
+    switch.andys_bedroom_sockets_right:
+      type: outlet
+    switch.hall_socket:
+      type: outlet
+    switch.kitchen_sockets_1_left:
+      type: outlet
+    switch.kitchen_sockets_1_right:
+      type: outlet
+    switch.kitchen_sockets_2_left:
+      type: outlet
+    switch.kitchen_sockets_2_right:
+      type: outlet
+    switch.kitchen_sockets_3_left:
+      type: outlet
+    switch.kitchen_sockets_3_right:
+      type: outlet
+    switch.kitchen_sockets_4_left:
+      type: outlet
+    switch.kitchen_sockets_4_right:
+      type: outlet
+    switch.kitchen_washing_machine_socket:
+      type: outlet
+    switch.lounge_socket_1_left:
+      type: outlet
+    switch.lounge_socket_1_right:
+      type: outlet
+    switch.lounge_socket_2_left:
+      type: outlet
+    switch.lounge_socket_2_right:
+      type: outlet
+    switch.lounge_socket_3_left:
+      type: outlet
+    switch.lounge_socket_4_right:
+      type: outlet
+    switch.lounge_socket_5_left:
+      type: outlet
+    switch.lounge_extension_socket_1:
+      type: outlet
+    switch.lounge_extension_socket_2:
+      type: outlet
+    switch.lounge_extension_socket_3:
+      type: outlet
+    switch.lounge_extension_socket_4:
+      type: outlet
+    switch.lounge_extension_socket_usb:
+      type: outlet
+    switch.media_room_sockets_1_left:
+      type: outlet
+    switch.media_room_sockets_1_right:
+      type: outlet
+    switch.media_room_sockets_2_left:
+      type: outlet
+    switch.media_room_sockets_2_right:
+      type: outlet
+    switch.office_socket_1_left:
+      type: outlet
+    switch.office_socket_1_right:
+      type: outlet
+    switch.office_socket_2_left:
+      type: outlet
+    switch.office_socket_2_right:
+      type: outlet
+    switch.mums_bedroom_sockets_left:
+      type: outlet
+    switch.mums_bedroom_sockets_right:
+      type: outlet
+# - name: Lounge TV
+#   port: 51829
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - media_player.lounge_tv
+# - name: Media Room TV
+#   port: 51830
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - media_player.media_room_tv
+# - name: Garage Door
+#   port: 51833
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.garage_door
+# - name: Back Door
+#   port: 51831
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.back_door
+# - name: Lounge Door
+#   port: 51835
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.lounge_door_contact
+# - name: Media Room Door
+#   port: 51836
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.media_room_door_contact
+# - name: Front Door
+#   port: 51832
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.front_door
+# - name: Front Garden Gate
+#   port: 51839
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.front_garden_gate_contact
+# - name: Andys Bedroom Door
+#   port: 51834
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.andys_bedroom_door_contact
+# - name: Office Bedroom Door
+#   port: 51837
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.office_door_contact
+# - name: Mums Bedroom Door
+#   port: 51838
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.mums_bedroom_door_contact
+
+# - name: Back Garden Motion Sensor
+#   port: 51840
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.back_garden_motion_sensor_occupancy
+# - name: FrontGarden Motion Sensor
+#   port: 51841
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.front_garden_motion_sensor_occupancy
+# - name: Kitchen Motion Sensor
+#   port: 51842
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.kitchen_motion_sensor_occupancy
+# - name: Hall Motion Sensor
+#   port: 51843
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.hall_motion_sensor_occupancy
+# - name: Landing Motion Sensor
+#   port: 51844
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - binary_sensor.landing_motion_sensor_occupancy
+# - name: Bathroom Humidity Sensor
+#   port: 51845
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - sensor.bathroom_humidity_sensor_humidity
+# - name: BG_SHS
+#   port: 51846
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - sensor.back_garden_soil_sensor_humidity
+# - name: FG_SHS
+#   port: 51848
+#   mode: accessory
+#   filter:
+#     include_entities:
+#       - sensor.front_garden_soil_sensor_humidity

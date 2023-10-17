@@ -1,0 +1,174 @@
+title: Office
+path: office
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(5, fit-content(100%))
+  grid-template-areas: |
+    "header       header      .             .           "
+    "scene1       scene2      scene3        scene4      "
+    "graphs       graphs      graphs        graphs      "
+    "stat         shade        sockets         lights      "
+    "stat         shade        sockets       lights     "
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: repeat(8, fit-content(100%))
+      grid-template-areas: |
+        "header       header     "
+        "scene1       scene2     "
+        "scene3       scene4     "
+        "graphs       graphs     "
+        "stat         stat       "
+        "shade        shade      "
+        "lights       lights     "
+        "sockets      sockets    "
+
+cards:
+  - type: custom:mushroom-chips-card
+    view_layout:
+      grid-area: header
+    chips:
+      - type: back
+      - type: entity
+        entity: binary_sensor.office_door_contact
+        content_info: none
+        tap_action:
+          action: more-info
+      - type: entity
+        entity: sensor.wiser_lts_temperature_office
+      - type: template
+        icon: mdi:power-socket-uk
+        content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Office'] }}"
+      - type: template
+        icon: mdi:lightbulb
+        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Office'] }}"
+
+  - type: custom:mushroom-entity-card
+    view_layout:
+      grid-area: scene1
+    entity: button.office_somfy_window_shade_my_position
+    tap_action:
+      action: call-service
+      service: button.press
+      target:
+        entity_id: button.office_somfy_window_shade_my_position
+      data: {}
+    name: Shade My Position
+
+  - type: custom:state-switch
+    view_layout:
+      grid-area: graphs
+    entity: mediaquery
+    states:
+      "(max-width: 800px)": # iPhone
+        type: custom:tabbed-card
+        tabs:
+          - attributes:
+              label: Temperature
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              entities:
+                - entity: sensor.wiser_lts_temperature_office
+                  name: Temperature
+          - attributes:
+              label: Humidity
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              lower_bound: 0
+              upper_bound: 100
+              entities:
+                - entity: sensor.wiser_lts_humidity_office
+                  name: Humidity
+      "(min-width: 800px)": # Desktop / Tablet
+        type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            line_width: 2
+            points_per_hour: 2
+            entities:
+              - entity: sensor.wiser_lts_temperature_office
+                name: Temperature
+          - type: custom:mini-graph-card
+            line_width: 2
+            points_per_hour: 2
+            lower_bound: 0
+            upper_bound: 100
+            entities:
+              - entity: sensor.wiser_lts_humidity_office
+                name: Humidity
+
+  # - type: thermostat
+  #   view_layout:
+  #     grid-area: stat
+  #   entity: climate.wiser_office
+  #   name: " "
+
+  - type: tile
+    view_layout:
+      grid-area: stat
+    entity: climate.wiser_office
+    name: Heating
+    vertical: true
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - "off"
+
+  - type: tile
+    view_layout:
+      grid-area: shade
+    entity: cover.office_window_shade
+    name: Window Shade
+    vertical: true
+    features:
+      - type: cover-open-close
+
+  - type: tile
+    view_layout:
+      grid-area: lights
+    entity: light.office_dimmer
+    name: Spots
+    vertical: true
+    features:
+      - type: light-brightness
+
+  - type: custom:stack-in-card
+    view_layout:
+      grid-area: sockets
+    mode: vertical
+    cards:
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.office_socket_1_left
+            name: iMac
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.office_socket_1_right
+            name: Printer
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.office_socket_2_left
+            vertical: true
+            color: blue
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
+            entity: switch.office_socket_2_right
+            vertical: true
+            color: blue

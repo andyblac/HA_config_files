@@ -1,0 +1,21 @@
+mode: storage
+# dashboards:
+#   lovelace-minimalist-2:
+#     mode: yaml
+#     title: macOS
+#     icon: phu:imac
+#     show_in_sidebar: true
+#     filename: ui_lovelace_minimalist/dashboard/macOS.yaml
+#   lovelace-minimalist-3:
+#     mode: yaml
+#     title: iPad
+#     icon: mdi:tablet
+#     show_in_sidebar: true
+#     filename: ui_lovelace_minimalist/dashboard/iPad.yaml
+#   lovelace-minimalist-4:
+#     mode: yaml
+#     title: Main
+#     icon: phu:imac
+#     show_in_sidebar: true
+#     filename: ui_lovelace_minimalist/dashboard/main.yaml
+

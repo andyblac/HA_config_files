@@ -1,0 +1,93 @@
+title: Motion Sensors
+path: motion-sensors
+icon: mdi:motion-sensor
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: 10% repeat(3, 1fr) 10%
+  grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
+  grid-template-areas: |
+    ".  .         .       .       ."
+    ".  header    header  header  ."
+    ".  garage    back    front   ."
+    ".  kitchen   lounge  media   ."
+    ".  hall      landing .       ."
+    ".  .         .       .       ."
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(3, 33%) 0
+      grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
+      grid-template-areas: |
+        ".           .       .     ."
+        "header    header  header  ."
+        "garage    back    front   ."
+        "lounge    media   hall    ."
+        "landing   .       .       ."
+        ".         .       .       ."
+cards:
+  - type: "custom:button-card"
+    view_layout:
+      grid-area: header
+    template: chip_back
+    variables:
+      ulm_chip_back_path: home
+
+  - type: tile
+    view_layout:
+      grid-area: garage
+    entity: binary_sensor.garage_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: back
+    entity: binary_sensor.back_garden_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: front
+    entity: binary_sensor.front_garden_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: kitchen
+    entity: binary_sensor.kitchen_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: lounge
+    entity: binary_sensor.lounge_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: media
+    entity: binary_sensor.media_room_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: hall
+    entity: binary_sensor.hall_motion_sensor_occupancy
+    vertical: true
+    color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: landing
+    entity: binary_sensor.landing_motion_sensor_occupancy
+    vertical: true
+    color: blue

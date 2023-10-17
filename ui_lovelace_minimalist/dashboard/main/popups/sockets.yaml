@@ -1,0 +1,19 @@
+type: custom:auto-entities
+card:
+  type: entities
+  show_header_toggle: false
+  state_color: true
+  card_mod:
+    style: |
+      ha-card {
+        --ha-card-background: none;
+        box-shadow: none;
+      }
+show_empty: false
+filter:
+  template: |
+    {% for entity in state_attr('sensor.number_of_sockets_on','entities') %}
+      {{ entity.entity_id }}
+    {% endfor %}
+sort:
+  method: friendly_name

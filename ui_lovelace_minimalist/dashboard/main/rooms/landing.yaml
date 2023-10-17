@@ -1,0 +1,48 @@
+title: Landing
+path: landing
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: back
+          - type: entity
+            entity: sensor.landing_motion_sensor_device_temperature
+            tap_action:
+              action: more-info
+          - type: entity
+            entity: sensor.landing_motion_sensor_illuminance_lux
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:motion-sensor
+            content: ""
+            icon_color: >-
+              {% if
+              is_state('binary_sensor.landing_motion_sensor_occupancy',
+              'on') %}
+                blue
+              {% endif %}
+            entity: binary_sensor.landing_motion_sensor_occupancy
+            tap_action:
+              action: more-info
+          - type: template
+            icon: mdi:power-socket-uk
+            content: "{{ state_attr('sensor.number_of_sockets_on', 'count')['Landing'] }}"
+          - type: template
+            icon: mdi:lightbulb
+            content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Landing'] }}"
+
+      - type: horizontal-stack
+        cards:
+          - type: tile
+            entity: alarm_control_panel.house_alarm
+            vertical: true
+            features:
+              - type: alarm-modes
+                modes:
+                  - armed_away
+                  - disarmed
+          - type: tile
+            entity: light.landing_lights
+            vertical: true
