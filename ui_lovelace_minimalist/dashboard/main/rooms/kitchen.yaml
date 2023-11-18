@@ -8,11 +8,11 @@ layout:
   grid-template-columns: repeat(4, 1fr)
   grid-template-rows: repeat(5, fit-content(100%))
   grid-template-areas: |
-    "header    header    .         .        "
-    "scene1    scene2    scene3    scene4   "
-    "fridge    fridge    freezer   freezer  "
-    ".         shade     lights    .   "
-    ".         sockets   sockets   .        "
+    "header      header      .           .        "
+    "scene1      fridge_d    freezer_d   scene4   "
+    "fridge      fridge      freezer     freezer  "
+    ".           shade       lights      .   "
+    ".           sockets     sockets     .        "
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -22,7 +22,7 @@ layout:
       grid-template-areas: |
         "header       header     "
         "scene1       scene2     "
-        "scene3       scene4     "
+        "fridge_d     freezer_d  "
         "fridge       fridge     "
         "freezer      freezer    "
         "shade        shade      "
@@ -56,21 +56,31 @@ cards:
         icon: mdi:lightbulb
         content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Kitchen'] }}"
 
-  - type: horizontal-stack
+  - type: custom:mushroom-entity-card
     view_layout:
       grid-area: scene1
-    cards:
-      - type: custom:mushroom-entity-card
-        entity: scene.tea_time
-        tap_action:
-          action: toggle
+    entity: scene.tea_time
+    tap_action:
+      action: toggle
+  - type: tile
+    view_layout:
+      grid-area: fridge_d
+    entity: binary_sensor.kitchen_fridge_contact
+    vertical: false
+    name: Fridge Door
+  - type: tile
+    view_layout:
+      grid-area: freezer_d
+    entity: binary_sensor.kitchen_freezer_contact
+    vertical: false
+    name: Freezer Door
 
   - type: custom:tabbed-card
     view_layout:
       grid-area: fridge
     tabs:
       - attributes:
-          label: Tempreature
+          label: Temperature
         card:
           type: custom:mini-graph-card
           # lower_bound: 0
@@ -78,8 +88,15 @@ cards:
           line_width: 2
           points_per_hour: 2
           entities:
-            - entity: sensor.kitchen_fridge_sensor_temperature
+            - entity: sensor.kitchen_fridge_temperature
               name: Fridge
+          color_thresholds:
+            - value: 4.5
+              color: '#19B2FF'
+            - value: 4.0
+              color: '#1966FF'
+            - value: 3.5
+              color: '#1919FF'
       - attributes:
           label: Humidity
         card:
@@ -87,14 +104,16 @@ cards:
           line_width: 2
           points_per_hour: 2
           entities:
-            - entity: sensor.kitchen_fridge_sensor_humidity
+            - entity: sensor.kitchen_fridge_humidity
               name: Fridge
+              color: "#03a9f4"
+
   - type: custom:tabbed-card
     view_layout:
       grid-area: freezer
     tabs:
       - attributes:
-          label: Tempreature
+          label: Temperature
         card:
           type: custom:mini-graph-card
           line_width: 2
@@ -102,8 +121,15 @@ cards:
           # lower_bound: -25
           # upper_bound: 0
           entities:
-            - entity: sensor.kitchen_freezer_sensor_temperature
+            - entity: sensor.kitchen_freezer_temperature
               name: Freezer
+          color_thresholds:
+            - value: -18
+              color: '#19B2FF'
+            - value: -18.5
+              color: '#1966FF'
+            - value: -19
+              color: '#1919FF'
       - attributes:
           label: Humidity
         card:
@@ -111,8 +137,9 @@ cards:
           line_width: 2
           points_per_hour: 2
           entities:
-            - entity: sensor.kitchen_freezer_sensor_humidity
+            - entity: sensor.kitchen_freezer_humidity
               name: Freezer
+              color: "#03a9f4"
 
   - type: tile
     view_layout:

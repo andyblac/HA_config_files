@@ -1,0 +1,42 @@
+# - sensor:
+#   - name: 'Media Room TV Sockets 1 Energy Left'
+#     unique_id: aeb001bb-ced5-4e38-b5ac-f902f807893c
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_1_power_left') | float / 1000 }}"
+#     state_class: total_increasing
+
+#   - name: 'Media Room TV Sockets 1 Energy Right'
+#     unique_id: 981be421-c120-46ac-b1e1-75450cad01247
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_1_power_right') | float / 1000 }}"
+#     state_class: total_increasing
+
+#   - name: 'Media Room TV Sockets 2 Energy Left'
+#     unique_id: 8c8d39e5-6171-498b-8fe3-6ecf12e9ee52
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_2_power_left') | float / 1000 }}"
+#     state_class: total_increasing
+
+#   - name: 'Media Room TV Sockets 2 Energy Right'
+#     unique_id: 22b36127-2ecc-40ee-ad18-05d02a388cd7
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_2_power_left') | float / 1000 }}"
+#     state_class: total_increasing
+
+#   - name: 'Media Room TV Sockets 3 Energy Left'
+#     unique_id: f9bf21c3-03e6-4d3e-aafa-187d648acf91
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_3_power_left') | float / 1000 }}"
+#     state_class: total_increasing
+
+#   - name: 'Media Room TV Sockets 3 Energy Right'
+#     unique_id: 34b0fe7d-b4fc-49be-8a81-2f2d6773ad8d
+#     device_class: energy
+#     unit_of_measurement: kWh
+#     state: "{{ states('sensor.media_room_tv_sockets_3_power_right') | float / 1000 }}"
+#     state_class: total_increasing

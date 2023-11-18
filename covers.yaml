@@ -1,84 +1,39 @@
 - platform: template
   covers:
-    andys_bedroom_window_shade:
-      unique_id: dcb9f6e3-f1f2-46d6-9d06-6f52a3222681
+    media_room_window_shade:
+      unique_id: b717049e-f5d0-43ba-a6b5-c2f64041b9c4
       device_class: blind
-      friendly_name: "Andys Bedroom Window Shade"
+      friendly_name: "Media Room Window Shade"
       value_template: >
-        {% if states('cover.andys_bedroom_somfy_window_shade') == 'opening' %}
+        {% if states('cover.media_room_somfy_window_shade') == 'opening' %}
           opening
-        {% elif states('cover.andys_bedroom_somfy_window_shade') == 'closing' %}
+        {% elif states('cover.media_room_somfy_window_shade') == 'closing' %}
           closing
-        {% elif states('binary_sensor.andys_shade_helper') == 'off' %}
+        {% elif states('binary_sensor.media_room_shade_helper') == 'off' %}
           closed
-        {% elif states('binary_sensor.andys_shade_helper') == 'on' %}
+        {% elif states('binary_sensor.media_room_shade_helper') == 'on' %}
           open
         {% else %}
           none
         {% endif %}
       open_cover:
         - condition: state
-          entity_id: binary_sensor.andys_shade_helper
+          entity_id: binary_sensor.media_room_shade_helper
           state: "off"
         - service: cover.open_cover
           target:
-            entity_id: cover.andys_bedroom_somfy_window_shade
+            entity_id: cover.media_room_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.andys_shade_helper
+          entity_id: binary_sensor.media_room_shade_helper
           state: "on"
         - service: cover.close_cover
           target:
-            entity_id: cover.andys_bedroom_somfy_window_shade
+            entity_id: cover.media_room_somfy_window_shade
       stop_cover:
         service: cover.stop_cover
         target:
-          entity_id: cover.andys_bedroom_somfy_window_shade
-      icon_template: >-
-        {% if this.state == 'opening' %}
-          mdi:arrow-up-box
-        {% elif this.state == 'closing' %}
-          mdi:arrow-down-box
-        {% elif this.state == 'closed' %}
-          phu:shutter-100
-        {% else %}
-          phu:shutter-20
-        {% endif %}
-
-    mums_bedroom_window_shade:
-      unique_id: 595d368a-498d-4fc4-b938-5eea13d2cd9d
-      device_class: blind
-      friendly_name: "Mums Bedroom Window Shade"
-      value_template: >
-        {% if states('cover.mums_bedroom_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.mums_bedroom_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.mums_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.mums_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
-      open_cover:
-        - condition: state
-          entity_id: binary_sensor.mums_shade_helper
-          state: "off"
-        - service: cover.open_cover
-          target:
-            entity_id: cover.mums_bedroom_somfy_window_shade
-      close_cover:
-        - condition: state
-          entity_id: binary_sensor.mums_shade_helper
-          state: "on"
-        - service: cover.close_cover
-          target:
-            entity_id: cover.mums_bedroom_somfy_window_shade
-      stop_cover:
-        service: cover.stop_cover
-        target:
-          entity_id: cover.mums_bedroom_somfy_window_shade
+          entity_id: cover.media_room_somfy_window_shade
       icon_template: >-
         {% if this.state == 'opening' %}
           mdi:arrow-up-box
@@ -179,3 +134,94 @@
         {% else %}
           phu:shutter-20
         {% endif %}
+
+    mums_bedroom_window_shade:
+      unique_id: 595d368a-498d-4fc4-b938-5eea13d2cd9d
+      device_class: blind
+      friendly_name: "Mums Bedroom Window Shade"
+      value_template: >
+        {% if states('cover.mums_bedroom_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.mums_bedroom_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.mums_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.mums_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.mums_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.mums_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.mums_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.mums_bedroom_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.mums_bedroom_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}
+
+    andys_bedroom_window_shade:
+      unique_id: dcb9f6e3-f1f2-46d6-9d06-6f52a3222681
+      device_class: blind
+      friendly_name: "Andys Bedroom Window Shade"
+      value_template: >
+        {% if states('cover.andys_bedroom_somfy_window_shade') == 'opening' %}
+          opening
+        {% elif states('cover.andys_bedroom_somfy_window_shade') == 'closing' %}
+          closing
+        {% elif states('binary_sensor.andys_shade_helper') == 'off' %}
+          closed
+        {% elif states('binary_sensor.andys_shade_helper') == 'on' %}
+          open
+        {% else %}
+          none
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: binary_sensor.andys_shade_helper
+          state: "off"
+        - service: cover.open_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: binary_sensor.andys_shade_helper
+          state: "on"
+        - service: cover.close_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      stop_cover:
+        service: cover.stop_cover
+        target:
+          entity_id: cover.andys_bedroom_somfy_window_shade
+      icon_template: >-
+        {% if this.state == 'opening' %}
+          mdi:arrow-up-box
+        {% elif this.state == 'closing' %}
+          mdi:arrow-down-box
+        {% elif this.state == 'closed' %}
+          phu:shutter-100
+        {% else %}
+          phu:shutter-20
+        {% endif %}
+

@@ -1,50 +1,21 @@
 - sensor:
-    - name: "Outside temperature"
-      unique_id: 1d3c16e2-3804-4d96-b59d-262055389ad9
-      unit_of_measurement: "°C"
-      device_class: temperature
-      state: "{{ states('sensor.high_croft_temperature') if states('sensor.high_croft_temperature') not in ['unavailable','unknown'] }}"
+  - name: "Outside temperature"
+    unique_id: 1d3c16e2-3804-4d96-b59d-262055389ad9
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state: "{{ states('sensor.high_croft_temperature')|default('unknown') }}"
 
-    - name: Cleaner Day
-      unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23
-      icon: mdi:vacuum
-      state: "{{ 'on' if (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) < 1 else 'off' }}"
-      attributes:
-        DaysTo: "{{ ((state_attr('calendar.cleaner','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
-        HoursTo: "{{ (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) }}"
+  - name: Cleaner Day
+    unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23
+    icon: mdi:vacuum
+    state: "{{ 'on' if (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) < 1 else 'off' }}"
+    attributes:
+      DaysTo: "{{ ((state_attr('calendar.cleaner','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
+      HoursTo: "{{ (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) }}"
 
-    - name: Shower Day
-      unique_id: 264d5d51-19db-4502-8d20-5bfac2970d6a
-      state: "{{ 'on' if ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int == 0 else 'off' }}"
-      icon: mdi:shower-head
-      attributes:
-        DaysTo: "{{ ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
-
-    - name: "Boiler Relative Consumption"
-      unique_id: 42b65180-b37e-4e5d-8a62-748f6147c814
-      unit_of_measurement: "kW"
-      device_class: power
-      state: >
-        {%- if (states('sensor.relative_mod_level_boiler_otgw') or states('sensor.slave_max_capacity_boiler_otgw')) not in ['unavailable','unknown'] %}
-          {{ (states('sensor.slave_max_capacity_boiler_otgw') | float) * (states('sensor.relative_mod_level_boiler_otgw') | float) / 100 }}
-        {% else %}
-          0
-        {% endif %}
-
-- binary_sensor:
-# Wiser Heating and Hot Water binary sensors
-  # Wiser Hub Status binary sensor
-  - name: Wiser Hub Status
-    device_class: problem
-    icon: >-
-      {%- if is_state('binary_sensor.wiser_hub_status', 'on') -%}
-        mdi:router-wireless-off
-      {%- else -%}
-        mdi:router-wireless
-      {%- endif -%}
-    state: >-
-      {%- if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') %}
-        off
-      {% else %}
-        on
-      {% endif %}
+  - name: Shower Day
+    unique_id: 264d5d51-19db-4502-8d20-5bfac2970d6a
+    state: "{{ 'on' if ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int == 0 else 'off' }}"
+    icon: mdi:shower-head
+    attributes:
+      DaysTo: "{{ ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"

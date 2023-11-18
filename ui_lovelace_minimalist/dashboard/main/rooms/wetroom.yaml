@@ -30,6 +30,7 @@ cards:
               entities:
                 - entity: sensor.wetroom_sensor_humidity
                   name: Humidity
+                  color: "#03a9f4"
           - attributes:
               label: Derivative
             card:
@@ -39,6 +40,7 @@ cards:
               upper_bound: 4
               entities:
                 - entity: sensor.wetroom_humidity_derivative
+                  color: "#03a9f4"
           - attributes:
               label: Temperature
             card:

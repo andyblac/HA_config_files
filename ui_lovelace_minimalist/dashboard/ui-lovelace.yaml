@@ -11,7 +11,6 @@ views:
   - !include main/sockets.yaml
   - !include main/doors.yaml
   - !include main/motion-sensors.yaml
-  - !include main/batteries.yaml
   - !include main/rooms/front-garden.yaml
   - !include main/rooms/back-garden.yaml
   - !include main/rooms/garage.yaml

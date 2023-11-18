@@ -5,82 +5,83 @@ cards:
   - type: custom:stack-in-card
     mode: vertical
     cards:
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(max-width: 800px)":
-            type: custom:clock-weather-card
-            entity: weather.high_croft_daily
-            locale: en-GB
-            date_pattern: ccc, DDD
-            animated_icon: true
-            hide_forecast_section: true
-            use_browser_time: true
-            card_mod:
-              style: |
-                ha-card {
-                  height: 110px !important;
-                }
-                .card-content {
-                  padding-top: 0px !important;
-                  padding-bottom: 0px !important;
-                }
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 800px)":
-            type: custom:clock-weather-card
-            entity: weather.high_croft_daily
-            locale: en-GB
-            date_pattern: ccc, DDD
-            animated_icon: true
-            hide_forecast_section: true
-            use_browser_time: true
-            card_mod:
-              style: |
-                .card-content {
-                  margin-top: -10px !important;
-                  padding-top: 0px !important;
-                  padding-bottom: 0px !important;
-                }
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 800px)":
-            type: custom:hourly-weather
-            entity: weather.high_croft
-            num_segments: 8 # optional, defaults to 12
-            label_spacing: 1
-            # offset: "{{ 24 - now().hour }}"
-            name: "" # optional, defaults to "Hourly Weather"
-            # show_wind: true
-            show_precipitation_amounts: true
-            show_precipitation_probability: true
-            card_mod:
-              style: |
-                ha-card {
-                  height: 140px !important;
-                }
-                .card-content {
-                  padding-top: 0px !important;
-                  padding-bottom: 0px !important;
-                }
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 1200px)":
-            type: custom:clock-weather-card
-            entity: weather.high_croft_daily
-            sun_entity: sun.sun
-            forecast_rows: 7
-            locale: en-GB
-            hide_today_section: true
-            card_mod:
-              style: |
-                .card-content {
-                  padding-top: 0px !important;
-                  padding-bottom: 0px !important;
-                }
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(max-width: 767px)'
+        card:
+          type: custom:clock-weather-card
+          entity: weather.high_croft_daily
+          locale: en-GB
+          date_pattern: ccc, DDD
+          animated_icon: true
+          hide_forecast_section: true
+          use_browser_time: true
+          card_mod:
+            style: |
+              .card-content {
+                padding-top: 0px !important;
+                padding-bottom: 0px !important;
+              }
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 768px)'
+        card:
+          type: custom:clock-weather-card
+          entity: weather.high_croft_daily
+          locale: en-GB
+          date_pattern: ccc, DDD
+          animated_icon: true
+          hide_forecast_section: true
+          use_browser_time: true
+          card_mod:
+            style: |
+              .card-content {
+                margin-top: -10px !important;
+                padding-top: 0px !important;
+                padding-bottom: 0px !important;
+              }
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 1024px)'
+        card:
+          type: custom:hourly-weather
+          entity: weather.high_croft
+          num_segments: 8 # optional, defaults to 12
+          label_spacing: 1
+          # offset: "{{ 24 - now().hour }}"
+          name: "" # optional, defaults to "Hourly Weather"
+          # show_wind: true
+          show_precipitation_amounts: true
+          show_precipitation_probability: true
+          card_mod:
+            style: |
+              ha-card {
+                height: 140px !important;
+              }
+              .card-content {
+                padding-top: 0px !important;
+                padding-bottom: 0px !important;
+              }
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 1024px)'
+        card:
+          type: custom:clock-weather-card
+          entity: weather.high_croft_daily
+          sun_entity: sun.sun
+          forecast_rows: 7
+          locale: en-GB
+          hide_today_section: true
+          card_mod:
+            style: |
+              .card-content {
+                padding-top: 0px !important;
+                padding-bottom: 0px !important;
+              }
 
   - type: horizontal-stack
     cards:
@@ -110,7 +111,7 @@ cards:
         template: custom_card_andyblac_person
         entity: person.christine_leek
         variables:
-          ulm_card_person_use_entity_picture: false
+          ulm_card_person_use_entity_picture: true
           ulm_card_person_icon: mdi:face-woman
           ulm_address: sensor.christines_iphone_icloudv3_zone_name
           ulm_card_person_eta: sensor.christines_iphone_icloudv3_zone_distance
@@ -123,8 +124,6 @@ cards:
         entity: sensor.security_state
         template:
           - custom_card_andyblac_status
-        tap_action:
-          action: navigate
         variables:
           button:
             popup_title: "Security"
@@ -253,14 +252,14 @@ cards:
     cards:
       - type: gauge
         entity: sensor.octopus_energy_electricity_22j0006288_1591022098690_current_demand
-        name: "Elec"
+        name: "Electric"
         min: 0
+        max: 5000
         needle: false
         severity:
           green: 0
           yellow: 600
           red: 1700
-        max: 5000
         card_mod:
           style: |
             ha-card {
@@ -271,12 +270,12 @@ cards:
         entity: sensor.boiler_relative_consumption
         name: Boiler
         min: 0
+        max: 30
         needle: false
         severity:
           green: 0
           yellow: 15
           red: 22
-        max: 30
         card_mod:
           style: |
             ha-card {
@@ -287,12 +286,12 @@ cards:
         entity: sensor.octopus_energy_electricity_22j0006288_1591022098690_current_accumulative_consumption
         name: "Electric"
         min: 0
+        max: 10
         needle: false
         severity:
           green: 0
           yellow: 7
           red: 8.5
-        max: 10
         card_mod:
           style: |
             ha-card {
@@ -303,12 +302,12 @@ cards:
         entity: sensor.octopus_energy_gas_e6f23377622200_1354260601_current_accumulative_consumption
         name: "Gas"
         min: 0
+        max: 80
         needle: false
         severity:
           green: 0
-          yellow: 40
-          red: 60
-        max: 80
+          yellow: 30
+          red: 50
         card_mod:
           style: |
             ha-card {

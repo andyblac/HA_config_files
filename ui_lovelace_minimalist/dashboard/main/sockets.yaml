@@ -307,6 +307,7 @@ cards:
         cards:
           - type: tile
             entity: switch.hall_socket
+            name: Socket
             vertical: true
             color: blue
           - type: markdown
@@ -330,14 +331,17 @@ cards:
             cards:
               - type: tile
                 entity: switch.office_socket_1_left
+                name: Socket 1 Left
                 vertical: true
                 color: blue
               - type: tile
                 entity: switch.office_socket_1_right
+                name: Socket 1 Right
                 vertical: true
                 color: blue
               - type: tile
                 entity: switch.office_socket_2_left
+                name: Socket 2 Left
                 vertical: true
                 color: blue
             card_mod:
@@ -351,6 +355,7 @@ cards:
             cards:
               - type: tile
                 entity: switch.office_socket_2_right
+                name: Socket 2 Right
                 vertical: true
                 color: blue
               - type: markdown
@@ -379,6 +384,7 @@ cards:
             cards:
               - type: tile
                 entity: switch.andys_bedroom_sockets_left
+                name: Tooth Brush
                 vertical: true
                 color: blue
               - type: tile

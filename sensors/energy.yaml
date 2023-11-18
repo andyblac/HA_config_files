@@ -1,0 +1,114 @@
+- platform: integration
+  name: Lounge Sockets 1 Left energy
+  unique_id: c3b3fd9c-03c0-46a7-9bf4-ceeeb0d01efb
+  source: sensor.lounge_sockets_1_power_left
+  unit_prefix: k
+  round: 3
+- platform: integration
+  name: Lounge Sockets 1 Right energy
+  unique_id: f8261632-4adb-4adf-9012-cf208a813e84
+  source: sensor.lounge_sockets_1_power_right
+  unit_prefix: k
+  round: 3
+
+- platform: integration
+  name: Lounge Sockets 2 Left energy
+  unique_id: 34226ada-1549-4637-b1ab-0abf0cb86530
+  source: sensor.lounge_sockets_2_power_left
+  unit_prefix: k
+  round: 3
+- platform: integration
+  name: Lounge Sockets 2 Right energy
+  unique_id: fdb903d2-a82f-4e37-90d6-1aac95a49a9a
+  source: sensor.lounge_sockets_2_power_right
+  unit_prefix: k
+  round: 3
+
+- platform: integration
+  name: Lounge Sockets 3 Left energy
+  unique_id: 33ffe756-3358-4f93-9377-88817dd897ec
+  source: sensor.lounge_sockets_3_power_left
+  unit_prefix: k
+  round: 3
+- platform: integration
+  name: Lounge Sockets 3 Right energy
+  unique_id: 68df70a7-13fe-449c-9f3f-3735cfeda78f
+  source: sensor.lounge_sockets_3_power_right
+  unit_prefix: k
+  round: 3
+
+- platform: integration
+  name: Lounge Sockets 4 Left energy
+  unique_id: 096054f4-c9ef-417e-8885-d96bc51b9a58
+  source: sensor.lounge_sockets_4_power_left
+  unit_prefix: k
+  round: 3
+- platform: integration
+  name: Lounge Sockets 4 Right energy
+  unique_id: 4bacf20f-05f1-44e0-9fb8-7c4cb58bdbfd
+  source: sensor.lounge_sockets_4_power_right
+  unit_prefix: k
+  round: 3
+
+- platform: integration
+  name: Lounge Sockets 5 Left energy
+  unique_id: a1a64964-e280-4a5b-bf22-6a1a1ecf5d46
+  source: sensor.lounge_sockets_5_power_left
+  unit_prefix: k
+  round: 3
+- platform: integration
+  name: Lounge Sockets 5 Right energy
+  unique_id: 132dceaf-e6a9-4817-88d4-f683edf683ff
+  source: sensor.lounge_sockets_5_power_right
+  unit_prefix: k
+  round: 3
+
+
+
+- platform: integration
+  name: Media Room TV Sockets 1 Left energy
+  unique_id: cf7a560e-9ab0-4531-9f52-be7f5d0537d6
+  source: sensor.media_room_tv_sockets_1_power_left
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Media Room TV Sockets 1 Right energy
+  unique_id: 3204d7d4-4ab9-4afb-91e7-da81632b5df7
+  source: sensor.media_room_tv_sockets_1_power_right
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Media Room TV Sockets 2 Left energy
+  unique_id: 2da6deac-b0c5-47b2-9554-2693f6276994
+  source: sensor.media_room_tv_sockets_2_power_left
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Media Room TV Sockets 2 Right energy
+  unique_id: c613c779-0c59-42f7-b7dd-ea0fc55bb8d7
+  source: sensor.media_room_tv_sockets_2_power_right
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Media Room TV Sockets 3 Left energy
+  unique_id: 1bff9101-e7a2-412e-8ba8-f8348d6e11a2
+  source: sensor.media_room_tv_sockets_3_power_left
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Media Room TV Sockets 3 Right energy
+  unique_id: 1a0aa78a-92c4-4fa5-9bf6-7ea7082123ac
+  source: sensor.media_room_tv_sockets_3_power_right
+  unit_prefix: k
+  round: 3
+  # unit_time: s

@@ -16,10 +16,10 @@ layout:
     "sidebar  .       .       .       .      "
   mediaquery:
     #phone
-    "(max-width: 800px)":
+    "(max-width: 767px)":
       grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
       grid-template-columns: repeat(2, 1fr)
-      grid-template-rows: repeat(6, fit-content(100%))
+      grid-template-rows: repeat(7, fit-content(100%))
       grid-template-areas: |
         "sidebar  sidebar "
         "room1    room2   "
@@ -29,7 +29,7 @@ layout:
         "room9    room10  "
         "room11   room12  "
     #Tablet
-    "(max-width: 1200px)":
+    "(max-width: 1024px)":
       margin: 0
       grid-gap: var(--custom-layout-card-padding)
       grid-template-columns: 35% repeat(3, 1fr)
@@ -145,15 +145,16 @@ cards:
     template:
       - custom_card_andyblac_room
     name: Kitchen
-    icon: mdi:silverware-fork-knife
+    icon: fas:kitchen-set
+    # icon: mdi:silverware-fork-knife
     tap_action:
       action: navigate
       navigation_path: kitchen
     variables:
       ulm_custom_card_andyblac_room_color: red
       sensor_label_1: sensor.kitchen_motion_sensor_device_temperature
-      sensor_label_2: sensor.kitchen_fridge_sensor_temperature
-      sensor_label_3: sensor.kitchen_freezer_sensor_temperature
+      sensor_label_2: sensor.kitchen_fridge_temperature
+      sensor_label_3: sensor.kitchen_freezer_temperature
       sensor_1:
         entity_id: binary_sensor.kitchen_door_contact
       sensor_2:
@@ -182,7 +183,8 @@ cards:
         ulm_custom_card_andyblac_room_use_light_color: true
       entity_4:
         entity_id: light.kitchen_floor_led
-        ulm_custom_card_andyblac_room_use_light_color: true
+        ulm_custom_card_andyblac_room_icon_color_on: white
+        # ulm_custom_card_andyblac_room_use_light_color: true
 
   # Lounge
   - type: custom:button-card
@@ -192,16 +194,15 @@ cards:
       - custom_card_andyblac_room
     name: Lounge
     icon: mdi:sofa
-    entity: climate.wiser_lounge
     tap_action:
       action: navigate
       navigation_path: lounge
-    hold_action:
-      action: "more-info"
     variables:
       ulm_custom_card_andyblac_room_color: yellow
       sensor_label_1: sensor.wiser_lts_temperature_lounge
       sensor_label_2: sensor.wiser_lts_humidity_lounge
+      climate:
+        entity_id: climate.wiser_lounge
       sensor_1:
         entity_id: binary_sensor.lounge_door_contact
       sensor_2:
@@ -234,16 +235,15 @@ cards:
       - custom_card_andyblac_room
     name: Media Room
     icon: mdi:sofa
-    entity: climate.wiser_media_room
     tap_action:
       action: navigate
       navigation_path: media-room
-    hold_action:
-      action: "more-info"
     variables:
       ulm_custom_card_andyblac_room_color: yellow
       sensor_label_1: sensor.wiser_lts_temperature_media_room
       sensor_label_2: sensor.wiser_lts_humidity_media_room
+      climate:
+        entity_id: climate.wiser_media_room
       sensor_1:
         entity_id: binary_sensor.media_room_door_contact
       sensor_2:
@@ -275,12 +275,12 @@ cards:
       - custom_card_andyblac_room
     name: Hall
     icon: mdi:door
-    entity: sensor.hall_motion_sensor_device_temperature
     tap_action:
       action: navigate
       navigation_path: hall
     variables:
       ulm_custom_card_andyblac_room_color: blue
+      sensor_label_1: sensor.hall_motion_sensor_device_temperature
       sensor_2:
         entity_id: binary_sensor.hall_motion_sensor_occupancy
         templates:
@@ -301,12 +301,12 @@ cards:
       - custom_card_andyblac_room
     name: Landing
     icon: mdi:stairs
-    entity: sensor.landing_motion_sensor_device_temperature
     tap_action:
       action: navigate
       navigation_path: landing
     variables:
       ulm_custom_card_andyblac_room_color: blue
+      sensor_label_1: sensor.landing_motion_sensor_device_temperature
       sensor_2:
         entity_id: binary_sensor.landing_motion_sensor_occupancy
         templates:
@@ -353,15 +353,14 @@ cards:
       - custom_card_andyblac_room
     name: Office
     icon: mdi:desk
-    entity: climate.wiser_office
     tap_action:
       action: navigate
       navigation_path: office
-    hold_action:
-      action: "more-info"
     variables:
       sensor_label_1: sensor.wiser_lts_temperature_office
       sensor_label_2: sensor.wiser_lts_humidity_office
+      climate:
+        entity_id: climate.wiser_office
       sensor_1:
         entity_id: binary_sensor.office_door_contact
       sensor_2:
@@ -378,6 +377,7 @@ cards:
         entity_id: light.office_dimmer
         ulm_custom_card_andyblac_room_icon_color_on: yellow
 
+
   # Mums Bedroom
   - type: custom:button-card
     view_layout:
@@ -386,16 +386,15 @@ cards:
       - custom_card_andyblac_room
     name: Mums Bedroom
     icon: mdi:bed
-    entity: climate.wiser_mums_bedroom
     tap_action:
       action: navigate
       navigation_path: mums-bedroom
-    hold_action:
-      action: "more-info"
     variables:
       ulm_custom_card_andyblac_room_color: violet
       sensor_label_1: sensor.wiser_lts_temperature_mums_bedroom
       sensor_label_2: sensor.wiser_lts_humidity_mums_bedroom
+      climate:
+        entity_id: climate.wiser_mums_bedroom
       sensor_1:
         entity_id: binary_sensor.mums_bedroom_door_contact
       sensor_2:
@@ -427,16 +426,15 @@ cards:
       - custom_card_andyblac_room
     name: Andys Bedroom
     icon: mdi:bed
-    entity: climate.wiser_andys_bedroom
     tap_action:
       action: navigate
       navigation_path: andys-bedroom
-    hold_action:
-      action: "more-info"
     variables:
       ulm_custom_card_andyblac_room_color: violet
       sensor_label_1: sensor.wiser_lts_temperature_andys_bedroom
       sensor_label_2: sensor.wiser_lts_humidity_andys_bedroom
+      climate:
+        entity_id: climate.wiser_andys_bedroom
       sensor_1:
         entity_id: binary_sensor.andys_bedroom_door_contact
       sensor_2:

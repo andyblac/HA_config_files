@@ -1,5 +1,5 @@
-- name: Main HA Bridge
-  port: 51828
+- name: HA Bridge
+  port: 51825
   filter:
     include_domains:
       # - alarm_control_panel

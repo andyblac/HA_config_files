@@ -1,6 +1,6 @@
 title: Heating
-path: heating
 icon: mdi:radiator-disabled
+path: heating
 type: custom:grid-layout
 layout:
   #default
@@ -9,24 +9,25 @@ layout:
   grid-template-columns: repeat(5, 1fr)
   grid-template-rows: repeat(4, fit-content(100%))
   grid-template-areas: |
-    "header       .           .             .           .        "
-    ".            flowrates   flowrates     flowrates   .        "
+    "header       flowrates   flowrates     flowrates   .        "
     ".            graphs      graphs        graphs      .        "
     "lounge_stat  media_stat  office_stat   andys_stat  mums_stat"
     "schedule     schedule    schedule      schedule    schedule "
   mediaquery:
     #phone
-    "(max-width: 800px)":
+    "(max-width: 767px)":
       grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
       grid-template-columns: repeat(2, 1fr)
       grid-template-rows: repeat(5, fit-content(100%))
       grid-template-areas: |
-        "header       header     "
+        "header       .          "
         "flowrates    flowrates  "
         "graphs       graphs     "
-        "lounge_stat  media_stat "
-        "office_stat  andys_stat "
-        "mums_stat    .          "
+        "lounge_stat  lounge_stat"
+        "media_stat   media_stat "
+        "office_stat  office_stat "
+        "andys_stat   andys_stat "
+        "mums_stat    mums_stat  "
         "schedule     schedule   "
 
 cards:
@@ -51,7 +52,7 @@ cards:
             {{states('sensor.wiser_heating')}}
           {% endif %}
         icon: |-
-          {%- if is_state('binary_sensor.slave_flame_on_boiler_otgw', 'On') %}
+          {%- if is_state('binary_sensor.slave_flame_on_boiler_otgw', 'on') %}
           mdi:radiator
           {%- else -%}
           mdi:radiator-disabled
@@ -79,124 +80,53 @@ cards:
         severity:
           green: 0
           yellow: 40
-          red: 45
+          red: 50
         max: 60
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 800px)":
-            type: gauge
-            entity: sensor.return_water_temp_boiler_otgw
-            name: "Return"
-            min: 0
-            needle: false
-            severity:
-              green: 0
-              yellow: 40
-              red: 55
-            max: 80
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 800px)":
-            type: gauge
-            entity: sensor.octopus_energy_gas_e6f23377622200_1354260601_current_accumulative_consumption
-            name: "Gas"
-            min: 0
-            needle: false
-            severity:
-              green: 0
-              yellow: 40
-              red: 60
-            max: 80
-      - type: custom:state-switch
-        entity: mediaquery
-        states:
-          "(min-width: 800px)":
-            type: gauge
-            entity: sensor.relative_mod_level_boiler_otgw
-            name: "Boiler Power"
-            min: 0
-            needle: false
-            severity:
-              green: 0
-              yellow: 50
-              red: 80
-            max: 100
-
-  # - type: custom:state-switch
-  #   view_layout:
-  #     grid-area: graphs
-  #   entity: mediaquery
-  #   states:
-  #     "(max-width: 800px)": # iPhone
-  #       type: custom:tabbed-card
-  #       tabs:
-  #         - attributes:
-  #             label: Boiler Demand
-  #           card:
-  #             type: custom:mini-graph-card
-  #             line_width: 2
-  #             points_per_hour: 4
-  #             lower_bound: 0
-  #             upper_bound: 100
-  #             entities:
-  #               - entity: sensor.wiser_lts_heating_demand_channel_1
-  #                 name: Boiler Demand
-  #               - entity: sensor.wiser_lts_heating_demand_lounge
-  #                 name: Lounge
-  #               - entity: sensor.wiser_lts_heating_demand_media_room
-  #                 name: Media Room
-  #               - entity: sensor.wiser_lts_heating_demand_office
-  #                 name: Office
-  #               - entity: sensor.wiser_lts_heating_demand_andys_bedroom
-  #                 name: Andys Bedroom
-  #               - entity: sensor.wiser_lts_heating_demand_mums_bedroom
-  #                 name: Mums Bedroom
-  #         - attributes:
-  #             label: Boiler Flow
-  #           card:
-  #             type: custom:mini-graph-card
-  #             line_width: 2
-  #             points_per_hour: 4
-  #             entities:
-  #               - entity: sensor.ch_water_temp_boiler_otgw
-  #                 name: Boiler Flow
-  #               - entity: sensor.return_water_temp_boiler_otgw
-  #                 name: Boiler Return
-  #               - entity: sensor.dhw_temp_boiler_otgw
-  #                 name: Hot Water
-  #     "(min-width: 800px)": # Desktop / Tablet
-  #       type: horizontal-stack
-  #       cards:
-  #         - type: custom:mini-graph-card
-  #           line_width: 2
-  #           points_per_hour: 4
-  #           lower_bound: 0
-  #           upper_bound: 100
-  #           entities:
-  #             - entity: sensor.wiser_lts_heating_demand_channel_1
-  #               name: Boiler Demand
-  #             - entity: sensor.wiser_lts_heating_demand_lounge
-  #               name: Lounge
-  #             - entity: sensor.wiser_lts_heating_demand_media_room
-  #               name: Media Room
-  #             - entity: sensor.wiser_lts_heating_demand_office
-  #               name: Office
-  #             - entity: sensor.wiser_lts_heating_demand_andys_bedroom
-  #               name: Andys Bedroom
-  #             - entity: sensor.wiser_lts_heating_demand_mums_bedroom
-  #               name: Mums Bedroom
-  #         - type: custom:mini-graph-card
-  #           line_width: 2
-  #           points_per_hour: 4
-  #           entities:
-  #             - entity: sensor.ch_water_temp_boiler_otgw
-  #               name: Boiler Flow
-  #             - entity: sensor.return_water_temp_boiler_otgw
-  #               name: Boiler Return
-  #             - entity: sensor.dhw_temp_boiler_otgw
-  #               name: Hot Water
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 768px)'
+        card:
+          type: gauge
+          entity: sensor.return_water_temp_boiler_otgw
+          name: "Return"
+          min: 0
+          needle: false
+          severity:
+            green: 0
+            yellow: 40
+            red: 55
+          max: 80
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 768px)'
+        card:
+          type: gauge
+          entity: sensor.octopus_energy_gas_e6f23377622200_1354260601_current_accumulative_consumption
+          name: "Gas"
+          min: 0
+          needle: false
+          severity:
+            green: 0
+            yellow: 30
+            red: 50
+          max: 80
+      - type: conditional
+        conditions:
+          - condition: screen
+            media_query: '(min-width: 768px)'
+        card:
+          type: gauge
+          entity: sensor.relative_mod_level_boiler_otgw
+          name: "Boiler Power"
+          min: 0
+          needle: false
+          severity:
+            green: 0
+            yellow: 50
+            red: 80
+          max: 100
 
   - type: custom:tabbed-card
     view_layout:
@@ -205,86 +135,214 @@ cards:
       - attributes:
           label: Heating Demand
         card:
-          type: custom:mini-graph-card
-          line_width: 2
-          points_per_hour: 4
-          lower_bound: 0
-          upper_bound: 100
-          entities:
-            - entity: sensor.wiser_lts_heating_demand_channel_1
-              name: Heating Demand
-              color: white
-            - entity: sensor.wiser_lts_heating_demand_lounge
-              name: Lounge
-            - entity: sensor.wiser_lts_heating_demand_media_room
-              name: Media Room
-            - entity: sensor.wiser_lts_heating_demand_office
-              name: Office
-            - entity: sensor.wiser_lts_heating_demand_andys_bedroom
-              name: Andys Bedroom
-            - entity: sensor.wiser_lts_heating_demand_mums_bedroom
-              name: Mums Bedroom
+          type: custom:history-explorer-card
+          uiLayout:
+            toolbar: hide
+            selector: hide
+          header: hide
+          decimation: fast
+          showCurrentValues: true
+          lineMode: stepped
+          graphs:
+            - type: line
+              entities:
+                - entity: sensor.wiser_lts_heating_demand_channel_1
+                  name: Heating Demand
+                  hidden: true
+                  color: white
+                - entity: sensor.wiser_lts_heating_demand_lounge
+                  name: Lounge
+                  color: "#3498db"
+                - entity: sensor.wiser_lts_heating_demand_media_room
+                  name: Media Room
+                  color: "#e74b45"
+                - entity: sensor.wiser_lts_heating_demand_office
+                  name: Office
+                  color: "#9b59b6"
+                - entity: sensor.wiser_lts_heating_demand_andys_bedroom
+                  name: Andys Bedroom
+                  color: "#30cc71"
+                - entity: sensor.wiser_lts_heating_demand_mums_bedroom
+                  name: Mums Bedroom
+                  color: "#f1c40f"
       - attributes:
           label: Boiler Flow
         card:
-          type: custom:mini-graph-card
-          line_width: 2
-          points_per_hour: 4
-          entities:
-            - entity: sensor.ch_water_temp_boiler_otgw
-              name: Boiler Flow
-            - entity: sensor.return_water_temp_boiler_otgw
-              name: Boiler Return
-            - entity: sensor.dhw_temp_boiler_otgw
-              name: Hot Water
+          type: custom:history-explorer-card
+          uiLayout:
+            toolbar: hide
+            selector: hide
+          showCurrentValues: true
+          decimation: fast
+          header: hide
+          defaultTimeRange: 12h
+          lineMode: stepped
+          graphs:
+            - type: line
+              entities:
+                - entity: sensor.ch_water_temp_boiler_otgw
+                  name: Boiler Flow
+                - entity: sensor.return_water_temp_boiler_otgw
+                  name: Boiler Return
+                - entity: sensor.dhw_temp_boiler_otgw
+                  name: Hot Water
       - attributes:
           label: Temperatures
         card:
-          type: custom:mini-graph-card
-          line_width: 2
-          points_per_hour: 4
-          entities:
-            - entity: sensor.wiser_lts_temperature_lounge
-              name: Lounge
-            - entity: sensor.wiser_lts_temperature_media_room
-              name: Media Room
-            - entity: sensor.wiser_lts_temperature_office
-              name: Office
-            - entity: sensor.wiser_lts_temperature_mums_bedroom
-              name: Mums Bedroom
-            - entity: sensor.wiser_lts_temperature_andys_bedroom
-              name: Andys Bedroom
+          type: custom:history-explorer-card
+          uiLayout:
+            toolbar: hide
+            selector: hide
+          showCurrentValues: true
+          decimation: fast
+          header: hide
+          # lineMode: stepped
+          graphs:
+            - type: line
+              entities:
+                - entity: sensor.wiser_lts_temperature_lounge
+                  name: Lounge
+                  color: "#3498db"
+                - entity: sensor.wiser_lts_temperature_media_room
+                  name: Media Room
+                  color: "#e74b45"
+                - entity: sensor.wiser_lts_temperature_office
+                  name: Office
+                  color: "#9b59b6"
+                - entity: sensor.wiser_lts_temperature_andys_bedroom
+                  name: Andys Bedroom
+                  color: "#30cc71"
+                - entity: sensor.wiser_lts_temperature_mums_bedroom
+                  name: Mums Bedroom
+                  color: "#f1c40f"
+                - entity: sensor.outside_temp_thermostat_otgw
+                  name: Outside
+                  color: "#cc953e"
+                  hidden: true
 
-  - type: custom:better-thermostat-ui-card
+  - type: tile
     view_layout:
       grid-area: lounge_stat
     entity: climate.wiser_lounge
-    name: Lounge
-    # set_current_as_main: true
-  - type: custom:better-thermostat-ui-card
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - 'off'
+    state_content:
+      - current_temperature
+      - hvac_action
+      - current_schedule_temp
+      - percentage_demand
+      - state
+  - type: tile
     view_layout:
       grid-area: media_stat
     entity: climate.wiser_media_room
-    name: Media Room
-    # set_current_as_main: true
-  - type: custom:better-thermostat-ui-card
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - 'off'
+    state_content:
+      - current_temperature
+      - hvac_action
+      - current_schedule_temp
+      - percentage_demand
+      - state
+  - type: tile
     view_layout:
       grid-area: office_stat
     entity: climate.wiser_office
-    name: Office
-    # set_current_as_main: true
-  - type: custom:better-thermostat-ui-card
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - 'off'
+    state_content:
+      - current_temperature
+      - hvac_action
+      - current_schedule_temp
+      - percentage_demand
+      - state
+  - type: tile
     view_layout:
       grid-area: andys_stat
     entity: climate.wiser_andys_bedroom
-    name: Andys Bedroom
-    # set_current_as_main: true
-  - type: custom:better-thermostat-ui-card
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - 'off'
+    state_content:
+      - current_temperature
+      - hvac_action
+      - current_schedule_temp
+      - percentage_demand
+      - state
+  - type: tile
     view_layout:
       grid-area: mums_stat
     entity: climate.wiser_mums_bedroom
-    name: Mums Bedroom
-    # set_current_as_main: true
+    features:
+      - type: target-temperature
+      - type: climate-hvac-modes
+        hvac_modes:
+          - auto
+          - heat
+          - 'off'
+    state_content:
+      - current_temperature
+      - hvac_action
+      - current_schedule_temp
+      - percentage_demand
+      - state
+
+  # - type: custom:better-thermostat-ui-card
+  #   view_layout:
+  #     grid-area: lounge_stat
+  #   entity: climate.wiser_lounge
+  #   name: Lounge
+  #   set_current_as_main: true
+  # - type: custom:better-thermostat-ui-card
+  #   view_layout:
+  #     grid-area: media_stat
+  #   entity: climate.wiser_media_room
+  #   name: Media Room
+  #   set_current_as_main: true
+  # - type: custom:better-thermostat-ui-card
+  #   view_layout:
+  #     grid-area: office_stat
+  #   entity: climate.wiser_office
+  #   name: Office
+  #   set_current_as_main: true
+  # - type: custom:better-thermostat-ui-card
+  #   view_layout:
+  #     grid-area: andys_stat
+  #   entity: climate.wiser_andys_bedroom
+  #   name: Andys Bedroom
+  #   set_current_as_main: true
+  # - type: custom:better-thermostat-ui-card
+  #   view_layout:
+  #     grid-area: mums_stat
+  #   entity: climate.wiser_mums_bedroom
+  #   name: Mums Bedroom
+  #   set_current_as_main: true
+  # - type: custom:more-info-card
+  #   view_layout:
+  #     grid-area: mums_stat
+  #   entity: climate.wiser_mums_bedroom
+  #   title: ' '
+  #   style: |
+  #     state-card-content { display: none }
 
   - type: custom:wiser-schedule-card
     view_layout:

@@ -61,49 +61,75 @@ cards:
       data: {}
     name: Shade My Position
 
-  - type: custom:state-switch
+  - type: conditional
     view_layout:
       grid-area: graphs
-    entity: mediaquery
-    states:
-      "(max-width: 800px)": # iPhone
-        type: custom:tabbed-card
-        tabs:
-          - attributes:
-              label: Temperature
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              entities:
-                - entity: sensor.wiser_lts_temperature_office
-                  name: Temperature
-          - attributes:
-              label: Humidity
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              lower_bound: 0
-              upper_bound: 100
-              entities:
-                - entity: sensor.wiser_lts_humidity_office
-                  name: Humidity
-      "(min-width: 800px)": # Desktop / Tablet
-        type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            line_width: 2
+    conditions:
+      - condition: screen
+        media_query: '(min-width: 0px) and (max-width: 767px)' # iPhone 
+    card:
+      type: custom:tabbed-card
+      tabs:
+        - attributes:
+            label: Temperature
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
+            color_thresholds:
+              - value: 16
+                color: '#3399ff'
+              - value: 18.5
+                color: '#f39c12'
+              - value: 20.5
+                color: '#d35400'
+              - value: 22
+                color: '#c0392b'
             entities:
               - entity: sensor.wiser_lts_temperature_office
                 name: Temperature
-          - type: custom:mini-graph-card
-            line_width: 2
+        - attributes:
+            label: Humidity
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
             lower_bound: 0
             upper_bound: 100
             entities:
               - entity: sensor.wiser_lts_humidity_office
                 name: Humidity
+  - type: conditional
+    view_layout:
+      grid-area: graphs
+    conditions:
+      - condition: screen
+        media_query: '(min-width: 768px)' # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          color_thresholds:
+            - value: 16
+              color: '#3399ff'
+            - value: 18
+              color: '#f39c12'
+            - value: 20
+              color: '#d35400'
+            - value: 21
+              color: '#c0392b'
+          entities:
+            - entity: sensor.wiser_lts_temperature_office
+              name: Temperature
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          lower_bound: 0
+          upper_bound: 100
+          entities:
+            - entity: sensor.wiser_lts_humidity_office
+              name: Humidity
+              color: "#03a9f4"
 
   # - type: thermostat
   #   view_layout:
@@ -163,6 +189,7 @@ cards:
             color: blue
           - type: tile
             entity: switch.office_socket_2_left
+            name: Socket 2 Left
             vertical: true
             color: blue
       - type: custom:stack-in-card
@@ -170,5 +197,6 @@ cards:
         cards:
           - type: tile
             entity: switch.office_socket_2_right
+            name: Socket 2 Right
             vertical: true
             color: blue

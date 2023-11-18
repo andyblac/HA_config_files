@@ -1,168 +1,139 @@
 - sensor:
-  - name: "Number of Lights On"
-    unique_id: 3b279d97-e05a-4c8b-9368-2ce58d7fd46c
-    attributes:
-      navigation: lights
-      label: >
-        {%- if this.state not in ['unavailable','unknown'] -%}
-          {%- if this.state | int > 0 -%}
+    - name: "Number of Lights On"
+      unique_id: 3b279d97-e05a-4c8b-9368-2ce58d7fd46c
+      attributes:
+        navigation: lights
+        label: >
+          {%- if this.state | int(0) > 0 -%}
           {{ this.state }} On
           {%- else -%}
           All Off
           {%- endif -%}
-        {%- else -%}
-        All Off
-        {%- endif -%}
-      entities: >
-        {%- from 'tools.jinja' import list_entities -%}
-        {{ list_entities(states.light,exclude_area='groups',state='on') }}
-      count: >
-        {%- from 'tools.jinja' import count_entities -%}
-        {%- set ns = namespace(entities=[]) -%}
-        {%- for s in states.light | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
-          {%- set ns.entities = ns.entities + [ (s, count_entities(states.light,state='on',area=s,exclude_area='groups') | from_json )] -%}
-        {%- endfor -%}
-        {{ dict.from_keys(ns.entities) }}
-    state: "{{ this.attributes.entities | count }}"
-    icon: >
-      {%- if this.state not in ['unavailable','unknown'] -%}
-        {%- if this.state | int > 0 -%}
+        entities: >
+          {%- from 'tools.jinja' import list_entities -%}
+          {{ list_entities(states.light,exclude_area='groups',state='on') }}
+        count: >
+          {%- from 'tools.jinja' import count_entities -%}
+          {%- set ns = namespace(entities=[]) -%}
+          {%- for s in states.light | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
+            {%- set ns.entities = ns.entities + [ (s, count_entities(states.light,state='on',area=s,exclude_area='groups') | from_json )] -%}
+          {%- endfor -%}
+          {{ dict.from_keys(ns.entities) }}
+      state: "{{ this.attributes.entities | count }}"
+      icon: >
+        {%- if this.state | int(0) > 0 -%}
         mdi:lightbulb-group
         {%- else -%}
         mdi:lightbulb-group-outline
         {%- endif -%}
-      {%- else -%}
-      mdi:lightbulb-group-outline
-      {%- endif -%}
 
-  - name: "Number of Sockets On"
-    unique_id: c838cee8-1919-4000-8fc0-d6587433e6fc
-    attributes:
-      navigation: sockets
-      label: >
-        {%- if this.state not in ['unavailable','unknown'] -%}
-          {%- if this.state | int > 0 -%}
+    - name: "Number of Sockets On"
+      unique_id: c838cee8-1919-4000-8fc0-d6587433e6fc
+      attributes:
+        navigation: sockets
+        label: >
+          {%- if this.state | int(0) > 0 -%}
           {{ this.state }} On
           {%- else -%}
           All Off
           {%- endif -%}
-        {%- else -%}
-        All Off
-        {%- endif -%}
-      entities: >
-        {%- from 'tools.jinja' import list_entities -%}
-        {{ list_entities(states.switch,device_class='outlet',state='on') }}
-      count: >
-        {%- from 'tools.jinja' import count_entities -%}
-        {%- set ns = namespace(entities=[], tmp=[]) -%}
-        {%- for s in states.switch | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
-          {%- set ns.tmp = ns.tmp + [ (s, count_entities(states.switch,device_class='outlet',state='on',area=s) | from_json )] -%}
-        {%- endfor -%}
-        {%- for key, value in ns.tmp -%} 
-          {%- if key == 'House' -%}
-            {%- set value = count_entities(states.switch,device_class='outlet',state='on') | from_json -%}
-          {%- endif -%}
-          {%- set ns.entities = ns.entities + [ (key, value)] -%}
-        {%- endfor -%}
-        {{ dict.from_keys(ns.entities) }}
-    state: "{{ this.attributes.entities | count }}"
-    icon: mdi:power-socket-uk
+        entities: >
+          {%- from 'tools.jinja' import list_entities -%}
+          {{ list_entities(states.switch,device_class='outlet',state='on') }}
+        count: >
+          {%- from 'tools.jinja' import count_entities -%}
+          {%- set ns = namespace(entities=[], tmp=[]) -%}
+          {%- for s in states.switch | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
+            {%- set ns.tmp = ns.tmp + [ (s, count_entities(states.switch,device_class='outlet',state='on',area=s) | from_json )] -%}
+          {%- endfor -%}
+          {%- for key, value in ns.tmp -%} 
+            {%- if key == 'House' -%}
+              {%- set value = count_entities(states.switch,device_class='outlet',state='on') | from_json -%}
+            {%- endif -%}
+            {%- set ns.entities = ns.entities + [ (key, value)] -%}
+          {%- endfor -%}
+          {{ dict.from_keys(ns.entities) }}
+      state: "{{ this.attributes.entities | count }}"
+      icon: mdi:power-socket-uk
 
-  - name: "Number of Doors Open"
-    unique_id: 905cf252-7adb-4b68-b696-ae089d96b11f
-    attributes:
-      navigation: doors
-      label: >
-        {%- if this.state not in ['unavailable','unknown'] -%}
-          {%- if this.state | int > 0 -%}
+    - name: "Number of Doors Open"
+      unique_id: 905cf252-7adb-4b68-b696-ae089d96b11f
+      attributes:
+        navigation: doors
+        label: >
+          {%- if this.state | int(0) > 0 -%}
           {{ this.state }} Open
           {%- else -%}
           All Closed
           {%- endif -%}
-        {%- else -%}
-        All Closed
-        {%- endif -%}
-      entities: >
-        {%- from 'tools.jinja' import list_entities -%}
-        {{ list_entities(states.binary_sensor,device_class='door',state='on') }}
-      count: >
-        {%- from 'tools.jinja' import count_entities -%}
-        {%- set ns = namespace(entities=[]) -%}
-        {%- for s in states.binary_sensor | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
-          {%- set ns.entities = ns.entities + [ (s, count_entities(states.binary_sensor,device_class='door',state='on',area=s) | from_json )] -%}
-        {%- endfor -%}
-        {{ dict.from_keys(ns.entities) }}
-    state: "{{ this.attributes.entities | count }}"
-    icon: >
-      {%- if this.state not in ['unavailable','unknown'] -%}
-        {%- if this.state | int > 0 -%}
+        entities: >
+          {%- from 'tools.jinja' import list_entities -%}
+          {{ list_entities(states.binary_sensor,device_class='door',state='on') }}
+        count: >
+          {%- from 'tools.jinja' import count_entities -%}
+          {%- set ns = namespace(entities=[]) -%}
+          {%- for s in states.binary_sensor | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
+            {%- set ns.entities = ns.entities + [ (s, count_entities(states.binary_sensor,device_class='door',state='on',area=s) | from_json )] -%}
+          {%- endfor -%}
+          {{ dict.from_keys(ns.entities) }}
+      state: "{{ this.attributes.entities | count }}"
+      icon: >
+        {%- if this.state | int(0) > 0 -%}
         mdi:door-open
         {%- else -%}
         mdi:door
         {%- endif -%}
-      {%- else -%}
-      mdi:door
-      {%- endif -%}
 
-  - name: "Number of Motion Detected"
-    unique_id: 156e99a5-cdb6-4d6b-9bea-5e05d5a3c548
-    attributes:
-      navigation: motion-sensors
-      label: >
-        {%- if this.state not in ['unavailable','unknown'] -%}
-          {%- if this.state | int > 0 -%}
+    - name: "Number of Motion Detected"
+      unique_id: 156e99a5-cdb6-4d6b-9bea-5e05d5a3c548
+      attributes:
+        navigation: motion-sensors
+        label: >
+          {%- if this.state | int(0) > 0 -%}
           {{ this.state }} Detected
           {%- else -%}
           All Clear
           {%- endif -%}
-        {%- else -%}
-        All Clear
-        {%- endif -%}
-      entities: >
-        {%- from 'tools.jinja' import list_entities -%}
-        {{ list_entities(states.binary_sensor,device_class='motion',state='on') }}
-      count: >
-        {%- from 'tools.jinja' import count_entities -%}
-        {%- set ns = namespace(entities=[]) -%}
-        {%- for s in states.binary_sensor | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
-          {%- set ns.entities = ns.entities + [ (s, count_entities(states.binary_sensor,device_class='motion',state='on',area=s) | from_json )] -%}
-        {%- endfor -%}
-        {{ dict.from_keys(ns.entities) }}
-    state: "{{ this.attributes.entities | count }}"
-    icon: mdi:motion-sensor
+        entities: >
+          {%- from 'tools.jinja' import list_entities -%}
+          {{ list_entities(states.binary_sensor,device_class='motion',state='on') }}
+        count: >
+          {%- from 'tools.jinja' import count_entities -%}
+          {%- set ns = namespace(entities=[]) -%}
+          {%- for s in states.binary_sensor | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
+            {%- set ns.entities = ns.entities + [ (s, count_entities(states.binary_sensor,device_class='motion',state='on',area=s) | from_json )] -%}
+          {%- endfor -%}
+          {{ dict.from_keys(ns.entities) }}
+      state: "{{ this.attributes.entities | count }}"
+      icon: mdi:motion-sensor
 
-  - name: "Devices with low battery"
-    unique_id: e9da96dc-aa51-47c1-8a6d-435de1ce5149
-    attributes:
-      navigation: batteries
-      entities: >
-        {%- set ns = namespace(sensors=[]) -%}
-        {%- set handheld_entities = ['sensor.andys_iphone_battery_level','sensor.andys_iphone_icloudv3_battery','sensor.christines_iphone_battery_level','sensor.christines_iphone_icloudv3_battery','sensor.ipad_battery_level','sensor.mums_ipad_battery_level'] -%}
-        {%- set cover_entities = ['sensor.lounge_window_shade_battery','sensor.lounge_patio_window_shade_battery','sensor.media_room_window_shade_battery'] -%}
-        {%- set ignore_entities = handheld_entities + cover_entities -%}
-        {%- set cover_battery_level = 55 -%}
-        {%- set battery_level = 20 -%}
-        {%- for state in states | selectattr('attributes.device_class', 'eq', 'battery') | rejectattr('entity_id', 'in', ignore_entities) -%}
-          {%- if 0 <= state.state | int(-1) <= battery_level | int -%}
-            {%- set ns.sensors = ns.sensors + [dict(entity_id = state.entity_id, name = state.name | replace(' battery', '') | replace(' Battery', ''), state = state.state | int)] -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- for state in states | selectattr('entity_id', 'in', cover_entities) -%}
-          {%- if 0 <= state.state | int(-1) <= cover_battery_level | int -%}
-            {%- set ns.sensors = ns.sensors + [dict(entity_id = state.entity_id, name = state.name | replace(' battery', '') | replace(' Battery', ''), state = state.state | int)] -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- set low_batteries = ns.sensors | sort (attribute='state') -%}
-        {{ low_batteries }}
-    state: "{{ this.attributes.entities | count }}"
-    icon: >
-      {%- if this.state not in ['unavailable','unknown'] -%}
-        {%- if this.state | int > 0 -%}
+    - name: "Devices with low battery"
+      unique_id: e9da96dc-aa51-47c1-8a6d-435de1ce5149
+      attributes:
+        navigation: batteries
+        entities: >
+          {%- set ns = namespace(sensors=[]) -%}
+          {%- set handheld_entities = ['sensor.andys_iphone_battery_level','sensor.andys_iphone_icloudv3_battery','sensor.christines_iphone_battery_level','sensor.christines_iphone_icloudv3_battery','sensor.mums_ipad_battery_level'] -%}
+          {%- set cover_entities = ['sensor.lounge_window_shade_battery','sensor.lounge_patio_window_shade_battery'] -%}
+          {%- set ignore_entities = handheld_entities + cover_entities -%}
+          {%- set cover_battery_level = 60 -%}
+          {%- set battery_level = 20 -%}
+          {%- for state in states | selectattr('attributes.device_class', 'eq', 'battery') | rejectattr('entity_id', 'in', ignore_entities) -%}
+            {%- if 0 <= state.state | int(-1) <= battery_level | int -%}
+              {%- set ns.sensors = ns.sensors + [dict(entity_id = state.entity_id, name = state.name | replace(' battery', '') | replace(' Battery', ''), state = state.state | int)] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- for state in states | selectattr('entity_id', 'in', cover_entities) -%}
+            {%- if 0 <= state.state | int(-1) <= cover_battery_level | int -%}
+              {%- set ns.sensors = ns.sensors + [dict(entity_id = state.entity_id, name = state.name | replace(' battery', '') | replace(' Battery', ''), state = state.state | int)] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- set low_batteries = ns.sensors | sort (attribute='state') -%}
+          {{ low_batteries }}
+      state: "{{ this.attributes.entities | count }}"
+      icon: >
+        {%- if this.state | int(0) > 0 -%}
           mdi:battery-alert
         {%- else -%}
           mdi:battery
         {%- endif -%}
-      {%- else -%}
-        mdi:battery
-      {%- endif -%}
-

@@ -6,21 +6,19 @@ layout:
   margin: 0
   grid-gap: var(--custom-layout-card-padding)
   grid-template-columns: repeat(4, 1fr)
-  grid-template-rows: repeat(4, fit-content(100%))
+  grid-template-rows: repeat(7, fit-content(100%))
   grid-template-areas: |
-    "header       header      .             .           "
-    "scene1       scene2      scene3        scene4      "
-    "graphs       graphs      graphs        graphs      "
-    "tv           shade1      stat          lights      "
-    "homepod      shade2      stat          lights     "
-    "sockets      sockets     sockets       .      "
-    "sockets      sockets     sockets       ."
+    "header       header      .           .           "
+    "scene1       scene2      scene3      scene4      "
+    "graphs       graphs      graphs      graphs      "
+    "shade1       shade2      tv          homepod     "
+    "stat         lights       sockets     sockets    "
   mediaquery:
     #phone
     "(max-width: 800px)":
       grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
       grid-template-columns: repeat(2, 1fr)
-      grid-template-rows: repeat(5, fit-content(100%))
+      grid-template-rows: repeat(9, fit-content(100%))
       grid-template-areas: |
         "header       header     "
         "scene1       scene2     "
@@ -33,12 +31,6 @@ layout:
         "sockets      sockets    "
 
 cards:
-  - type: "custom:button-card"
-    view_layout:
-      grid-area: header
-    template: chip_back
-    variables:
-      ulm_chip_back_path: home
   - type: custom:mushroom-chips-card
     view_layout:
       grid-area: header
@@ -69,68 +61,89 @@ cards:
   - type: tile
     view_layout:
       grid-area: scene1
-    entity: scene.lamps_on
-    color: blue
-  - type: tile
-    view_layout:
-      grid-area: scene2
     entity: scene.evening
     color: blue
   - type: tile
     view_layout:
-      grid-area: scene3
+      grid-area: scene2
     entity: scene.it_s_too_bright
     color: blue
   - type: tile
     view_layout:
-      grid-area: scene4
+      grid-area: scene3
     entity: scene.patio_sun
     color: blue
 
-
-  - type: custom:state-switch
+  - type: conditional
     view_layout:
       grid-area: graphs
-    entity: mediaquery
-    states:
-      "(max-width: 800px)": # iPhone
-        type: custom:tabbed-card
-        tabs:
-          - attributes:
-              label: Temperature
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              entities:
-                - entity: sensor.wiser_lts_temperature_lounge
-                  name: Temperature
-          - attributes:
-              label: Humidity
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              # lower_bound: 0
-              # upper_bound: 100
-              entities:
-                - entity: sensor.wiser_lts_humidity_lounge
-                  name: Humidity
-      "(min-width: 800px)": # Desktop / Tablet
-        type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            line_width: 2
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 0px) and (max-width: 767px)" # iPhone
+    card:
+      type: custom:tabbed-card
+      tabs:
+        - attributes:
+            label: Temperature
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
             entities:
               - entity: sensor.wiser_lts_temperature_lounge
                 name: Temperature
-          - type: custom:mini-graph-card
-            line_width: 2
+            color_thresholds:
+              - value: 16
+                color: "#3399ff"
+              - value: 18
+                color: "#f39c12"
+              - value: 20
+                color: "#d35400"
+              - value: 21
+                color: "#c0392b"
+        - attributes:
+            label: Humidity
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
             # lower_bound: 0
             # upper_bound: 100
             entities:
               - entity: sensor.wiser_lts_humidity_lounge
                 name: Humidity
+                color: "#03a9f4"
+  - type: conditional
+    view_layout:
+      grid-area: graphs
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 768px)" # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          entities:
+            - entity: sensor.wiser_lts_temperature_lounge
+              name: Temperature
+          color_thresholds:
+            - value: 16
+              color: "#3399ff"
+            - value: 18
+              color: "#f39c12"
+            - value: 20
+              color: "#d35400"
+            - value: 21
+              color: "#c0392b"
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          # lower_bound: 0
+          # upper_bound: 100
+          entities:
+            - entity: sensor.wiser_lts_humidity_lounge
+              name: Humidity
+              color: "#03a9f4"
 
   - type: tile
     view_layout:
@@ -257,189 +270,199 @@ cards:
               box-shadow: none;
             }
 
-
-  - type: custom:state-switch
+  - type: conditional
     view_layout:
       grid-area: sockets
-    entity: mediaquery
-    states:
-      "(max-width: 800px)": # iPhone
-        type: horizontal-stack
-        cards:
-          - type: custom:stack-in-card
-            mode: vertical
-            cards:
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: TV Power
-                    entity: switch.lounge_socket_1_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_1_right
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_2_left
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: Socket 2 Right
-                    entity: switch.lounge_socket_2_right
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_3_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: Socket 4 Right
-                    entity: switch.lounge_socket_4_right
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: Socket 5 Left
-                    entity: switch.lounge_socket_5_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: HomePod
-                    entity: switch.lounge_extension_socket_1
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: Sofa
-                    entity: switch.lounge_extension_socket_2
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: iPhone
-                    entity: switch.lounge_extension_socket_3
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_extension_socket_4
-                    name: Iron
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_extension_socket_usb
-                    name: USB
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
-      "(min-width: 800px)": # Desktop / Tablet
-        type: horizontal-stack
-        cards:
-          - type: custom:stack-in-card
-            mode: vertical
-            cards:
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: TV Power
-                    entity: switch.lounge_socket_1_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_1_right
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_2_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: Socket 2 Right
-                    entity: switch.lounge_socket_2_right
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_socket_3_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: Socket 4 Left
-                    entity: switch.lounge_socket_4_right
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
-              - type: custom:stack-in-card
-                mode: horizontal
-                cards:
-                  - type: tile
-                    name: Socket 5 Left
-                    entity: switch.lounge_socket_5_left
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: HomePod Power
-                    entity: switch.lounge_extension_socket_1
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: Sofa
-                    entity: switch.lounge_extension_socket_2
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    name: iPhone Charger
-                    entity: switch.lounge_extension_socket_3
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_extension_socket_4
-                    name: Iron
-                    vertical: true
-                    color: blue
-                  - type: tile
-                    entity: switch.lounge_extension_socket_usb
-                    name: USB
-                    vertical: true
-                    color: blue
-                card_mod:
-                  style: |
-                    ha-card {
-                      --ha-card-background: none;
-                      box-shadow: none;
-                    }
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 0px) and (max-width: 767px)" # iPhone
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          mode: vertical
+          cards:
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: TV Power
+                  entity: switch.lounge_socket_1_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: AppleTV UK
+                  entity: switch.lounge_socket_1_right
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: AppleTV US
+                  entity: switch.lounge_socket_2_left
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: Socket 2 Right
+                  entity: switch.lounge_socket_2_right
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_socket_3_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: Socket 4 Right
+                  entity: switch.lounge_socket_4_right
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: Socket 5 Left
+                  entity: switch.lounge_socket_5_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: HomePod
+                  entity: switch.lounge_extension_socket_1
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: Sofa
+                  entity: switch.lounge_extension_socket_2
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: iPhone
+                  entity: switch.lounge_extension_socket_3
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_extension_socket_4
+                  name: Iron
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_extension_socket_usb
+                  name: USB
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }
+  - type: conditional
+    view_layout:
+      grid-area: sockets
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 768px)" # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          mode: vertical
+          cards:
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: TV Power
+                  entity: switch.lounge_socket_1_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: AppleTV UK
+                  entity: switch.lounge_socket_1_right
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: AppleTV US
+                  entity: switch.lounge_socket_2_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: Socket 2 Right
+                  entity: switch.lounge_socket_2_right
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_socket_3_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: Socket 4 Left
+                  entity: switch.lounge_socket_4_right
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  name: Socket 5 Left
+                  entity: switch.lounge_socket_5_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: HomePod Power
+                  entity: switch.lounge_extension_socket_1
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: Sofa
+                  entity: switch.lounge_extension_socket_2
+                  vertical: true
+                  color: blue
+                - type: tile
+                  name: iPhone Charger
+                  entity: switch.lounge_extension_socket_3
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_extension_socket_4
+                  name: Iron
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.lounge_extension_socket_usb
+                  name: USB
+                  vertical: true
+                  color: blue
+              card_mod:
+                style: |
+                  ha-card {
+                    --ha-card-background: none;
+                    box-shadow: none;
+                  }

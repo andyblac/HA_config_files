@@ -9,11 +9,11 @@ layout:
   grid-template-columns: 10% repeat(3, 1fr) 10%
   grid-template-rows: repeat(5, fit-content(100%))
   grid-template-areas: |
-    ".   header    header  header  ."
-    ".   .         roller  .       ."
-    ".   garage    back    front   ."
-    ".   lounge    media   office  ."
-    ".   andys     mums    .       ."
+    ".   header    header    header  ."
+    ".   .         roller    .       ."
+    ".   garage    back      front   ."
+    ".   kitchen   lounge    media   ."
+    ".   office    andys     mums    ."
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -21,11 +21,11 @@ layout:
       grid-template-columns: repeat(3, 33%) 0
       grid-template-rows: repeat(5, fit-content(100%))
       grid-template-areas: |
-        "header    header  header  ."
-        "roller    roller  roller  ."
-        "garage    back    front   ."
-        "lounge    media   office  ."
-        "andys     mums    .       ."
+        "header    header    header  ."
+        "roller    roller    roller  ."
+        "garage    back      front   ."
+        "kitchen   lounge    media   ."
+        "office    andys     mums       ."
 cards:
   - type: "custom:button-card"
     view_layout:
@@ -60,6 +60,12 @@ cards:
     view_layout:
       grid-area: front
     entity: binary_sensor.front_door
+    vertical: true
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: kitchen
+    entity: binary_sensor.kitchen_door_contact
     vertical: true
     color: blue
   - type: tile

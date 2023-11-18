@@ -13,7 +13,7 @@ layout:
     ".    graphs      graphs    ."
     ".    stat        shade     ."
     ".    stat        lights    ."
-    ".    sockets     sockets   ."
+    ".    sockets     .         ."
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -59,6 +59,16 @@ cards:
         card:
           type: custom:mini-graph-card
           points_per_hour: 2
+          line_width: 2
+          color_thresholds:
+            - value: 16
+              color: '#3399ff'
+            - value: 18.5
+              color: '#f39c12'
+            - value: 20.5
+              color: '#d35400'
+            - value: 22
+              color: '#c0392b'
           entities:
             - entity: sensor.wiser_lts_temperature_andys_bedroom
               name: Temperature
@@ -67,11 +77,13 @@ cards:
         card:
           type: custom:mini-graph-card
           points_per_hour: 2
-          lower_bound: 0
-          upper_bound: 100
+          line_width: 2
+          # lower_bound: 0
+          # upper_bound: 100
           entities:
             - entity: sensor.wiser_lts_humidity_andys_bedroom
               name: Humidity
+              color: "#03a9f4"
 
 
 
@@ -125,7 +137,8 @@ cards:
   #   collapsible_controls: true
 
 
-  - type: horizontal-stack
+  - type: custom:stack-in-card
+    mode: horizontal
     view_layout:
       grid-area: sockets
     cards:

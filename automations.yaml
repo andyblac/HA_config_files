@@ -53,6 +53,9 @@
       - condition: trigger
         id:
         - away
+      - condition: time
+        after: '22:00:00'
+        before: 07:00:00
       sequence:
       - service: switch.turn_on
         data: {}
@@ -66,6 +69,9 @@
       - condition: trigger
         id:
         - diarmed
+      - condition: time
+        before: '10:00:00'
+        after: 07:00:00
       sequence:
       - service: switch.turn_off
         data: {}
@@ -347,7 +353,7 @@
           entity_id: light.kitchen_cabinets
       - service: light.turn_on
         data:
-          brightness: 50
+          brightness: 25
         target:
           entity_id: light.kitchen_floor_led
     - conditions:
@@ -615,7 +621,6 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: 00:10:00
   condition: []
   action:
   - service: scene.turn_on
@@ -666,6 +671,7 @@
         data: {}
         target:
           entity_id: light.office_dimmer
+    enabled: false
   mode: single
 - id: '1681322393347'
   alias: Alarm Notification
@@ -954,7 +960,6 @@
         entity_id:
         - sensor.lounge_patio_window_shade_battery
         - sensor.lounge_window_shade_battery
-        - sensor.media_room_window_shade_battery
       actions: []
       time: '10:00:00'
       include_unavailable: enabled
@@ -982,7 +987,6 @@
         entity_id:
         - sensor.lounge_patio_window_shade_battery
         - sensor.lounge_window_shade_battery
-        - sensor.media_room_window_shade_battery
       time: '10:00:00'
       include_unavailable: enabled
       unavailable: battery
@@ -1044,17 +1048,8 @@
   - choose:
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.outside_temperature
+        entity_id: sensor.outside_temp_thermostat_otgw
         above: 15
-      sequence:
-      - service: shell_command.send_otgw_command
-        data:
-          key: SH
-          value: 45
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.outside_temperature
-        above: 10
       sequence:
       - service: shell_command.send_otgw_command
         data:
@@ -1062,17 +1057,8 @@
           value: 50
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.outside_temperature
-        above: 5
-      sequence:
-      - service: shell_command.send_otgw_command
-        data:
-          key: SH
-          value: 55
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.outside_temperature
-        above: 0.01
+        entity_id: sensor.outside_temp_thermostat_otgw
+        above: 10
       sequence:
       - service: shell_command.send_otgw_command
         data:
@@ -1080,32 +1066,40 @@
           value: 60
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.outside_temperature
+        entity_id: sensor.outside_temp_thermostat_otgw
+        above: 5
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 65
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temp_thermostat_otgw
+        above: 0.01
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
+          value: 70
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temp_thermostat_otgw
         below: 0.01
       sequence:
       - service: shell_command.send_otgw_command
         data:
           key: SH
+          value: 75
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.outside_temp_thermostat_otgw
+        below: -5.01
+      sequence:
+      - service: shell_command.send_otgw_command
+        data:
+          key: SH
           value: 80
-  mode: single
-- id: '1693391532622'
-  alias: Shower Hot Water
-  description: Turn run automation to change hot water temperature.
-  trigger:
-  - platform: time
-    at:
-    - '19:00:00'
-    - '23:00:00'
-  - platform: homeassistant
-    event: start
-  condition:
-  - condition: template
-    value_template: '{{ (now() - as_datetime(''19700101T00Z'')).days % 2 == 0 }}'
-  action:
-  - service: input_boolean.turn_{{ 'on' if 19 <= now().hour < 23 else 'off' }}
-    data: {}
-    target:
-      entity_id: input_boolean.hot_water_toggle
   mode: single
 - id: '1693391820403'
   alias: Shower Hot Water Temperature
@@ -1143,11 +1137,38 @@
   trigger:
   - platform: state
     entity_id:
-    - sensor.outside_temperature
+    - sensor.high_croft_temperature
   condition: []
   action:
   - service: opentherm_gw.set_outside_temperature
     data:
       gateway_id: otgw
-      temperature: '{{trigger.to_state.state|float(0)}}'
+      temperature: '{{trigger.to_state.state|float(0.0)|default(0.0)}}'
   mode: single
+- id: '1697717076054'
+  alias: Freeer Door Left Open Notification
+  description: ''
+  use_blueprint:
+    path: Neekster/notification-if-door-or-window-is-left-open.yaml
+    input:
+      entity: binary_sensor.kitchen_freezer_contact
+      friendly_name: Freezer Door
+      interruption_level: time-sensitive
+      notify_service: notify.mobile_app_andys_iphone
+      click_url: /ui-lovelace-minimalist/kitchen
+      title: '{{friendly_name}}'
+      message: Was left open at {{now().hour}}:{{now().minute}}:{{now().second}}.
+- id: '1697717153588'
+  alias: Fridge Door Left Open Notification
+  description: ''
+  use_blueprint:
+    path: Neekster/notification-if-door-or-window-is-left-open.yaml
+    input:
+      entity: binary_sensor.kitchen_fridge_contact
+      friendly_name: Fridge Door
+      interruption_level: time-sensitive
+      notify_service: notify.mobile_app_andys_iphone
+      click_url: /ui-lovelace-minimalist/kitchen
+      seconds: 150
+      title: '{{friendly_name}}'
+      message: Was left open at {{now().hour}}:{{now().minute}}:{{now().second}}

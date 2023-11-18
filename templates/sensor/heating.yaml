@@ -2,10 +2,10 @@
     - name: "Heating State"
       unique_id: 8f8d798f-8e2c-42c2-812c-be4df3548fac
       state: >
-        {%- if is_state('sensor.wiser_heating', 'On') -%}
+        {%- if is_state('binary_sensor.slave_ch_active_boiler_otgw', 'on') -%}
           {%- if states('sensor.ch_water_temp_boiler_otgw')|float > 60 -%}
           high
-          {%- elif states('sensor.ch_water_temp_boiler_otgw')|float > 30 -%}
+          {%- elif states('sensor.ch_water_temp_boiler_otgw')|float > 40 -%}
           med
           {%- else -%}
           low
@@ -34,8 +34,6 @@
           yellow
           {%- elif this.state == 'low' -%}
           blue
-          {%- else -%}
-          theme
           {%- endif -%}
         fault: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(1) %}on{% else %}off{% endif %}"
         ch1_mode: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(2) %}on{% else %}off{% endif %}"
@@ -43,6 +41,43 @@
         flame_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(8) %}on{% else %}off{% endif %}"
         cooling_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(16) %}on{% else %}off{% endif %}"
         diagnostic: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(64) %}on{% else %}off{% endif %}"
-        flow_temp: "{% if states('sensor.ch_water_temp_boiler_otgw') | int(0) %}{{states('sensor.ch_water_temp_boiler_otgw')}}{% else %}0{% endif %}"
-        max_flow_temp: "{% if states('sensor.max_ch_setpoint_boiler_otgw') | int(0) %}{{states('sensor.max_ch_setpoint_boiler_otgw')}}{% else %}0{% endif %}"
-        consumption: "{% if states('sensor.boiler_relative_consumption') | float(0) %}{{states('sensor.boiler_relative_consumption')}}{% else %}0{% endif %}"
+        max_flow_temp: "{{states('sensor.max_ch_setpoint_boiler_otgw')}}"
+        flow_temp: "{{states('sensor.ch_water_temp_boiler_otgw')}}"
+        Delta T: "{{states('sensor.delta_t_temp_boiler_otgw')}}"
+        consumption: "{{states('sensor.boiler_relative_consumption')}}"
+
+    - name: "Boiler Relative Consumption"
+      unique_id: 42b65180-b37e-4e5d-8a62-748f6147c814
+      unit_of_measurement: "kW"
+      device_class: power
+      state: "{{ (states('sensor.slave_max_capacity_boiler_otgw') | float(0)) * (states('sensor.relative_mod_level_boiler_otgw') | float(0) / 100)}}"
+      attributes:
+        Lounge: "{{ states('sensor.wiser_lts_heating_demand_lounge') }}%"
+        Media Room: "{{ states('sensor.wiser_lts_heating_demand_media_room') }}%"
+        Office: "{{ states('sensor.wiser_lts_heating_demand_office') }}%"
+        Andys Bedroom: "{{ states('sensor.wiser_lts_heating_demand_andys_bedroom') }}%"
+        Mums Bedroom: "{{ states('sensor.wiser_lts_heating_demand_mums_bedroom') }}%"
+
+    - name: "delta_t_temp_boiler_otgw"
+      unique_id: 9be77d21-344d-485e-96cc-d49b4d9e82f2
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: "{{ (states('sensor.ch_water_temp_boiler_otgw') | float(0)) - (states('sensor.return_water_temp_boiler_otgw') | float(0))}}"
+        
+- binary_sensor:
+  # Wiser Hub Status binary sensor
+  - name: Wiser Hub Status
+    unique_id: 8ced4a5b-5e53-4c50-b299-ca6f91ebb07d
+    device_class: problem
+    icon: >-
+      {%- if is_state('binary_sensor.wiser_hub_status', 'on') -%}
+        mdi:router-wireless-off
+      {%- else -%}
+        mdi:router-wireless
+      {%- endif -%}
+    state: >-
+      {%- if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') %}
+        off
+      {% else %}
+        on
+      {% endif %}

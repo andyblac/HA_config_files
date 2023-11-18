@@ -10,8 +10,8 @@ layout:
   grid-template-areas: |
     "header       header      .          .           "
     "graphs       graphs      graphs     graphs      "
-    "tv           shade       stat       sockets    "
-    "homepod      lights      stat       sockets "
+    "tv           homepod     shade      lights       "
+    "stat         sockets     sockets    sockets "
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -58,49 +58,75 @@ cards:
         content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Media Room'] }}"
 
 
-  - type: custom:state-switch
+  - type: conditional
     view_layout:
       grid-area: graphs
-    entity: mediaquery
-    states:
-      "(max-width: 800px)": # iPhone
-        type: custom:tabbed-card
-        tabs:
-          - attributes:
-              label: Temperature
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              entities:
-                - entity: sensor.wiser_lts_temperature_media_room
-                  name: Temperature
-          - attributes:
-              label: Humidity
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 2
-              lower_bound: 0
-              upper_bound: 100
-              entities:
-                - entity: sensor.wiser_lts_humidity_media_room
-                  name: Humidity
-      "(min-width: 800px)": # Desktop / Tablet
-        type: horizontal-stack
-        cards:
-          - type: custom:mini-graph-card
-            line_width: 2
+    conditions:
+      - condition: screen
+        media_query: '(min-width: 0px) and (max-width: 767px)' # iPhone
+    card:
+      type: custom:tabbed-card
+      tabs:
+        - attributes:
+            label: Temperature
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
+            color_thresholds:
+              - value: 16
+                color: '#3399ff'
+              - value: 18
+                color: '#f39c12'
+              - value: 20
+                color: '#d35400'
+              - value: 21
+                color: '#c0392b'
             entities:
               - entity: sensor.wiser_lts_temperature_media_room
                 name: Temperature
-          - type: custom:mini-graph-card
-            line_width: 2
+        - attributes:
+            label: Humidity
+          card:
+            type: custom:mini-graph-card
             points_per_hour: 2
             lower_bound: 0
             upper_bound: 100
             entities:
               - entity: sensor.wiser_lts_humidity_media_room
                 name: Humidity
+  - type: conditional
+    view_layout:
+      grid-area: graphs
+    conditions:
+      - condition: screen
+        media_query: '(min-width: 768px)' # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          color_thresholds:
+            - value: 16
+              color: '#3399ff'
+            - value: 18
+              color: '#f39c12'
+            - value: 20
+              color: '#d35400'
+            - value: 21
+              color: '#c0392b'
+          entities:
+            - entity: sensor.wiser_lts_temperature_media_room
+              name: Temperature
+        - type: custom:mini-graph-card
+          line_width: 2
+          points_per_hour: 2
+          lower_bound: 0
+          upper_bound: 100
+          entities:
+            - entity: sensor.wiser_lts_humidity_media_room
+              name: Humidity
+              color: "#03a9f4"
 
 
   - type: tile
@@ -193,6 +219,39 @@ cards:
         mode: horizontal
         cards:
           - type: tile
+            entity: switch.media_room_tv_sockets_1_left
+            name: TV 1 Left
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_tv_sockets_1_right
+            name: TV 1 Right
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_tv_sockets_2_left
+            name: TV 2 Left
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_tv_sockets_2_right
+            name: TV 2 Right
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_tv_sockets_3_left
+            name: TV 3 Left
+            vertical: true
+            color: blue
+          - type: tile
+            entity: switch.media_room_tv_sockets_3_right
+            name: TV 3 Right
+            vertical: true
+            color: blue
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: tile
             name: Socket 1 Left
             entity: switch.media_room_sockets_1_left
             vertical: true
@@ -207,12 +266,8 @@ cards:
             name: Sofa
             vertical: true
             color: blue
-      - type: custom:stack-in-card
-        mode: horizontal
-        cards:
           - type: tile
             entity: switch.media_room_sockets_2_right
             name: HomePod
             vertical: true
             color: blue
-

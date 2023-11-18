@@ -53,6 +53,7 @@ cards:
               entities:
                 - entity: sensor.front_garden_soil_sensor_humidity
                   name: Humidity
+                  color: "#03a9f4"
 
       - type: horizontal-stack
         cards:

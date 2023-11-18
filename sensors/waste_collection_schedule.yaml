@@ -1,0 +1,20 @@
+- platform: waste_collection_schedule
+  name: Rubbish Collection
+  add_days_to: true
+  value_template: "{{ 'on' if value.daysTo <2 else 'off' }}"
+  types:
+    - Rubbish bin
+
+- platform: waste_collection_schedule
+  name: Recycle Collection
+  add_days_to: true
+  value_template: "{{ 'on' if value.daysTo <2 else 'off' }}"
+  types:
+    - Recycle bin
+
+- platform: waste_collection_schedule
+  name: Garden Waste Collection
+  add_days_to: true
+  value_template: "{{ 'on' if value.daysTo <2 else 'off' }}"
+  types:
+    - Garden waste bin

@@ -59,6 +59,16 @@ cards:
         card:
           type: custom:mini-graph-card
           points_per_hour: 2
+          line_width: 2
+          color_thresholds:
+            - value: 16
+              color: '#3399ff'
+            - value: 18.5
+              color: '#f39c12'
+            - value: 20.5
+              color: '#d35400'
+            - value: 22
+              color: '#c0392b'
           entities:
             - entity: sensor.wiser_lts_temperature_mums_bedroom
               name: Temperature
@@ -72,6 +82,7 @@ cards:
           entities:
             - entity: sensor.wiser_lts_humidity_mums_bedroom
               name: Humidity
+              color: "#03a9f4"
 
   - type: tile
     view_layout:
