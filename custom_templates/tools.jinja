@@ -1,0 +1,63 @@
+{% macro list_entities(type, device_class='', state='off', select='', reject='', area='', exclude_area='') %}
+{% set ns = namespace(sensors=[]) %}
+{% if device_class and area %}
+  {% for entity in type | selectattr('attributes.device_class', 'eq', device_class) | selectattr('entity_id', 'in', area_entities(area)) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif device_class %}
+  {% for entity in type | selectattr('attributes.device_class', 'eq', device_class) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif area and reject %}
+  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif area and select %}
+  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | selectattr('entity_id', 'match', select) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif area %}
+  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif exclude_area and reject %}
+  {% for entity in type | rejectattr('entity_id', 'in', area_entities(exclude_area)) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif exclude_area %}
+  {% for entity in type | rejectattr('entity_id', 'in', area_entities(exclude_area)) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif select and reject %}
+  {% for entity in type | selectattr('entity_id', 'match', select) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif select %}
+  {% for entity in type | selectattr('entity_id', 'match', select) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% elif reject %}
+  {% for entity in type | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
+    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% endfor %}
+{% endif %}
+{{ ns.sensors | to_json }}
+{% endmacro %}
+
+{% macro count_entities(type, device_class='', state='off', select='', reject='', area='', exclude_area='') %}
+{% from 'tools.jinja' import list_entities %}
+{{ list_entities(type,device_class,state,select,reject,area,exclude_area) | from_json | count }}
+{% endmacro %}
+
+{% macro relative(entity) %}
+{% set time_diff =  (as_timestamp(now()) - as_timestamp(states(entity))) | round(0) %}
+{% if time_diff > 86400 %}
+  {{(time_diff / 86400) | int}} days
+{% elif time_diff > 3600 %}
+  {{(time_diff / 3600) | int}} hours
+{% elif time_diff > 60 %}
+  {{(time_diff / 60) | int}} minutes
+{% else %}
+  {{time_diff}} seconds
+{% endif %}
+{% endmacro %}
