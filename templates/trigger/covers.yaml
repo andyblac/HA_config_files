@@ -1,89 +1,119 @@
 - trigger:
     - platform: state
-      entity_id:
-        - cover.media_room_somfy_window_shade
-      id: "on"
+      entity_id: cover.media_room_somfy_window_shade
+      id: "opening"
+      to: opening
+    - platform: state
+      entity_id: cover.media_room_somfy_window_shade
+      id: "open"
       from: opening
       to: unknown
     - platform: state
-      entity_id:
-        - cover.media_room_somfy_window_shade
-      id: "off"
+      entity_id: cover.media_room_somfy_window_shade
+      id: "closing"
+      to: closing
+    - platform: state
+      entity_id: cover.media_room_somfy_window_shade
+      id: "closed"
       from: closing
       to: unknown
-  binary_sensor:
+  sensor:
     - name: Media Room Shade Helper
       unique_id: a5c19860-c74d-4b25-8893-982e8b135bcd
       state: "{{ trigger.id }}"
 
 - trigger:
     - platform: state
-      entity_id:
-        - cover.kitchen_somfy_window_shade
-      id: "on"
+      entity_id: cover.kitchen_somfy_window_shade
+      id: "opening"
+      to: opening
+    - platform: state
+      entity_id: cover.kitchen_somfy_window_shade
+      id: "open"
       from: opening
       to: unknown
     - platform: state
-      entity_id:
-        - cover.kitchen_somfy_window_shade
-      id: "off"
+      entity_id: cover.kitchen_somfy_window_shade
+      id: "closing"
+      to: closing
+    - platform: state
+      entity_id: cover.kitchen_somfy_window_shade
+      id: "closed"
       from: closing
       to: unknown
-  binary_sensor:
+  sensor:
     - name: Kitchen Shade Helper
       unique_id: b93e4cd1-d994-4699-91f8-4e6a8022bf0c
       state: "{{ trigger.id }}"
 
 - trigger:
     - platform: state
-      entity_id:
-        - cover.office_somfy_window_shade
-      id: "on"
+      entity_id: cover.office_somfy_window_shade
+      id: "opening"
+      to: opening
+    - platform: state
+      entity_id: cover.office_somfy_window_shade
+      id: "open"
       from: opening
       to: unknown
     - platform: state
-      entity_id:
-        - cover.office_somfy_window_shade
-      id: "off"
+      entity_id: cover.office_somfy_window_shade
+      id: "closing"
+      to: closing
+    - platform: state
+      entity_id: cover.office_somfy_window_shade
+      id: "closed"
       from: closing
       to: unknown
-  binary_sensor:
+  sensor:
     - name: Office Shade Helper
       unique_id: fdb22f67-2781-4c44-9abb-a2b2d9e57b33
       state: "{{ trigger.id }}"
 
 - trigger:
     - platform: state
-      entity_id:
-        - cover.mums_bedroom_somfy_window_shade
-      id: "on"
+      entity_id: cover.mums_bedroom_somfy_window_shade
+      id: "opening"
+      to: opening
+    - platform: state
+      entity_id: cover.mums_bedroom_somfy_window_shade
+      id: "open"
       from: opening
       to: unknown
     - platform: state
-      entity_id:
-        - cover.mums_bedroom_somfy_window_shade
-      id: "off"
+      entity_id: cover.mums_bedroom_somfy_window_shade
+      id: "closing"
+      to: closing
+    - platform: state
+      entity_id: cover.mums_bedroom_somfy_window_shade
+      id: "closed"
       from: closing
       to: unknown
-  binary_sensor:
+  sensor:
     - name: Mums Shade Helper
       unique_id: aeaf8eaf-ca83-4cf6-94df-aab6e175f449
       state: "{{ trigger.id }}"
 
 - trigger:
     - platform: state
-      entity_id:
-        - cover.andys_bedroom_somfy_window_shade
-      id: "on"
+      entity_id: cover.andys_bedroom_somfy_window_shade
+      id: "opening"
+      to: opening
+    - platform: state
+      entity_id: cover.andys_bedroom_somfy_window_shade
+      id: "open"
       from: opening
       to: unknown
     - platform: state
-      entity_id:
-        - cover.andys_bedroom_somfy_window_shade
-      id: "off"
+      entity_id: cover.andys_bedroom_somfy_window_shade
+      id: "closing"
+      to: closing
+    - platform: state
+      entity_id: cover.andys_bedroom_somfy_window_shade
+      id: "closed"
       from: closing
       to: unknown
-  binary_sensor:
+  sensor:
     - name: Andys Shade Helper
       unique_id: bef6f128-9493-49f1-a61c-d3db57d38af4
       state: "{{ trigger.id }}"

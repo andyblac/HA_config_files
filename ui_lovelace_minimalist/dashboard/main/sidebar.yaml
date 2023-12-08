@@ -45,7 +45,7 @@ cards:
       - type: conditional
         conditions:
           - condition: screen
-            media_query: '(min-width: 1024px)'
+            media_query: '(min-width: 1200px)'
         card:
           type: custom:hourly-weather
           entity: weather.high_croft
@@ -92,7 +92,7 @@ cards:
           ulm_custom_card_andyblac_scene_color: yellow
       - type: custom:button-card
         template: custom_card_andyblac_scene
-        entity: scene.good_night
+        entity: scene.evening
         variables:
           ulm_custom_card_andyblac_scene_color: blue
 
@@ -306,8 +306,8 @@ cards:
         needle: false
         severity:
           green: 0
-          yellow: 30
-          red: 50
+          yellow: 50
+          red: 70
         card_mod:
           style: |
             ha-card {

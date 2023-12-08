@@ -32,13 +32,14 @@ layout:
     "(max-width: 1024px)":
       margin: 0
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: 35% repeat(3, 1fr)
-      grid-template-rows: repeat(4, fit-content(100%))
+      grid-template-columns: 40% repeat(3, 1fr)
+      grid-template-rows: repeat(4, fit-content(80%))
       grid-template-areas: |
         "sidebar  room1   room2   room3  "
         "sidebar  room4   room5   room6  "
         "sidebar  room7   room8   room9  "
         "sidebar  room10  room11  room12 "
+        "sidebar  .       .       .      "
 cards:
   # Sidebar
   - !include sidebar.yaml
@@ -136,7 +137,7 @@ cards:
           - motion_animation
       entity_3:
         entity_id: light.garage_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
 
   # Kitchen
   - type: custom:button-card
@@ -177,13 +178,13 @@ cards:
           action: toggle
       entity_2:
         entity_id: light.kitchen_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_3:
         entity_id: light.kitchen_cabinets
         ulm_custom_card_andyblac_room_use_light_color: true
       entity_4:
         entity_id: light.kitchen_floor_led
-        ulm_custom_card_andyblac_room_icon_color_on: white
+        ulm_custom_card_andyblac_room_icon_color_on: yellow
         # ulm_custom_card_andyblac_room_use_light_color: true
 
   # Lounge
@@ -219,10 +220,10 @@ cards:
           action: toggle
       entity_2:
         entity_id: light.lounge_table_light
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_3:
         entity_id: light.lounge_extention_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_4:
         entity_id: light.lounge_lamps
         ulm_custom_card_andyblac_room_icon_color_on: green
@@ -262,7 +263,7 @@ cards:
           action: toggle
       entity_3:
         entity_id: light.media_room_dimmer2
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_4:
         entity_id: light.media_room_sideboard_lamps
         ulm_custom_card_andyblac_room_use_light_color: true
@@ -291,7 +292,7 @@ cards:
           action: toggle
       entity_3:
         entity_id: light.hall_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
 
   # Landing
   - type: custom:button-card
@@ -313,7 +314,7 @@ cards:
           - motion_animation
       entity_3:
         entity_id: light.landing_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
 
   # Bathroom
   - type: custom:button-card
@@ -337,10 +338,10 @@ cards:
         tap_action:
           action: toggle
       entity_3:
-        entity_id: light.wetroom_light
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        entity_id: light.wetroom_lights
+        ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_4:
-        entity_id: fan.wetroom_extractor
+        entity_id: switch.wetroom_extractor_boost
         ulm_custom_card_andyblac_room_icon_color_on: blue
         templates:
           - fan_animation
@@ -375,7 +376,7 @@ cards:
           action: toggle
       entity_3:
         entity_id: light.office_dimmer
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber
 
 
   # Mums Bedroom
@@ -449,4 +450,4 @@ cards:
           action: toggle
       entity_3:
         entity_id: light.andys_bedroom_lights
-        ulm_custom_card_andyblac_room_icon_color_on: yellow
+        ulm_custom_card_andyblac_room_icon_color_on: amber

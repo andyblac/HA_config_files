@@ -217,7 +217,7 @@ cards:
             template: card_title
             name: Wetroom
           - type: tile
-            entity: light.wetroom_light
+            entity: light.wetroom_lights
             name: Spots
             color: amber
             vertical: true

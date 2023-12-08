@@ -43,10 +43,7 @@ cards:
       - type: template
         icon: mdi:motion-sensor
         content: ""
-        icon_color: >-
-          {% if is_state('binary_sensor.media_room_motion_sensor_occupancy', 'on') %}
-            blue
-          {% endif %}
+        icon_color: "{{ 'blue' if is_state('binary_sensor.media_room_motion_sensor_occupancy', 'on') }}"
         entity: binary_sensor.media_room_motion_sensor_occupancy
         tap_action:
           action: more-info
@@ -105,7 +102,7 @@ cards:
       cards:
         - type: custom:mini-graph-card
           line_width: 2
-          points_per_hour: 2
+          points_per_hour: 4
           color_thresholds:
             - value: 16
               color: '#3399ff'
@@ -158,11 +155,7 @@ cards:
     vertical: true
     features:
       - type: cover-open-close
-    # card_mod:
-    #   style: |
-    #     ha-card {
-    #       height: 150px !important;
-    #     }
+
   - type: custom:stack-in-card
     view_layout:
       grid-area: lights

@@ -11,7 +11,8 @@ layout:
   grid-template-areas: |
     "header   header   header"
     "kitchen  lounge   media"
-    "office   andys    mums"
+    "hall     office   andys"
+    "hall     office   mums"
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -23,6 +24,7 @@ layout:
         "kitchen "
         "lounge  "
         "media   "
+        "hall    "
         "office  "
         "andys   "
         "mums    "
@@ -259,6 +261,42 @@ cards:
             mode: horizontal
             cards:
               - type: tile
+                entity: switch.media_room_tv_sockets_1_left
+                name: TV 1 Left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_tv_sockets_1_right
+                name: TV 1 Right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_tv_sockets_2_left
+                name: TV 2 Left
+                vertical: true
+                color: blue
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.media_room_tv_sockets_2_right
+                name: TV 2 Right
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_tv_sockets_3_left
+                name: TV 3 Left
+                vertical: true
+                color: blue
+              - type: tile
+                entity: switch.media_room_tv_sockets_3_right
+                name: TV 3 Right
+                vertical: true
+                color: blue
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
                 entity: switch.media_room_sockets_1_left
                 name: Socket 1 Left
                 vertical: true
@@ -298,7 +336,11 @@ cards:
                   box-shadow: none;
                 }
 
-      # Hall
+  # Hall
+  - type: vertical-stack
+    view_layout:
+      grid-area: hall
+    cards:
       - type: "custom:button-card"
         template: card_title
         name: Hall

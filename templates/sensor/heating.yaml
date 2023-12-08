@@ -13,6 +13,7 @@
         {%- else -%}
         off
         {%- endif -%}
+      # state_class: measurement
       icon: >
         {%- if is_state('binary_sensor.slave_flame_on_boiler_otgw', 'on') %}
         mdi:radiator
@@ -50,7 +51,8 @@
       unique_id: 42b65180-b37e-4e5d-8a62-748f6147c814
       unit_of_measurement: "kW"
       device_class: power
-      state: "{{ (states('sensor.slave_max_capacity_boiler_otgw') | float(0)) * (states('sensor.relative_mod_level_boiler_otgw') | float(0) / 100)}}"
+      state: "{{ 30 * (states('sensor.relative_mod_level_boiler_otgw') | float(0) / 100)}}"
+      state_class: measurement
       attributes:
         Lounge: "{{ states('sensor.wiser_lts_heating_demand_lounge') }}%"
         Media Room: "{{ states('sensor.wiser_lts_heating_demand_media_room') }}%"
@@ -63,21 +65,23 @@
       unit_of_measurement: "°C"
       device_class: temperature
       state: "{{ (states('sensor.ch_water_temp_boiler_otgw') | float(0)) - (states('sensor.return_water_temp_boiler_otgw') | float(0))}}"
-        
+      state_class: measurement
+
 - binary_sensor:
-  # Wiser Hub Status binary sensor
-  - name: Wiser Hub Status
-    unique_id: 8ced4a5b-5e53-4c50-b299-ca6f91ebb07d
-    device_class: problem
-    icon: >-
-      {%- if is_state('binary_sensor.wiser_hub_status', 'on') -%}
-        mdi:router-wireless-off
-      {%- else -%}
-        mdi:router-wireless
-      {%- endif -%}
-    state: >-
-      {%- if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') %}
-        off
-      {% else %}
-        on
-      {% endif %}
+    # Wiser Hub Status binary sensor
+    - name: Wiser Hub Status
+      unique_id: 8ced4a5b-5e53-4c50-b299-ca6f91ebb07d
+      device_class: problem
+      state: >-
+        {%- if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+      # state_class: measurement
+      icon: >-
+        {%- if this.state == 'on' -%}
+          mdi:router-wireless-off
+        {%- else -%}
+          mdi:router-wireless
+        {%- endif -%}

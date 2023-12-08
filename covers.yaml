@@ -2,31 +2,20 @@
   covers:
     media_room_window_shade:
       unique_id: b717049e-f5d0-43ba-a6b5-c2f64041b9c4
-      device_class: blind
+      device_class: shade
       friendly_name: "Media Room Window Shade"
-      value_template: >
-        {% if states('cover.media_room_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.media_room_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.media_room_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.media_room_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
+      value_template: "{{states('sensor.media_room_shade_helper')}}"
       open_cover:
         - condition: state
-          entity_id: binary_sensor.media_room_shade_helper
-          state: "off"
+          entity_id: sensor.media_room_shade_helper
+          state: "closed"
         - service: cover.open_cover
           target:
             entity_id: cover.media_room_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.media_room_shade_helper
-          state: "on"
+          entity_id: sensor.media_room_shade_helper
+          state: "open"
         - service: cover.close_cover
           target:
             entity_id: cover.media_room_somfy_window_shade
@@ -47,31 +36,20 @@
 
     kitchen_window_shade:
       unique_id: 872520ae-ba0b-40ca-bfe4-fcb18474de78
-      device_class: blind
+      device_class: shade
       friendly_name: "Kitchen Window Shade"
-      value_template: >
-        {% if states('cover.kitchen_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.kitchen_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.kitchen_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.kitchen_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
+      value_template: "{{states('sensor.kitchen_shade_helper')}}"
       open_cover:
         - condition: state
-          entity_id: binary_sensor.kitchen_shade_helper
-          state: "off"
+          entity_id: sensor.kitchen_shade_helper
+          state: "closed"
         - service: cover.open_cover
           target:
             entity_id: cover.kitchen_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.kitchen_shade_helper
-          state: "on"
+          entity_id: sensor.kitchen_shade_helper
+          state: "open"
         - service: cover.close_cover
           target:
             entity_id: cover.kitchen_somfy_window_shade
@@ -92,31 +70,20 @@
 
     office_window_shade:
       unique_id: ea08a123-4c1a-4c68-9575-d14bf21bd34e
-      device_class: blind
+      device_class: shade
       friendly_name: "Office Window Shade"
-      value_template: >
-        {% if states('cover.office_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.office_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.office_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.office_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
+      value_template: "{{states('sensor.office_shade_helper')}}"
       open_cover:
         - condition: state
-          entity_id: binary_sensor.office_shade_helper
-          state: "off"
+          entity_id: sensor.office_shade_helper
+          state: "closed"
         - service: cover.open_cover
           target:
             entity_id: cover.office_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.office_shade_helper
-          state: "on"
+          entity_id: sensor.office_shade_helper
+          state: "open"
         - service: cover.close_cover
           target:
             entity_id: cover.office_somfy_window_shade
@@ -137,31 +104,20 @@
 
     mums_bedroom_window_shade:
       unique_id: 595d368a-498d-4fc4-b938-5eea13d2cd9d
-      device_class: blind
+      device_class: shade
       friendly_name: "Mums Bedroom Window Shade"
-      value_template: >
-        {% if states('cover.mums_bedroom_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.mums_bedroom_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.mums_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.mums_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
+      value_template: "{{states('sensor.mums_shade_helper')}}"
       open_cover:
         - condition: state
-          entity_id: binary_sensor.mums_shade_helper
-          state: "off"
+          entity_id: sensor.mums_shade_helper
+          state: "closed"
         - service: cover.open_cover
           target:
             entity_id: cover.mums_bedroom_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.mums_shade_helper
-          state: "on"
+          entity_id: sensor.mums_shade_helper
+          state: "open"
         - service: cover.close_cover
           target:
             entity_id: cover.mums_bedroom_somfy_window_shade
@@ -182,31 +138,20 @@
 
     andys_bedroom_window_shade:
       unique_id: dcb9f6e3-f1f2-46d6-9d06-6f52a3222681
-      device_class: blind
+      device_class: shade
       friendly_name: "Andys Bedroom Window Shade"
-      value_template: >
-        {% if states('cover.andys_bedroom_somfy_window_shade') == 'opening' %}
-          opening
-        {% elif states('cover.andys_bedroom_somfy_window_shade') == 'closing' %}
-          closing
-        {% elif states('binary_sensor.andys_shade_helper') == 'off' %}
-          closed
-        {% elif states('binary_sensor.andys_shade_helper') == 'on' %}
-          open
-        {% else %}
-          none
-        {% endif %}
+      value_template: "{{states('sensor.andys_shade_helper')}}"
       open_cover:
         - condition: state
-          entity_id: binary_sensor.andys_shade_helper
-          state: "off"
+          entity_id: sensor.andys_shade_helper
+          state: "closed"
         - service: cover.open_cover
           target:
             entity_id: cover.andys_bedroom_somfy_window_shade
       close_cover:
         - condition: state
-          entity_id: binary_sensor.andys_shade_helper
-          state: "on"
+          entity_id: sensor.andys_shade_helper
+          state: "open"
         - service: cover.close_cover
           target:
             entity_id: cover.andys_bedroom_somfy_window_shade

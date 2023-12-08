@@ -20,6 +20,7 @@
           {%- endfor -%}
           {{ dict.from_keys(ns.entities) }}
       state: "{{ this.attributes.entities | count }}"
+      state_class: measurement
       icon: >
         {%- if this.state | int(0) > 0 -%}
         mdi:lightbulb-group
@@ -54,6 +55,7 @@
           {%- endfor -%}
           {{ dict.from_keys(ns.entities) }}
       state: "{{ this.attributes.entities | count }}"
+      state_class: measurement
       icon: mdi:power-socket-uk
 
     - name: "Number of Doors Open"
@@ -77,6 +79,7 @@
           {%- endfor -%}
           {{ dict.from_keys(ns.entities) }}
       state: "{{ this.attributes.entities | count }}"
+      state_class: measurement
       icon: >
         {%- if this.state | int(0) > 0 -%}
         mdi:door-open
@@ -105,6 +108,7 @@
           {%- endfor -%}
           {{ dict.from_keys(ns.entities) }}
       state: "{{ this.attributes.entities | count }}"
+      state_class: measurement
       icon: mdi:motion-sensor
 
     - name: "Devices with low battery"
@@ -113,9 +117,9 @@
         navigation: batteries
         entities: >
           {%- set ns = namespace(sensors=[]) -%}
-          {%- set handheld_entities = ['sensor.andys_iphone_battery_level','sensor.andys_iphone_icloudv3_battery','sensor.christines_iphone_battery_level','sensor.christines_iphone_icloudv3_battery','sensor.mums_ipad_battery_level'] -%}
+          {%- set handheld_entities = ['sensor.andys_iphone_battery_level','sensor.andys_iphone_icloudv3_battery','sensor.christines_iphone_battery_level','sensor.christines_iphone_icloudv3_battery'] -%}
           {%- set cover_entities = ['sensor.lounge_window_shade_battery','sensor.lounge_patio_window_shade_battery'] -%}
-          {%- set ignore_entities = handheld_entities + cover_entities -%}
+          {%- set ignore_entities = handheld_entities + cover_entities + ['sensor.kitchen_freezer_battery'] -%}
           {%- set cover_battery_level = 60 -%}
           {%- set battery_level = 20 -%}
           {%- for state in states | selectattr('attributes.device_class', 'eq', 'battery') | rejectattr('entity_id', 'in', ignore_entities) -%}
@@ -131,6 +135,7 @@
           {%- set low_batteries = ns.sensors | sort (attribute='state') -%}
           {{ low_batteries }}
       state: "{{ this.attributes.entities | count }}"
+      state_class: measurement
       icon: >
         {%- if this.state | int(0) > 0 -%}
           mdi:battery-alert

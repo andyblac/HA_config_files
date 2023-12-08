@@ -4,6 +4,7 @@
     unit_of_measurement: "°C"
     device_class: temperature
     state: "{{ states('sensor.high_croft_temperature')|default('unknown') }}"
+    state_class: measurement
 
   - name: Cleaner Day
     unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23

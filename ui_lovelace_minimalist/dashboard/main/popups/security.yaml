@@ -2,16 +2,22 @@ type: vertical-stack
 cards:
   - type: horizontal-stack
     cards:
-      - type: custom:mushroom-alarm-control-panel-card
+      - type: tile
         entity: alarm_control_panel.house_alarm
-        states:
-          - armed_away
-        layout: vertical
-      - type: custom:mushroom-alarm-control-panel-card
+        vertical: true
+        features:
+          - type: alarm-modes
+            modes:
+              - armed_away
+              - disarmed
+      - type: tile
         entity: alarm_control_panel.garage_alarm
-        states:
-          - armed_away
-        layout: vertical
+        vertical: true
+        features:
+          - type: alarm-modes
+            modes:
+              - armed_away
+              - disarmed
   - type: tile
     entity: cover.roller_door
     vertical: true

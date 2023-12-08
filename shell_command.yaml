@@ -1,0 +1,1 @@
+send_otgw_command: /bin/bash -c "curl -X POST http://192.168.3.15/api/v1/otgw/command/{{key}}={{value}}

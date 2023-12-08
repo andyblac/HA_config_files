@@ -1,0 +1,7 @@
+sensor.outside_temp_thermostat_otgw:
+  state_class: measurement
+sensor.ch_water_temp_boiler_otgw:
+  state_class: measurement
+sensor.relative_mod_level_boiler_otgw:
+  state_class: measurement
+

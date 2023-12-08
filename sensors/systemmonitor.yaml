@@ -7,13 +7,13 @@
     - type: memory_use
     - type: memory_free
     - type: network_in
-      arg: end0
+      arg: eno2
     - type: network_out
-      arg: end0
+      arg: eno2
     - type: throughput_network_in
-      arg: end0
+      arg: eno2
     - type: throughput_network_out
-      arg: end0
+      arg: eno2
     - type: processor_use
     - type: processor_temperature
     - type: last_boot

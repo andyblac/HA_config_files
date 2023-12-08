@@ -20,11 +20,7 @@ cards:
           - type: template
             icon: mdi:motion-sensor
             content: ""
-            icon_color: >-
-              {% if is_state('binary_sensor.hall_motion_sensor_occupancy',
-              'on') %}
-                blue
-              {% endif %}
+            icon_color: "{{ 'blue' if is_state('binary_sensor.hall_motion_sensor_occupancy', 'on') }}"
             entity: binary_sensor.hall_motion_sensor_occupancy
             tap_action:
               action: more-info

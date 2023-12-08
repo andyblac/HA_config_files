@@ -10,7 +10,7 @@ layout:
   grid-template-rows: repeat(4, fit-content(100%))
   grid-template-areas: |
     "header       flowrates   flowrates     flowrates   .        "
-    ".            graphs      graphs        graphs      .        "
+    "graphs       graphs      graphs        graphs      graphs"
     "lounge_stat  media_stat  office_stat   andys_stat  mums_stat"
     "schedule     schedule    schedule      schedule    schedule "
   mediaquery:
@@ -109,9 +109,9 @@ cards:
           needle: false
           severity:
             green: 0
-            yellow: 30
-            red: 50
-          max: 80
+            yellow: 50
+            red: 70
+          max: 90
       - type: conditional
         conditions:
           - condition: screen
@@ -139,6 +139,8 @@ cards:
           uiLayout:
             toolbar: hide
             selector: hide
+          refresh:
+            automatic: true
           header: hide
           decimation: fast
           showCurrentValues: true
@@ -169,6 +171,8 @@ cards:
           label: Boiler Flow
         card:
           type: custom:history-explorer-card
+          refresh:
+            automatic: true
           uiLayout:
             toolbar: hide
             selector: hide
@@ -190,6 +194,8 @@ cards:
           label: Temperatures
         card:
           type: custom:history-explorer-card
+          refresh:
+            automatic: true
           uiLayout:
             toolbar: hide
             selector: hide
@@ -224,6 +230,7 @@ cards:
     view_layout:
       grid-area: lounge_stat
     entity: climate.wiser_lounge
+    name: Lounge
     features:
       - type: target-temperature
       - type: climate-hvac-modes
@@ -241,6 +248,7 @@ cards:
     view_layout:
       grid-area: media_stat
     entity: climate.wiser_media_room
+    name: Media Room
     features:
       - type: target-temperature
       - type: climate-hvac-modes
@@ -258,6 +266,7 @@ cards:
     view_layout:
       grid-area: office_stat
     entity: climate.wiser_office
+    name: Office
     features:
       - type: target-temperature
       - type: climate-hvac-modes
@@ -275,6 +284,7 @@ cards:
     view_layout:
       grid-area: andys_stat
     entity: climate.wiser_andys_bedroom
+    name: Andys Bedroom
     features:
       - type: target-temperature
       - type: climate-hvac-modes
@@ -292,6 +302,7 @@ cards:
     view_layout:
       grid-area: mums_stat
     entity: climate.wiser_mums_bedroom
+    name: Mums Bedroom
     features:
       - type: target-temperature
       - type: climate-hvac-modes
@@ -306,43 +317,6 @@ cards:
       - percentage_demand
       - state
 
-  # - type: custom:better-thermostat-ui-card
-  #   view_layout:
-  #     grid-area: lounge_stat
-  #   entity: climate.wiser_lounge
-  #   name: Lounge
-  #   set_current_as_main: true
-  # - type: custom:better-thermostat-ui-card
-  #   view_layout:
-  #     grid-area: media_stat
-  #   entity: climate.wiser_media_room
-  #   name: Media Room
-  #   set_current_as_main: true
-  # - type: custom:better-thermostat-ui-card
-  #   view_layout:
-  #     grid-area: office_stat
-  #   entity: climate.wiser_office
-  #   name: Office
-  #   set_current_as_main: true
-  # - type: custom:better-thermostat-ui-card
-  #   view_layout:
-  #     grid-area: andys_stat
-  #   entity: climate.wiser_andys_bedroom
-  #   name: Andys Bedroom
-  #   set_current_as_main: true
-  # - type: custom:better-thermostat-ui-card
-  #   view_layout:
-  #     grid-area: mums_stat
-  #   entity: climate.wiser_mums_bedroom
-  #   name: Mums Bedroom
-  #   set_current_as_main: true
-  # - type: custom:more-info-card
-  #   view_layout:
-  #     grid-area: mums_stat
-  #   entity: climate.wiser_mums_bedroom
-  #   title: ' '
-  #   style: |
-  #     state-card-content { display: none }
 
   - type: custom:wiser-schedule-card
     view_layout:

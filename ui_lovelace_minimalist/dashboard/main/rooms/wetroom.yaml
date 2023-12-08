@@ -1,63 +1,155 @@
 title: Wetroom
 path: wetroom
+type: custom:grid-layout
+layout:
+  #default
+  margin: 0
+  grid-gap: var(--custom-layout-card-padding)
+  grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: repeat(7, fit-content(100%))
+  grid-template-areas: |
+    "header       header      .           .           "
+    "graphs       graphs      graphs      graphs      "
+    ".            lights      fan         .    "
+  mediaquery:
+    #phone
+    "(max-width: 800px)":
+      grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+      grid-template-columns: repeat(2, 1fr)
+      grid-template-rows: repeat(9, fit-content(100%))
+      grid-template-areas: |
+        "header       header     "
+        "graphs       graphs     "
+        "lights       fan        "
+
 cards:
-  - type: vertical-stack
-    cards:
-      - type: custom:mushroom-chips-card
-        chips:
-          - type: back
-          - type: entity
-            entity: sensor.wetroom_sensor_temperature
-            action: more-info
-          - type: entity
-            entity: sensor.wetroom_sensor_humidity
-            tap_action:
-              action: more-info
-          - type: entity
-            entity: sensor.wetroom_humidity_derivative
-            tap_action:
-              action: more-info
+  - type: custom:mushroom-chips-card
+    view_layout:
+      grid-area: header
+    chips:
+      - type: back
+      - type: entity
+        entity: sensor.wetroom_sensor_temperature
+        action: more-info
+      - type: entity
+        entity: sensor.wetroom_sensor_humidity
+        tap_action:
+          action: more-info
+      - type: entity
+        entity: sensor.wetroom_humidity_derivative
+        tap_action:
+          action: more-info
 
-      - type: custom:tabbed-card
-        tabs:
-          - attributes:
-              label: Humidity
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 4
-              lower_bound: 0
-              upper_bound: 100
-              entities:
-                - entity: sensor.wetroom_sensor_humidity
-                  name: Humidity
-                  color: "#03a9f4"
-          - attributes:
-              label: Derivative
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 4
-              lower_bound: -4
-              upper_bound: 4
-              entities:
-                - entity: sensor.wetroom_humidity_derivative
-                  color: "#03a9f4"
-          - attributes:
-              label: Temperature
-            card:
-              type: custom:mini-graph-card
-              points_per_hour: 4
-              entities:
-                - entity: sensor.wetroom_sensor_temperature
-                  name: Temperature
+  - type: conditional
+    view_layout:
+      grid-area: graphs
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 0px) and (max-width: 767px)" # iPhone
+    card:
+      type: custom:tabbed-card
+      tabs:
+        - attributes:
+            label: Humidity
+          card:
+            type: custom:mini-graph-card
+            points_per_hour: 4
+            lower_bound: 0
+            upper_bound: 100
+            entities:
+              - entity: sensor.wetroom_sensor_humidity
+                name: Humidity
+                color: "#03a9f4"
+        - attributes:
+            label: Derivative
+          card:
+            type: custom:mini-graph-card
+            points_per_hour: 4
+            lower_bound: -4
+            upper_bound: 4
+            entities:
+              - entity: sensor.wetroom_humidity_derivative
+                color: "#03a9f4"
+        - attributes:
+            label: Temperature
+          card:
+            type: custom:mini-graph-card
+            points_per_hour: 4
+            line_width: 2
+            entities:
+              - entity: sensor.wetroom_sensor_temperature
+                name: Temperature
+            color_thresholds:
+              - value: 16
+                color: "#3399ff"
+              - value: 18
+                color: "#f39c12"
+              - value: 20
+                color: "#d35400"
+              - value: 21
+                color: "#c0392b"
+  - type: conditional
+    view_layout:
+      grid-area: graphs
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 768px)" # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:tabbed-card
+          tabs:
+            - attributes:
+                label: Humidity
+              card:
+                type: custom:mini-graph-card
+                line_width: 2
+                points_per_hour: 4
+                lower_bound: 0
+                upper_bound: 100
+                entities:
+                  - entity: sensor.wetroom_sensor_humidity
+                    name: ' '
+                    color: "#03a9f4"
+            - attributes:
+                label: Derivative
+              card:
+                type: custom:mini-graph-card
+                points_per_hour: 4
+                line_width: 2
+                lower_bound: -4
+                upper_bound: 4
+                entities:
+                  - entity: sensor.wetroom_humidity_derivative
+                    color: "#03a9f4"
+        - type: custom:mini-graph-card
+          points_per_hour: 4
+          line_width: 2
+          entities:
+            - entity: sensor.wetroom_sensor_temperature
+              name: Temperature
+          color_thresholds:
+            - value: 16
+              color: "#3399ff"
+            - value: 18
+              color: "#f39c12"
+            - value: 20
+              color: "#d35400"
+            - value: 21
+              color: "#c0392b"
 
-      - type: horizontal-stack
-        cards:
-          - type: tile
-            entity: light.wetroom_light
-            name: Spots
-            vertical: true
-            # color: blue
-          - type: tile
-            entity: fan.wetroom_extractor
-            vertical: true
-            # color: blue
+
+  - type: tile
+    view_layout:
+      grid-area: lights
+    entity: light.wetroom_lights
+    name: Spots
+    vertical: true
+    # color: blue
+  - type: tile
+    view_layout:
+      grid-area: fan
+    entity: switch.wetroom_extractor_boost
+    name: Extractor Boost
+    vertical: true
+    # color: blue

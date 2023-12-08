@@ -112,16 +112,15 @@ cards:
       grid-area: lights
     mode: horizontal
     cards:
-      - type: custom:mushroom-light-card
+      - type: tile
         entity: light.mums_bedroom_light
         icon: mdi:ceiling-light
         # layout: vertical
         show_brightness_control: false
         name: Ceiling
         icon_color: amber
-      - type: custom:mushroom-light-card
+      - type: tile
         entity: light.mums_bedroom_lamp
-        fill_container: false
         # show_brightness_control: true
         # layout: vertical
         name: Lamp
@@ -141,9 +140,10 @@ cards:
   #   fill_container: true
   #   collapsible_controls: true
 
-  - type: horizontal-stack
+  - type: custom:stack-in-card
     view_layout:
       grid-area: sockets
+    mode: horizontal
     cards:
       - type: tile
         entity: switch.mums_bedroom_sockets_left

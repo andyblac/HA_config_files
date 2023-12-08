@@ -1,0 +1,38 @@
+fan_control:
+  alias: Fan Control
+  sequence:
+  - variables:
+      presets:
+      - 'off'
+      - low
+      - high
+  - if:
+    - condition: template
+      value_template: '{{ presets.index(preset) > 0 }}'
+    then:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id:
+        - switch.wetroom_extractor_low_speed
+    else:
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.wetroom_extractor_low_speed
+  - if:
+    - condition: template
+      value_template: '{{ presets.index(preset) > 1 }}'
+    then:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id:
+        - switch.wetroom_extractor_boost
+    else:
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.wetroom_extractor_boost
+  mode: single
+  icon: mdi:fan

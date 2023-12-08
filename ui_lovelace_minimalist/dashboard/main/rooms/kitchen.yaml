@@ -11,8 +11,8 @@ layout:
     "header      header      .           .        "
     "scene1      fridge_d    freezer_d   scene4   "
     "fridge      fridge      freezer     freezer  "
-    ".           shade       lights      .   "
-    ".           sockets     sockets     .        "
+    "shade       lights      sockets     sockets  "
+    ".           .           sockets     sockets  "
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -41,12 +41,7 @@ cards:
         entity: binary_sensor.kitchen_motion_sensor_occupancy
         icon: mdi:motion-sensor
         content: ""
-        icon_color: >-
-          {% if
-          is_state('binary_sensor.kitchen_motion_sensor_occupancy',
-          'on') %}
-            blue
-          {% endif %}
+        icon_color: "{{ 'blue' if is_state('binary_sensor.kitchen_motion_sensor_occupancy', 'on') }}"
         tap_action:
           action: more-info
       - type: template
@@ -83,20 +78,22 @@ cards:
           label: Temperature
         card:
           type: custom:mini-graph-card
-          # lower_bound: 0
-          # upper_bound: 10
+          lower_bound: 3.5
+          upper_bound: 6
           line_width: 2
           points_per_hour: 2
           entities:
             - entity: sensor.kitchen_fridge_temperature
               name: Fridge
           color_thresholds:
-            - value: 4.5
-              color: '#19B2FF'
+            - value: 7
+              color: "#f39c12"
+            - value: 5
+              color: "#19B2FF"
             - value: 4.0
-              color: '#1966FF'
+              color: "#1966FF"
             - value: 3.5
-              color: '#1919FF'
+              color: "#1919FF"
       - attributes:
           label: Humidity
         card:
@@ -118,18 +115,20 @@ cards:
           type: custom:mini-graph-card
           line_width: 2
           points_per_hour: 2
-          # lower_bound: -25
-          # upper_bound: 0
+          lower_bound: -20
+          upper_bound: -17
           entities:
             - entity: sensor.kitchen_freezer_temperature
               name: Freezer
           color_thresholds:
+            - value: -15
+              color: "#f39c12"
+            - value: -17
+              color: "#19B2FF"
             - value: -18
-              color: '#19B2FF'
-            - value: -18.5
-              color: '#1966FF'
-            - value: -19
-              color: '#1919FF'
+              color: "#1966FF"
+            - value: -20
+              color: "#1919FF"
       - attributes:
           label: Humidity
         card:
@@ -167,88 +166,143 @@ cards:
         vertical: true
       - type: tile
         entity: light.kitchen_cabinets
+        name: Cabinets
         vertical: true
       - type: tile
         entity: light.kitchen_floor_led
         vertical: true
 
-  # - type: "custom:button-card"
-  #   view_layout:
-  #     grid-area: sockets
-  #   template: card_title
-  #   name: Sockets
-  - type: custom:stack-in-card
+  - type: conditional
     view_layout:
       grid-area: sockets
-    mode: vertical
-    cards:
-      - type: custom:stack-in-card
-        mode: horizontal
-        cards:
-          - type: tile
-            entity: switch.kitchen_sockets_1_left
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_sockets_1_right
-            name: "Water Heater"
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_sockets_2_left
-            name: "Air Fryer"
-            color: blue
-            vertical: true
-        card_mod:
-          style: |
-            ha-card {
-              --ha-card-background: none;
-              box-shadow: none;
-            }
-      - type: custom:stack-in-card
-        mode: horizontal
-        cards:
-          - type: tile
-            entity: switch.kitchen_sockets_2_right
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_sockets_3_left
-            name: "Bread Maker"
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_sockets_3_right
-            name: "Vacume Sealer"
-            vertical: true
-            color: blue
-        card_mod:
-          style: |
-            ha-card {
-              --ha-card-background: none;
-              box-shadow: none;
-            }
-      - type: custom:stack-in-card
-        mode: horizontal
-        cards:
-          - type: tile
-            entity: switch.kitchen_sockets_4_left
-            name: "Microwave"
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_sockets_4_right
-            name: "Tin Opener"
-            vertical: true
-            color: blue
-          - type: tile
-            entity: switch.kitchen_washing_machine_socket
-            name: "Washing Machine"
-            vertical: true
-            color: blue
-        card_mod:
-          style: |
-            ha-card {
-              --ha-card-background: none;
-              box-shadow: none;
-            }
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 0px) and (max-width: 767px)" # iPhone
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          mode: vertical
+          cards:
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  entity: switch.kitchen_sockets_1_left
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_sockets_1_right
+                  name: "Water Heater"
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_sockets_2_left
+                  name: "Air Fryer"
+                  color: blue
+                  vertical: true
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  entity: switch.kitchen_sockets_2_right
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_sockets_3_left
+                  name: "Bread Maker"
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_sockets_3_right
+                  name: "Vacume Sealer"
+                  vertical: true
+                  color: blue
+            - type: custom:stack-in-card
+              mode: horizontal
+              cards:
+                - type: tile
+                  entity: switch.kitchen_sockets_4_left
+                  name: "Microwave"
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_sockets_4_right
+                  name: "Tin Opener"
+                  vertical: true
+                  color: blue
+                - type: tile
+                  entity: switch.kitchen_washing_machine_socket
+                  name: "Washing Machine"
+                  vertical: true
+                  color: blue
+
+  - type: conditional
+    view_layout:
+      grid-area: sockets
+    conditions:
+      - condition: screen
+        media_query: "(min-width: 768px)" # Desktop / Tablet
+    card:
+      type: horizontal-stack
+      cards:
+        - type: custom:stack-in-card
+          mode: vertical
+          cards:
+            - type: custom:stack-in-card
+              view_layout:
+                grid-area: sockets
+              mode: vertical
+              cards:
+                - type: custom:stack-in-card
+                  mode: horizontal
+                  cards:
+                    - type: tile
+                      entity: switch.kitchen_sockets_1_left
+                      vertical: true
+                      color: blue
+                    - type: tile
+                      entity: switch.kitchen_sockets_1_right
+                      name: "Water Heater"
+                      vertical: true
+                      color: blue
+                    - type: tile
+                      entity: switch.kitchen_sockets_2_left
+                      name: "Air Fryer"
+                      color: blue
+                      vertical: true
+                    - type: tile
+                      entity: switch.kitchen_sockets_2_right
+                      vertical: true
+                      color: blue
+                - type: custom:stack-in-card
+                  mode: horizontal
+                  cards:
+                    - type: tile
+                      entity: switch.kitchen_sockets_3_left
+                      name: "Bread Maker"
+                      vertical: true
+                      color: blue
+                    - type: tile
+                      entity: switch.kitchen_sockets_3_right
+                      name: "Vacume Sealer"
+                      vertical: true
+                      color: blue
+                    - type: tile
+                      entity: switch.kitchen_sockets_4_left
+                      name: "Microwave"
+                      vertical: true
+                      color: blue
+                    - type: tile
+                      entity: switch.kitchen_sockets_4_right
+                      name: "Tin Opener"
+                      vertical: true
+                      color: blue
+                - type: custom:stack-in-card
+                  mode: horizontal
+                  cards:
+                    - type: tile
+                      entity: switch.kitchen_washing_machine_socket
+                      name: "Washing Machine"
+                      vertical: true
+                      color: blue
