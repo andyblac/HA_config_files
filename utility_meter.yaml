@@ -1,0 +1,5 @@
+# boiler_relative_consumption_energy:
+#   name: 'Boiler Relative Consumption Energy'
+#   unique_id: be6a20f6-bed9-4e4d-ae0e-f7ceae3539d9
+#   source: sensor.boiler_relative_consumption_kw
+#   cycle: hourly

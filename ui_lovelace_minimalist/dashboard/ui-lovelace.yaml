@@ -5,6 +5,7 @@ title: "Main Dashboard"
 
 views:
   - !include main/home.yaml
+  # - !include main/security.yaml
   - !include main/heating.yaml
   - !include main/lights.yaml
   - !include main/sockets.yaml

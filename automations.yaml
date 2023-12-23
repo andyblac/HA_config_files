@@ -627,6 +627,7 @@
   trigger:
   - platform: sun
     event: sunset
+    offset: 00:15:00
   condition: []
   action:
   - service: scene.turn_on
@@ -1121,7 +1122,7 @@
       - service: opentherm_gw.set_hot_water_setpoint
         data:
           gateway_id: otgw
-          temperature: 48
+          temperature: 49
     - conditions:
       - condition: state
         entity_id: input_boolean.hot_water_toggle
@@ -1189,23 +1190,61 @@
       end_scenes:
       - scene.front_garden_sensor_light_off
       time_delay: 2
-- id: '1700911567887'
-  alias: OE - Spin Wheel Of Fortune
+- id: '1702209972538'
+  alias: Automatic Backups
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.octopus_energy_a_82fe21ee_wheel_of_fortune_spins_electricity
-    above: 0
-  - platform: numeric_state
-    entity_id: sensor.octopus_energy_a_82fe21ee_wheel_of_fortune_spins_gas
-    above: 0
-  condition: []
-  action:
-  - repeat:
-      count: '{{ states(trigger.entity_id) | int }}'
-      sequence:
-      - service: octopus_energy.spin_wheel_of_fortune
-        data: {}
-        target:
-          entity_id: '{{ trigger.entity_id }}'
-  mode: single
+  use_blueprint:
+    path: jcwillox/automatic_backups.yaml
+- id: '1702474180002'
+  alias: Low Battery Notifications
+  description: ''
+  use_blueprint:
+    path: Blackshome/low-battery-notifications-and-actions.yaml
+    input:
+      include_time: time_enabled
+      time: '10:00:00'
+      exclude_sensors:
+        entity_id:
+        - sensor.lounge_window_shade_battery
+        - sensor.lounge_patio_window_shade_battery
+      include_easy_notify: enable_easy_notify
+      notify_device:
+      - 471bd108a9239fff6834cfa4b7fc4c91
+      - 43b8822568e31d7fb941511a100d6155
+      notify_title: Low Battery
+      notify_message: sensors
+      battery_level: 20
+- id: '1702641048552'
+  alias: Low Battery Window Shades
+  description: ''
+  use_blueprint:
+    path: Blackshome/low-battery-notifications-and-actions.yaml
+    input:
+      time: '10:00:00'
+      battery_level: 60
+      custom_group:
+        entity_id:
+        - sensor.lounge_window_shade_battery
+        - sensor.lounge_patio_window_shade_battery
+      notify_device:
+      - 471bd108a9239fff6834cfa4b7fc4c91
+      - 43b8822568e31d7fb941511a100d6155
+      notify_title: Low Battery
+      notify_message: sensors
+      include_easy_notify: enable_easy_notify
+      sensor_selection: enable_battery_sensors_custom_group
+- id: '1702646950259'
+  alias: Octopus Energy - Join Saving Session
+  description: ''
+  use_blueprint:
+    path: BottlecapDave/octopus_energy_octoplus_join_saving_session.yml.yaml
+    input:
+      saving_session_event_entity: event.octopus_energy_a_82fe21ee_octoplus_saving_session_events
+- id: '1702647063626'
+  alias: Octopus Energy - Spin Wheel Of Fortune
+  description: ''
+  use_blueprint:
+    path: BottlecapDave/octopus_energy_spin_wheel_of_fortune_dual.yml.yaml
+    input:
+      wheel_of_fortune_spins_electricity: sensor.octopus_energy_a_82fe21ee_wheel_of_fortune_spins_electricity
+      wheel_of_fortune_spins_gas: sensor.octopus_energy_a_82fe21ee_wheel_of_fortune_spins_gas

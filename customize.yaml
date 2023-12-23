@@ -4,4 +4,3 @@ sensor.ch_water_temp_boiler_otgw:
   state_class: measurement
 sensor.relative_mod_level_boiler_otgw:
   state_class: measurement
-

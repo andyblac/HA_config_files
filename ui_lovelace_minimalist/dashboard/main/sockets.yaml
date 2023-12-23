@@ -53,6 +53,7 @@ cards:
             cards:
               - type: tile
                 entity: switch.kitchen_sockets_1_left
+                name: "Sockets 1 Left"
                 vertical: true
                 color: blue
               - type: tile
@@ -76,6 +77,7 @@ cards:
             cards:
               - type: tile
                 entity: switch.kitchen_sockets_2_right
+                name: "Sockets 2 Right"
                 vertical: true
                 color: blue
               - type: tile
@@ -143,6 +145,7 @@ cards:
                   box-shadow: none;
                 }
 
+  # Lounge
   - type: vertical-stack
     view_layout:
       grid-area: lounge
@@ -158,14 +161,17 @@ cards:
             cards:
               - type: tile
                 entity: switch.lounge_socket_1_left
+                name: "TV Power"
                 vertical: true
                 color: blue
               - type: tile
                 entity: switch.lounge_socket_1_right
+                name: "AppleTV UK"
                 vertical: true
                 color: blue
               - type: tile
                 entity: switch.lounge_socket_2_left
+                name: "AppleTV US"
                 vertical: true
                 color: blue
             card_mod:

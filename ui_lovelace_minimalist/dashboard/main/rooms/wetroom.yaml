@@ -146,10 +146,18 @@ cards:
     name: Spots
     vertical: true
     # color: blue
-  - type: tile
+  - type: custom:stack-in-card
     view_layout:
       grid-area: fan
-    entity: switch.wetroom_extractor_boost
-    name: Extractor Boost
-    vertical: true
-    # color: blue
+    mode: horizontal
+    cards:
+      - type: tile
+        entity: switch.wetroom_extractor_low_speed
+        name: Extractor
+        vertical: true
+        # color: blue
+      - type: tile
+        entity: switch.wetroom_extractor_boost
+        name: Extractor Boost
+        vertical: true
+        # color: blue

@@ -9,10 +9,10 @@ layout:
   grid-template-columns: repeat(3, 1fr)
   grid-template-rows: repeat(4, fit-content(100%))
   grid-template-areas: |
-    "header   .        . "
+    "header   .             ."
     "outside  lounge        media"
     "kitchen  hall-landing  wetroom-office"
-    "mums     andys         .      "
+    "mums     andys         ."
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -107,7 +107,7 @@ cards:
           - type: tile
             entity: light.kitchen_floor_led
             vertical: true
-
+  # Lounge 
   - type: vertical-stack
     view_layout:
       grid-area: lounge
@@ -161,7 +161,7 @@ cards:
                   --ha-card-background: none;
                   box-shadow: none;
                 }
-
+  # Media Room
   - type: vertical-stack
     view_layout:
       grid-area: media
@@ -179,9 +179,10 @@ cards:
             vertical: true
           - type: tile
             entity: light.media_room_sideboard_lamps
+            name: "Sideboard Lamps"
             # color: amber
             vertical: true
-
+  # Hall
   - type: horizontal-stack
     view_layout:
       grid-area: hall-landing
@@ -206,7 +207,7 @@ cards:
             name: Spots
             color: amber
             vertical: true
-
+  # Wet Room
   - type: horizontal-stack
     view_layout:
       grid-area: wetroom-office
@@ -231,7 +232,7 @@ cards:
             name: Spots
             color: amber
             vertical: true
-
+  # Mums Bedroom
   - type: vertical-stack
     view_layout:
       grid-area: mums
@@ -249,7 +250,9 @@ cards:
             vertical: true
           - type: tile
             entity: light.mums_bedroom_lamp
+            name: "Lamp"
             vertical: true
+  # Andys Bedroom
   - type: vertical-stack
     view_layout:
       grid-area: andys

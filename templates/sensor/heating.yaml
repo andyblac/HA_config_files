@@ -42,23 +42,29 @@
         flame_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(8) %}on{% else %}off{% endif %}"
         cooling_status: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(16) %}on{% else %}off{% endif %}"
         diagnostic: "{% if state_attr('sensor.wiser_lts_boiler_flow_temperature','slave_status') | int(0) | bitwise_and(64) %}on{% else %}off{% endif %}"
-        max_flow_temp: "{{states('sensor.max_ch_setpoint_boiler_otgw')}}"
-        flow_temp: "{{states('sensor.ch_water_temp_boiler_otgw')}}"
+        Flow Temp: "{{states('sensor.ch_water_temp_boiler_otgw')}}"
         Delta T: "{{states('sensor.delta_t_temp_boiler_otgw')}}"
-        consumption: "{{states('sensor.boiler_relative_consumption')}}"
+        Modulation: "{{states('sensor.relative_mod_level_boiler_otgw')}}"
 
-    - name: "Boiler Relative Consumption"
-      unique_id: 42b65180-b37e-4e5d-8a62-748f6147c814
-      unit_of_measurement: "kW"
-      device_class: power
-      state: "{{ 30 * (states('sensor.relative_mod_level_boiler_otgw') | float(0) / 100)}}"
-      state_class: measurement
-      attributes:
-        Lounge: "{{ states('sensor.wiser_lts_heating_demand_lounge') }}%"
-        Media Room: "{{ states('sensor.wiser_lts_heating_demand_media_room') }}%"
-        Office: "{{ states('sensor.wiser_lts_heating_demand_office') }}%"
-        Andys Bedroom: "{{ states('sensor.wiser_lts_heating_demand_andys_bedroom') }}%"
-        Mums Bedroom: "{{ states('sensor.wiser_lts_heating_demand_mums_bedroom') }}%"
+    # - name: "Boiler Relative Consumption kW"
+    #   unique_id: 034b2f9e-23c5-4aad-a911-48233e9b55e8
+    #   unit_of_measurement: "kW"
+    #   device_class: power
+    #   state: >
+    #     {%- if states('sensor.relative_mod_level_boiler_otgw') | float(0) > 0 %}
+    #     {% set minimum = states('sensor.slave_max_capacity_boiler_otgw') | float(0) * states('sensor.slave_min_mod_level_boiler_otgw') | float(0) / 100 %}
+    #     {% set relative_max = states('sensor.slave_max_capacity_boiler_otgw') | float(0) - minimum %}
+    #     {{ relative_max * (states('sensor.relative_mod_level_boiler_otgw') | float(0) / 100) + minimum }}
+    #     {% else %}
+    #     0
+    #     {% endif %}
+    #   state_class: measurement
+    #   attributes:
+    #     Lounge: "{{ states('sensor.wiser_lts_heating_demand_lounge') }}%"
+    #     Media Room: "{{ states('sensor.wiser_lts_heating_demand_media_room') }}%"
+    #     Office: "{{ states('sensor.wiser_lts_heating_demand_office') }}%"
+    #     Andys Bedroom: "{{ states('sensor.wiser_lts_heating_demand_andys_bedroom') }}%"
+    #     Mums Bedroom: "{{ states('sensor.wiser_lts_heating_demand_mums_bedroom') }}%"
 
     - name: "delta_t_temp_boiler_otgw"
       unique_id: 9be77d21-344d-485e-96cc-d49b4d9e82f2
@@ -78,7 +84,6 @@
         {% else %}
           on
         {% endif %}
-      # state_class: measurement
       icon: >-
         {%- if this.state == 'on' -%}
           mdi:router-wireless-off

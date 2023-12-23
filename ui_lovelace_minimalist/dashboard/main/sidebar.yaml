@@ -125,6 +125,7 @@ cards:
         template:
           - custom_card_andyblac_status
         variables:
+          # ulm_custom_card_andyblac_status_color_on: rgb(255,0,0)
           button:
             popup_title: "Security"
             popup_content: !include popups/security.yaml
@@ -267,15 +268,15 @@ cards:
               padding-right: 0px !important;
             }
       - type: gauge
-        entity: sensor.boiler_relative_consumption
+        entity: sensor.relative_mod_level_boiler_otgw
         name: Boiler
         min: 0
-        max: 30
+        max: 100
         needle: false
         severity:
           green: 0
-          yellow: 15
-          red: 22
+          yellow: 50
+          red: 75
         card_mod:
           style: |
             ha-card {

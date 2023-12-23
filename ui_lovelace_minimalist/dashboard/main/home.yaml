@@ -125,7 +125,7 @@ cards:
     hold_action:
       action: "more-info"
     variables:
-      ulm_custom_card_andyblac_room_color: green
+      ulm_custom_card_andyblac_room_color: rgb(133, 173, 173)
       sensor_label_1: sensor.roller_door_temperature
       sensor_1:
         entity_id: binary_sensor.garage_door
@@ -202,7 +202,7 @@ cards:
       ulm_custom_card_andyblac_room_color: yellow
       sensor_label_1: sensor.wiser_lts_temperature_lounge
       sensor_label_2: sensor.wiser_lts_humidity_lounge
-      climate:
+      custom_2:
         entity_id: climate.wiser_lounge
       sensor_1:
         entity_id: binary_sensor.lounge_door_contact
@@ -243,7 +243,7 @@ cards:
       ulm_custom_card_andyblac_room_color: yellow
       sensor_label_1: sensor.wiser_lts_temperature_media_room
       sensor_label_2: sensor.wiser_lts_humidity_media_room
-      climate:
+      custom_2:
         entity_id: climate.wiser_media_room
       sensor_1:
         entity_id: binary_sensor.media_room_door_contact
@@ -329,7 +329,7 @@ cards:
       action: navigate
       navigation_path: wetroom
     variables:
-      ulm_custom_card_andyblac_room_color: blue
+      ulm_custom_card_andyblac_room_color: rgb(77, 195, 255)
       sensor_label_1: sensor.wetroom_sensor_temperature
       sensor_label_2: sensor.wetroom_sensor_humidity
       sensor_label_3: sensor.wetroom_humidity_derivative
@@ -342,7 +342,7 @@ cards:
         ulm_custom_card_andyblac_room_icon_color_on: amber
       entity_4:
         entity_id: switch.wetroom_extractor_boost
-        ulm_custom_card_andyblac_room_icon_color_on: blue
+        ulm_custom_card_andyblac_room_icon_color_on: rgb(77, 195, 255)
         templates:
           - fan_animation
 
@@ -358,9 +358,10 @@ cards:
       action: navigate
       navigation_path: office
     variables:
+      # ulm_custom_card_andyblac_room_color: rgb(245,90,49)
       sensor_label_1: sensor.wiser_lts_temperature_office
       sensor_label_2: sensor.wiser_lts_humidity_office
-      climate:
+      custom_2:
         entity_id: climate.wiser_office
       sensor_1:
         entity_id: binary_sensor.office_door_contact
@@ -372,12 +373,12 @@ cards:
           action: toggle
       sensor_6:
         entity_id: switch.office_socket_1_right
+        # ulm_custom_card_andyblac_room_sensor_color: rgba(245,90,49,0.4)
         tap_action:
           action: toggle
       entity_3:
         entity_id: light.office_dimmer
         ulm_custom_card_andyblac_room_icon_color_on: amber
-
 
   # Mums Bedroom
   - type: custom:button-card
@@ -394,7 +395,7 @@ cards:
       ulm_custom_card_andyblac_room_color: violet
       sensor_label_1: sensor.wiser_lts_temperature_mums_bedroom
       sensor_label_2: sensor.wiser_lts_humidity_mums_bedroom
-      climate:
+      custom_2:
         entity_id: climate.wiser_mums_bedroom
       sensor_1:
         entity_id: binary_sensor.mums_bedroom_door_contact
@@ -434,7 +435,7 @@ cards:
       ulm_custom_card_andyblac_room_color: violet
       sensor_label_1: sensor.wiser_lts_temperature_andys_bedroom
       sensor_label_2: sensor.wiser_lts_humidity_andys_bedroom
-      climate:
+      custom_2:
         entity_id: climate.wiser_andys_bedroom
       sensor_1:
         entity_id: binary_sensor.andys_bedroom_door_contact

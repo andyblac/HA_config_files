@@ -29,6 +29,19 @@ layout:
         "andys_stat   andys_stat "
         "mums_stat    mums_stat  "
         "schedule     schedule   "
+    #Tablet
+    "(max-width: 1024px)":
+      margin: 0
+      grid-gap: var(--custom-layout-card-padding)
+      grid-template-columns: repeat(3, 1fr)
+      grid-template-rows: auto
+      grid-template-areas: |
+        "header       . ."
+        "flowrates    flowrates   flowrates     "
+        "graphs       graphs      graphs        "
+        "lounge_stat  media_stat  office_stat   "
+        "mums_stat    andys_stat  ."
+        "schedule     schedule    schedule      "
 
 cards:
   - type: "custom:button-card"

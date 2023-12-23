@@ -1,3 +1,11 @@
+# - platform: integration
+#   name: Boiler Relative Consumption Energy
+#   unique_id: e3ed64a9-9309-4fd0-ae94-4f71959d1167
+#   source: sensor.boiler_relative_consumption_kw
+#   # unit_prefix: k
+#   round: 3
+
+
 - platform: integration
   name: Lounge Sockets 1 Left energy
   unique_id: c3b3fd9c-03c0-46a7-9bf4-ceeeb0d01efb
