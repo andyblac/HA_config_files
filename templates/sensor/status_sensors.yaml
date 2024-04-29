@@ -11,12 +11,12 @@
           {%- endif -%}
         entities: >
           {%- from 'tools.jinja' import list_entities -%}
-          {{ list_entities(states.light,exclude_area='groups',state='on') }}
+          {{ list_entities(states.light,exclude_label='Light Group',state='on') }}
         count: >
           {%- from 'tools.jinja' import count_entities -%}
           {%- set ns = namespace(entities=[]) -%}
           {%- for s in states.light | map(attribute='entity_id') | map('area_name') | unique | reject('none') | list -%}
-            {%- set ns.entities = ns.entities + [ (s, count_entities(states.light,state='on',area=s,exclude_area='groups') | from_json )] -%}
+            {%- set ns.entities = ns.entities + [ (s, count_entities(states.light,state='on',area=s,exclude_label='Light Group') | from_json )] -%}
           {%- endfor -%}
           {{ dict.from_keys(ns.entities) }}
       state: "{{ this.attributes.entities | count }}"
