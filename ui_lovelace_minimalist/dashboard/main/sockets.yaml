@@ -11,8 +11,8 @@ layout:
   grid-template-areas: |
     "header   header   header"
     "kitchen  lounge   media"
-    "hall     office   andys"
     "hall     office   mums"
+    "andys    office   mums"
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -144,6 +144,14 @@ cards:
                   --ha-card-background: none;
                   box-shadow: none;
                 }
+          - type: custom:stack-in-card
+            mode: horizontal
+            cards:
+              - type: tile
+                entity: switch.kitchen_smart_plug_outlet
+                name: "Smart Plug"
+                vertical: true
+                color: blue
 
   # Lounge
   - type: vertical-stack
@@ -160,17 +168,17 @@ cards:
             mode: horizontal
             cards:
               - type: tile
-                entity: switch.lounge_socket_1_left
+                entity: switch.lounge_sockets_1_left
                 name: "TV Power"
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.lounge_socket_1_right
+                entity: switch.lounge_sockets_1_right
                 name: "AppleTV UK"
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.lounge_socket_2_left
+                entity: switch.lounge_sockets_2_left
                 name: "AppleTV US"
                 vertical: true
                 color: blue
@@ -184,17 +192,18 @@ cards:
             mode: horizontal
             cards:
               - type: tile
-                entity: switch.lounge_socket_2_right
+                entity: switch.lounge_sockets_2_right
                 name: Socket 2 Right
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.lounge_socket_3_left
+                entity: switch.lounge_sockets_3_left
+                name: Socket 3 Left
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.lounge_socket_4_right
-                name: Socket 4 Right
+                entity: switch.lounge_sockets_4_left
+                name: Iron
                 vertical: true
                 color: blue
             card_mod:
@@ -207,8 +216,8 @@ cards:
             mode: horizontal
             cards:
               - type: tile
-                entity: switch.lounge_socket_5_left
-                name: Socket 5 Left
+                entity: switch.lounge_sockets_5_right
+                name: Socket 5 Right
                 vertical: true
                 color: blue
               - type: tile
@@ -237,7 +246,7 @@ cards:
                 color: blue
               - type: tile
                 entity: switch.lounge_extension_socket_4
-                name: Iron
+                name: Cushion
                 vertical: true
                 color: blue
               - type: tile
@@ -245,12 +254,6 @@ cards:
                 name: USB
                 vertical: true
                 color: blue
-            card_mod:
-              style: |
-                ha-card {
-                  --ha-card-background: none;
-                  box-shadow: none;
-                }
 
   # Media Room
   - type: vertical-stack
@@ -304,12 +307,12 @@ cards:
             cards:
               - type: tile
                 entity: switch.media_room_sockets_1_left
-                name: Socket 1 Left
+                name: Subwoofer
                 vertical: true
                 color: blue
               - type: tile
                 entity: switch.media_room_sockets_1_right
-                name: Subwoffer
+                name: Socket 1 Right
                 vertical: true
                 color: blue
               - type: tile
@@ -335,12 +338,6 @@ cards:
                 content: " "
               - type: markdown
                 content: " "
-            card_mod:
-              style: |
-                ha-card {
-                  --ha-card-background: none;
-                  box-shadow: none;
-                }
 
   # Hall
   - type: vertical-stack
@@ -378,17 +375,17 @@ cards:
             mode: horizontal
             cards:
               - type: tile
-                entity: switch.office_socket_1_left
+                entity: switch.office_sockets_1_left
                 name: Socket 1 Left
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.office_socket_1_right
+                entity: switch.office_sockets_1_right
                 name: Socket 1 Right
                 vertical: true
                 color: blue
               - type: tile
-                entity: switch.office_socket_2_left
+                entity: switch.office_sockets_2_left
                 name: Socket 2 Left
                 vertical: true
                 color: blue
@@ -402,20 +399,10 @@ cards:
             mode: horizontal
             cards:
               - type: tile
-                entity: switch.office_socket_2_right
+                entity: switch.office_sockets_2_right
                 name: Socket 2 Right
                 vertical: true
                 color: blue
-              - type: markdown
-                content: " "
-              - type: markdown
-                content: " "
-            card_mod:
-              style: |
-                ha-card {
-                  --ha-card-background: none;
-                  box-shadow: none;
-                }
 
   # Andys Bedroom
   - type: vertical-stack
@@ -454,20 +441,31 @@ cards:
             template: card_title
             name: Mums Bedroom
           - type: custom:stack-in-card
-            mode: horizontal
+            mode: vertical
             cards:
-              - type: tile
-                entity: switch.mums_bedroom_sockets_left
-                name: Hair Dryer
-                vertical: true
-                color: blue
-              - type: tile
-                entity: switch.mums_bedroom_sockets_right
-                name: Hair Curlers
-                vertical: true
-                color: blue
-              - type: tile
-                entity: switch.mums_bedroom_blanket
-                name: Blanket
-                vertical: true
-                color: blue
+              - type: custom:stack-in-card
+                mode: horizontal
+                cards:
+                  - type: tile
+                    entity: switch.mums_bedroom_sockets_2_left
+                    name: Mattress
+                    vertical: true
+                    color: blue
+                  - type: tile
+                    entity: switch.mums_bedroom_sockets_2_right
+                    name: Bed
+                    vertical: true
+                    color: blue
+                  - type: tile
+                    entity: switch.mums_bedroom_sockets_3_left
+                    name: Hair Dryer
+                    vertical: true
+                    color: blue
+              - type: custom:stack-in-card
+                mode: horizontal
+                cards:
+                  - type: tile
+                    entity: switch.mums_bedroom_sockets_3_right
+                    name: Hair Curlers
+                    vertical: true
+                    color: blue

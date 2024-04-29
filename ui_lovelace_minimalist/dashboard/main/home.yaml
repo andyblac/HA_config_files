@@ -6,7 +6,7 @@ layout:
   #default
   margin: 0
   grid-gap: var(--custom-layout-card-padding)
-  grid-template-columns: 30.4% repeat(4, 1fr)
+  grid-template-columns: 30.4% auto auto auto auto
   grid-template-rows: repeat(3, fit-content(100%))
   grid-template-areas: |
     "sidebar  room1   room2   room3   room4  "
@@ -18,7 +18,7 @@ layout:
     #phone
     "(max-width: 767px)":
       grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
-      grid-template-columns: repeat(2, 1fr)
+      grid-template-columns: auto auto
       grid-template-rows: repeat(7, fit-content(100%))
       grid-template-areas: |
         "sidebar  sidebar "
@@ -29,10 +29,10 @@ layout:
         "room9    room10  "
         "room11   room12  "
     #Tablet
-    "(max-width: 1024px)":
+    "(max-width: 1200px)":
       margin: 0
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: 40% repeat(3, 1fr)
+      grid-template-columns: 37.6% auto auto auto
       grid-template-rows: repeat(4, fit-content(80%))
       grid-template-areas: |
         "sidebar  room1   room2   room3  "
@@ -62,14 +62,14 @@ cards:
       sensor_label_3: sensor.front_garden_motion_sensor_illuminance_lux
       sensor_1:
         entity_id: binary_sensor.front_door
-      # sensor_2:
-      #   entity_id: switch.front_garden_water_control
-      #   templates:
-      #     - sprinkler_animation
-      sensor_3:
+      sensor_2:
         entity_id: binary_sensor.front_garden_motion_sensor_occupancy
         templates:
           - motion_animation
+      # sensor_3:
+      #   entity_id: switch.front_garden_water_control
+      #   templates:
+      #     - sprinkler_animation
       entity_3:
         entity_id: light.front_garden_light
         ulm_custom_card_andyblac_room_use_light_color: true
@@ -94,20 +94,20 @@ cards:
       sensor_label_3: sensor.back_garden_motion_sensor_illuminance_lux
       sensor_1:
         entity_id: binary_sensor.back_door
-      # sensor_2:
-      #   entity_id: switch.back_garden_water_control
-      #   templates:
-      #     - sprinkler_animation
-      sensor_3:
+      sensor_2:
         entity_id: binary_sensor.back_garden_motion_sensor_occupancy
         templates:
           - motion_animation
+      # sensor_3:
+      #   entity_id: switch.back_garden_water_control
+      #   templates:
+      #     - sprinkler_animation
       entity_3:
         entity_id: light.garage_wall_light
         ulm_custom_card_andyblac_room_use_light_color: true
-      # entity_4:
-      #   entity_id: light.back_garden_raised_bed_led
-      #   ulm_custom_card_andyblac_room_use_light_color: true
+      entity_4:
+        entity_id: light.back_garden_neon_rope
+        ulm_custom_card_andyblac_room_use_light_color: true
 
   # Garage
   - type: custom:button-card
@@ -118,7 +118,7 @@ cards:
       - garage-door_animation
     name: Garage
     # icon: mdi:garage
-    entity: cover.roller_door
+    entity: binary_sensor.garage_roller_door_contact
     tap_action:
       action: navigate
       navigation_path: garage
@@ -126,15 +126,15 @@ cards:
       action: "more-info"
     variables:
       ulm_custom_card_andyblac_room_color: rgb(133, 173, 173)
-      sensor_label_1: sensor.roller_door_temperature
+      # sensor_label_1: sensor.roller_door_temperature
       sensor_1:
         entity_id: binary_sensor.garage_door
       sensor_2:
-        entity_id: cover.roller_door
-      sensor_3:
         entity_id: binary_sensor.garage_motion_sensor_occupancy
         templates:
           - motion_animation
+      sensor_3:
+        entity_id: cover.garge_roller_door
       entity_3:
         entity_id: light.garage_lights
         ulm_custom_card_andyblac_room_icon_color_on: amber
@@ -153,17 +153,17 @@ cards:
       navigation_path: kitchen
     variables:
       ulm_custom_card_andyblac_room_color: red
-      sensor_label_1: sensor.kitchen_motion_sensor_device_temperature
+      sensor_label_1: sensor.kitchen_govee_thermostat_temperature
       sensor_label_2: sensor.kitchen_fridge_temperature
       sensor_label_3: sensor.kitchen_freezer_temperature
       sensor_1:
         entity_id: binary_sensor.kitchen_door_contact
       sensor_2:
-        entity_id: cover.kitchen_window_shade
-      sensor_3:
         entity_id: binary_sensor.kitchen_motion_sensor_occupancy
         templates:
           - motion_animation
+      sensor_3:
+        entity_id: cover.kitchen_window_shade
       sensor_4:
         entity_id: switch.kitchen_sockets_2_left
         tap_action:
@@ -207,13 +207,15 @@ cards:
       sensor_1:
         entity_id: binary_sensor.lounge_door_contact
       sensor_2:
-        entity_id: cover.lounge_window_shade
-      sensor_3:
-        entity_id: cover.lounge_patio_window_shade
-      sensor_4:
         entity_id: binary_sensor.lounge_motion_sensor_occupancy
         templates:
           - motion_animation
+      sensor_3:
+        entity_id: cover.lounge_window_shade
+      sensor_4:
+        entity_id: cover.lounge_patio_window_shade
+      sensor_5:
+        entity_id: switch.lounge_extension_socket_4
       sensor_6:
         entity_id: media_player.lounge_tv
         tap_action:
@@ -248,13 +250,13 @@ cards:
       sensor_1:
         entity_id: binary_sensor.media_room_door_contact
       sensor_2:
-        entity_id: cover.media_room_window_shade
-      sensor_3:
         entity_id: binary_sensor.media_room_motion_sensor_occupancy
         templates:
           - motion_animation
+      sensor_3:
+        entity_id: cover.media_room_window_shade
       sensor_5:
-        entity_id: switch.media_room_sockets_1_right
+        entity_id: switch.media_room_sockets_1_left
         tap_action:
           action: toggle
       sensor_6:
@@ -308,6 +310,7 @@ cards:
     variables:
       ulm_custom_card_andyblac_room_color: blue
       sensor_label_1: sensor.landing_motion_sensor_device_temperature
+      sensor_label_2: sensor.gas_sensor_gas_concentration
       sensor_2:
         entity_id: binary_sensor.landing_motion_sensor_occupancy
         templates:
@@ -368,11 +371,11 @@ cards:
       sensor_2:
         entity_id: cover.office_window_shade
       sensor_5:
-        entity_id: switch.office_socket_1_left
+        entity_id: switch.office_sockets_1_left
         tap_action:
           action: toggle
       sensor_6:
-        entity_id: switch.office_socket_1_right
+        entity_id: switch.office_sockets_1_right
         # ulm_custom_card_andyblac_room_sensor_color: rgba(245,90,49,0.4)
         tap_action:
           action: toggle
@@ -401,16 +404,12 @@ cards:
         entity_id: binary_sensor.mums_bedroom_door_contact
       sensor_2:
         entity_id: cover.mums_bedroom_window_shade
-      sensor_4:
-        entity_id: switch.mums_bedroom_blanket
-        tap_action:
-          action: toggle
       sensor_5:
-        entity_id: switch.mums_bedroom_sockets_left
+        entity_id: switch.mums_bedroom_sockets_2_left
         tap_action:
           action: toggle
       sensor_6:
-        entity_id: switch.mums_bedroom_sockets_right
+        entity_id: switch.mums_bedroom_sockets_2_right
         tap_action:
           action: toggle
       entity_3:

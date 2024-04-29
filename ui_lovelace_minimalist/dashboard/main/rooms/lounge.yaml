@@ -61,12 +61,12 @@ cards:
     color: blue
   - type: tile
     view_layout:
-      grid-area: scene2
+      grid-area: scene3
     entity: scene.it_s_too_bright
     color: blue
   - type: tile
     view_layout:
-      grid-area: scene3
+      grid-area: scene4
     entity: scene.patio_sun
     color: blue
 
@@ -154,34 +154,43 @@ cards:
           height: 235px !important;
         }
 
-  - type: tile
+  # - type: tile
+  #   view_layout:
+  #     grid-area: shade1
+  #   entity: cover.lounge_window_shade
+  #   name: Window Shade
+  #   icon: mdi:roller-shade
+  #   vertical: true
+  #   features:
+  #     - type: cover-open-close
+  #   # card_mod:
+  #   #   style: |
+  #   #     ha-card {
+  #   #       height: 150px !important;
+  #   #     }
+  - type: "custom:button-card"
     view_layout:
       grid-area: shade1
+    template: card_cover
     entity: cover.lounge_window_shade
-    name: Window Shade
-    icon: mdi:roller-shade
-    vertical: true
-    features:
-      - type: cover-open-close
-    # card_mod:
-    #   style: |
-    #     ha-card {
-    #       height: 150px !important;
-    #     }
-  - type: tile
+    variables:
+      ulm_card_cover_name: Window Shade
+      ulm_card_cover_enable_controls: true
+      ulm_card_cover_enable_slider: true
+      ulm_card_cover_favorite_percentage: 45
+      ulm_card_cover_color: "violet"
+  - type: "custom:button-card"
     view_layout:
       grid-area: shade2
+    template: card_cover
     entity: cover.lounge_patio_window_shade
-    name: Patio Shade
-    icon: mdi:roller-shade
-    vertical: true
-    features:
-      - type: cover-open-close
-    # card_mod:
-    #   style: |
-    #     ha-card {
-    #       height: 150px !important;
-    #     }
+    variables:
+      ulm_card_cover_name: Patio Window Shade
+      ulm_card_cover_enable_controls: true
+      ulm_card_cover_enable_slider: true
+      ulm_card_cover_favorite_percentage: 65
+      ulm_card_cover_enable_popup: true
+      ulm_card_cover_color: "violet"
 
   - type: custom:mushroom-media-player-card
     view_layout:
@@ -278,48 +287,49 @@ cards:
             view_layout:
               grid-area: socket1
             name: TV Power
-            entity: switch.lounge_socket_1_left
+            entity: switch.lounge_sockets_1_left
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket2
             name: AppleTV UK
-            entity: switch.lounge_socket_1_right
+            entity: switch.lounge_sockets_1_right
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket3
             name: AppleTV US
-            entity: switch.lounge_socket_2_left
+            entity: switch.lounge_sockets_2_left
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket4
             name: Socket 2 Right
-            entity: switch.lounge_socket_2_right
+            entity: switch.lounge_sockets_2_right
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket5
-            entity: switch.lounge_socket_3_left
+            name: Socket 3 Left
+            entity: switch.lounge_sockets_3_left
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket6
-            name: Socket 4 Right
-            entity: switch.lounge_socket_4_right
+            name: Iron
+            entity: switch.lounge_sockets_4_left
             vertical: true
             color: blue
           - type: tile
             view_layout:
               grid-area: socket7
-            name: Socket 5 Left
-            entity: switch.lounge_socket_5_left
+            name: Socket 5 Right
+            entity: switch.lounge_sockets_5_right
             vertical: true
             color: blue
           - type: tile
@@ -347,7 +357,7 @@ cards:
             view_layout:
               grid-area: socket11
             entity: switch.lounge_extension_socket_4
-            name: Iron
+            name: Cushion
             vertical: true
             color: blue
           - type: tile

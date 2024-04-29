@@ -34,6 +34,7 @@ minimalist-desktop-andy:
     light:
       # text
       primary-text-color: "#212121"
+      text-accent-color: "var(--primary-text-color)"
       # main interface colors
       primary-color: "#434343"
       google-red: "#F54436"
@@ -96,11 +97,12 @@ minimalist-desktop-andy:
     dark:
       # text
       primary-text-color: "#DDDDDD"
+      text-accent-color: "#000000"
       # main interface colors
       primary-color: "#89B3F8"
       google-red: "#F18B82"
       google-green: "#80C994"
-      google-yellow: "#FCD663"
+      google-yellow: "#FF9101"
       google-blue: "#89B3F8"
       google-violet: "#BB86FC"
       google-grey: "#BBBBBB"

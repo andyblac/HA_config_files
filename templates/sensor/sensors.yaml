@@ -1,22 +1,27 @@
 - sensor:
-  - name: "Outside temperature"
-    unique_id: 1d3c16e2-3804-4d96-b59d-262055389ad9
-    unit_of_measurement: "°C"
-    device_class: temperature
-    state: "{{ states('sensor.high_croft_temperature')|default('unknown') }}"
-    state_class: measurement
+    - name: "Outside temperature"
+      unique_id: 1d3c16e2-3804-4d96-b59d-262055389ad9
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state: "{{ states('sensor.high_croft_temperature')|default('0') }}"
+      state_class: measurement
 
-  - name: Cleaner Day
-    unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23
-    icon: mdi:vacuum
-    state: "{{ 'on' if (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) < 1 else 'off' }}"
-    attributes:
-      DaysTo: "{{ ((state_attr('calendar.cleaner','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
-      HoursTo: "{{ (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) }}"
+    - name: Cleaner Day
+      unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23
+      icon: mdi:vacuum
+      # unit_of_measurement: "d"
+      # state_class: measurement
+      state: "{{ 'on' if (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) < 1 else 'off' }}"
+      attributes:
+        DaysTo: "{{ ((state_attr('calendar.cleaner','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
+        HoursTo: "{{ (state_attr('calendar.cleaner','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) }}"
 
-  - name: Shower Day
-    unique_id: 264d5d51-19db-4502-8d20-5bfac2970d6a
-    state: "{{ 'on' if ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int == 0 else 'off' }}"
-    icon: mdi:shower-head
-    attributes:
-      DaysTo: "{{ ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
+    - name: Shower Day
+      unique_id: 264d5d51-19db-4502-8d20-5bfac2970d6a
+      # unit_of_measurement: "d"
+      # state_class: measurement
+      state: "{{ 'on' if (state_attr('calendar.showers','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) < 1 else 'off' }}"
+      icon: mdi:shower-head
+      attributes:
+        DaysTo: "{{ ((state_attr('calendar.showers','start_time') | as_timestamp - today_at ('00:00') | as_timestamp) / 86400) | int }}"
+        HoursTo: "{{ (state_attr('calendar.showers','start_time') | as_timestamp / 3600 - now() | as_timestamp / 3600) }}"

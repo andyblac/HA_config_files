@@ -19,14 +19,9 @@ cards:
             entity: binary_sensor.back_garden_motion_sensor_occupancy
             tap_action:
               action: more-info
-          - type: entity
-            entity: sensor.back_garden_motion_sensor_temperature
-            tap_action:
-              action: more-info
-          - type: entity
-            entity: sensor.back_garden_motion_sensor_illuminance_lux
-            tap_action:
-              action: more-info
+          - type: template
+            icon: mdi:lightbulb
+            content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Back Garden'] }}"
 
       - type: custom:tabbed-card
         tabs:
@@ -49,13 +44,22 @@ cards:
                 - entity: sensor.back_garden_soil_sensor_humidity
                   name: Humidity
                   color: "#03a9f4"
+          - attributes:
+              label: Lux
+            card:
+              type: custom:mini-graph-card
+              points_per_hour: 2
+              entities:
+                - entity: sensor.back_garden_motion_sensor_illuminance_lux
+                  name: Humidity
+                  color: "#33cc33"
       - type: horizontal-stack
         cards:
           - type: tile
             entity: light.garage_wall_light
             vertical: true
           - type: tile
-            entity: light.back_garden_raised_bed_led
+            entity: light.back_garden_neon_rope
             vertical: true
       - type: tile
         name: Sprinkler

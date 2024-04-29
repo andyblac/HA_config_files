@@ -24,7 +24,7 @@
         navigation: heating
         label: >
           {%- if this.state in ['high','med','low'] -%}
-          {{states('sensor.wiser_lts_heating_demand_channel_1')}}% - {{states('sensor.ch_water_temp_boiler_otgw')}}˚C
+          {{states('sensor.wiser_lts_heating_demand_channel_1')}}% - {{states('sensor.ch_water_temp_boiler_otgw')|round(2)}}˚C
           {%- else -%}
           Off
           {%- endif -%}

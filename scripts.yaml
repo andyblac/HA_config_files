@@ -36,3 +36,29 @@ fan_control:
         entity_id: switch.wetroom_extractor_boost
   mode: single
   icon: mdi:fan
+'1706177885902':
+  alias: Garage Wall Light Off
+  sequence:
+  - if:
+    - condition: and
+      conditions:
+      - condition: sun
+        after: sunset
+      - condition: time
+        before: '21:30:00'
+      - condition: time
+        after: '16:00:00'
+    then:
+    - service: scene.turn_on
+      metadata: {}
+      target:
+        entity_id: scene.back_garden_sesnor_light_off
+    else:
+    - service: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - light.garage_wall_light
+        - light.back_garden_neon_rope
+  mode: single

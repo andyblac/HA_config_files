@@ -2,5 +2,19 @@ sensor.outside_temp_thermostat_otgw:
   state_class: measurement
 sensor.ch_water_temp_boiler_otgw:
   state_class: measurement
+sensor.return_water_temp_boiler_otgw:
+  state_class: measurement
 sensor.relative_mod_level_boiler_otgw:
+  state_class: measurement
+sensor.slave_min_mod_level_boiler_otgw:
+  state_class: measurement
+sensor.exhaust_temp_boiler_otgw:
+  state_class: measurement
+sensor.slave_dhw_max_setp_boiler_otgw:
+  state_class: measurement
+sensor.dhw_setpoint_boiler_otgw:
+  state_class: measurement
+sensor.dhw_temp_boiler_otgw:
+  state_class: measurement
+sensor.dhw_flow_rate_boiler_otgw:
   state_class: measurement

@@ -8,11 +8,12 @@ layout:
   grid-template-columns: repeat(4, 1fr)
   grid-template-rows: repeat(5, fit-content(100%))
   grid-template-areas: |
-    "header      header      .           .        "
-    "scene1      fridge_d    freezer_d   scene4   "
-    "fridge      fridge      freezer     freezer  "
-    "shade       lights      sockets     sockets  "
-    ".           .           sockets     sockets  "
+    "header   header    .          .        "
+    "scene1   fridge_d  freezer_d  scene4   "
+    "graphs   graphs    graphs     graphs   "
+    "fridge   fridge    freezer    freezer  "
+    "shade    lights    sockets    sockets  "
+    ".        .         sockets    sockets  "
   mediaquery:
     #phone
     "(max-width: 800px)":
@@ -23,6 +24,7 @@ layout:
         "header       header     "
         "scene1       scene2     "
         "fridge_d     freezer_d  "
+        "graphs       graphs   "
         "fridge       fridge     "
         "freezer      freezer    "
         "shade        shade      "
@@ -35,8 +37,6 @@ cards:
       grid-area: header
     chips:
       - type: back
-      - type: entity
-        entity: sensor.kitchen_motion_sensor_device_temperature
       - type: template
         entity: binary_sensor.kitchen_motion_sensor_occupancy
         icon: mdi:motion-sensor
@@ -51,12 +51,11 @@ cards:
         icon: mdi:lightbulb
         content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Kitchen'] }}"
 
-  - type: custom:mushroom-entity-card
+  - type: tile
     view_layout:
       grid-area: scene1
     entity: scene.tea_time
-    tap_action:
-      action: toggle
+    color: blue
   - type: tile
     view_layout:
       grid-area: fridge_d
@@ -69,6 +68,71 @@ cards:
     entity: binary_sensor.kitchen_freezer_contact
     vertical: false
     name: Freezer Door
+
+  - type: custom:tabbed-card # iPhone
+    view_layout:
+      grid-area: graphs
+      show:
+        mediaquery: "(max-width: 767px)"
+    tabs:
+      - attributes:
+          label: Temperature
+        card:
+          type: custom:mini-graph-card
+          points_per_hour: 2
+          entities:
+            - entity: sensor.kitchen_govee_thermostat_temperature
+              name: Temperature
+          color_thresholds:
+            - value: 16
+              color: "#3399ff"
+            - value: 18
+              color: "#f39c12"
+            - value: 20
+              color: "#d35400"
+            - value: 21
+              color: "#c0392b"
+      - attributes:
+          label: Humidity
+        card:
+          type: custom:mini-graph-card
+          points_per_hour: 2
+          # lower_bound: 0
+          # upper_bound: 100
+          entities:
+            - entity: sensor.kitchen_govee_thermostat_humidity
+              name: Humidity
+              color: "#03a9f4"
+  - type: horizontal-stack # Desktop / Tablet
+    view_layout:
+      grid-area: graphs
+      show:
+        mediaquery: "(min-width: 768px)"
+    cards:
+      - type: custom:mini-graph-card
+        line_width: 2
+        points_per_hour: 4
+        entities:
+          - entity: sensor.kitchen_govee_thermostat_temperature
+            name: Temperature
+        color_thresholds:
+          - value: 16
+            color: "#3399ff"
+          - value: 18
+            color: "#f39c12"
+          - value: 20
+            color: "#d35400"
+          - value: 21
+            color: "#c0392b"
+      - type: custom:mini-graph-card
+        line_width: 2
+        points_per_hour: 2
+        # lower_bound: 0
+        # upper_bound: 100
+        entities:
+          - entity: sensor.kitchen_govee_thermostat_humidity
+            name: Humidity
+            color: "#03a9f4"
 
   - type: custom:tabbed-card
     view_layout:
@@ -166,10 +230,11 @@ cards:
         vertical: true
       - type: tile
         entity: light.kitchen_cabinets
-        name: Cabinets
+        name: Cabinets LED's
         vertical: true
       - type: tile
         entity: light.kitchen_floor_led
+        name: Floor LED
         vertical: true
 
   - type: custom:stack-in-card
@@ -185,7 +250,7 @@ cards:
           grid-template-rows: auto
           grid-template-areas: |
             "socket1  socket2  socket3  socket4  socket5"
-            "socket6  socket7  socket8  socket9  ."
+            "socket6  socket7  socket8  socket9  socket10"
           mediaquery:
             #phone
             "(max-width: 800px)":
@@ -196,6 +261,7 @@ cards:
                 "socket1  socket2  socket3"
                 "socket4  socket5  socket6"
                 "socket7  socket8  socket9"
+                "socket10 .        ."
         cards:
           - type: tile
             view_layout:
@@ -258,5 +324,12 @@ cards:
               grid-area: socket9
             entity: switch.kitchen_washing_machine_socket
             name: "Washing Machine"
+            vertical: true
+            color: blue
+          - type: tile
+            view_layout:
+              grid-area: socket10
+            entity: switch.kitchen_smart_plug_outlet
+            name: "Smart Plug"
             vertical: true
             color: blue

@@ -28,17 +28,6 @@ cards:
       grid-area: header
     chips:
       - type: back
-      - type: entity
-        entity: sensor.wetroom_sensor_temperature
-        action: more-info
-      - type: entity
-        entity: sensor.wetroom_sensor_humidity
-        tap_action:
-          action: more-info
-      - type: entity
-        entity: sensor.wetroom_humidity_derivative
-        tap_action:
-          action: more-info
 
   - type: conditional
     view_layout:

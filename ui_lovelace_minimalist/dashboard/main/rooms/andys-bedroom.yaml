@@ -112,13 +112,14 @@ cards:
       - type: cover-open-close
 
 
-  - type: custom:mushroom-light-card
+  - type: tile
     view_layout:
       grid-area: lights
     entity: light.andys_bedroom_lights
+    name: Spots
+    icon: mdi:ceiling-light
     icon_color: amber
     # layout: vertical
-    name: Spots
     # show_brightness_control: true
 
 

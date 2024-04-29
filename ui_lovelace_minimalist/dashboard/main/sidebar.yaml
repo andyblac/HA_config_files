@@ -8,7 +8,7 @@ cards:
       - type: conditional
         conditions:
           - condition: screen
-            media_query: '(max-width: 767px)'
+            media_query: "(max-width: 767px)"
         card:
           type: custom:clock-weather-card
           entity: weather.high_croft_daily
@@ -17,6 +17,7 @@ cards:
           animated_icon: true
           hide_forecast_section: true
           use_browser_time: true
+          show_decimal: true
           card_mod:
             style: |
               .card-content {
@@ -26,7 +27,7 @@ cards:
       - type: conditional
         conditions:
           - condition: screen
-            media_query: '(min-width: 768px)'
+            media_query: "(min-width: 780px)"
         card:
           type: custom:clock-weather-card
           entity: weather.high_croft_daily
@@ -35,17 +36,19 @@ cards:
           animated_icon: true
           hide_forecast_section: true
           use_browser_time: true
+          show_decimal: true
           card_mod:
             style: |
               .card-content {
                 margin-top: -10px !important;
+                margin-bottom: -15px !important;
                 padding-top: 0px !important;
                 padding-bottom: 0px !important;
               }
       - type: conditional
         conditions:
           - condition: screen
-            media_query: '(min-width: 1200px)'
+            media_query: "(min-width: 1200px)"
         card:
           type: custom:hourly-weather
           entity: weather.high_croft
@@ -53,22 +56,20 @@ cards:
           label_spacing: 1
           # offset: "{{ 24 - now().hour }}"
           name: "" # optional, defaults to "Hourly Weather"
-          # show_wind: true
+          show_wind: true
           show_precipitation_amounts: true
           show_precipitation_probability: true
           card_mod:
             style: |
-              ha-card {
-                height: 140px !important;
-              }
               .card-content {
+                margin-bottom: 0px !important;
                 padding-top: 0px !important;
                 padding-bottom: 0px !important;
               }
       - type: conditional
         conditions:
           - condition: screen
-            media_query: '(min-width: 1024px)'
+            media_query: "(min-width: 1024px)"
         card:
           type: custom:clock-weather-card
           entity: weather.high_croft_daily
@@ -83,16 +84,32 @@ cards:
                 padding-bottom: 0px !important;
               }
 
-  - type: horizontal-stack
+  - type: custom:stack-in-card
+    mode: horizontal
     cards:
       - type: custom:button-card
-        template: custom_card_andyblac_scene
+        template: custom_card_andyblac_scene_icon_only
         entity: scene.good_morning
         variables:
           ulm_custom_card_andyblac_scene_color: yellow
       - type: custom:button-card
-        template: custom_card_andyblac_scene
+        template: custom_card_andyblac_scene_icon_only
         entity: scene.evening
+        variables:
+          ulm_custom_card_andyblac_scene_color: orange
+      - type: custom:button-card
+        template: custom_card_andyblac_scene_icon_only
+        entity: scene.good_night
+        variables:
+          ulm_custom_card_andyblac_scene_color: blue
+      - type: custom:button-card
+        template: custom_card_andyblac_scene_icon_only
+        entity: scene.carer
+        variables:
+          ulm_custom_card_andyblac_scene_color: yellow
+      - type: custom:button-card
+        template: custom_card_andyblac_scene_icon_only
+        entity: scene.carers_left
         variables:
           ulm_custom_card_andyblac_scene_color: blue
 
@@ -103,7 +120,7 @@ cards:
         entity: person.andrew_blackburn
         variables:
           ulm_card_person_use_entity_picture: true
-          ulm_address: sensor.andys_iphone_icloudv3_zone_name
+          ulm_address: device_tracker.andys_iphone_icloudv3
           ulm_card_person_eta: sensor.andys_iphone_icloudv3_zone_distance
           battery:
             entity_id: sensor.andys_iphone_icloudv3_battery
@@ -113,7 +130,7 @@ cards:
         variables:
           ulm_card_person_use_entity_picture: true
           ulm_card_person_icon: mdi:face-woman
-          ulm_address: sensor.christines_iphone_icloudv3_zone_name
+          ulm_address: device_tracker.christines_iphone_icloudv3
           ulm_card_person_eta: sensor.christines_iphone_icloudv3_zone_distance
           battery:
             entity_id: sensor.christines_iphone_icloudv3_battery
@@ -126,6 +143,11 @@ cards:
           - custom_card_andyblac_status
         variables:
           # ulm_custom_card_andyblac_status_color_on: rgb(255,0,0)
+          # ulm_custom_card_andyblac_status_color_low_value: 50
+          # ulm_custom_card_andyblac_status_color_high_value: 200
+          # ulm_custom_card_andyblac_status_color_state_1_value: "garage_armed"
+          # ulm_custom_card_andyblac_status_color_state_2_value: "fully_armed"
+          # ulm_custom_card_andyblac_status_color_state_3_value: "door_open"
           button:
             popup_title: "Security"
             popup_content: !include popups/security.yaml
@@ -247,6 +269,12 @@ cards:
           - custom_card_andyblac_count_info
         variables:
           ulm_custom_card_andyblac_count_info_color_on: green
+          # ulm_custom_card_andyblac_status_color_on: rgb(255,0,0)
+          # ulm_custom_card_andyblac_status_color_low_value: 50
+          # ulm_custom_card_andyblac_status_color_high_value: 200
+          # ulm_custom_card_andyblac_status_color_state_1_value: "garage_armed"
+          # ulm_custom_card_andyblac_status_color_state_2_value: "fully_armed"
+          # ulm_custom_card_andyblac_status_color_state_3_value: "door_open"
 
   - type: custom:stack-in-card
     mode: horizontal
@@ -307,7 +335,7 @@ cards:
         needle: false
         severity:
           green: 0
-          yellow: 50
+          yellow: 34
           red: 70
         card_mod:
           style: |
@@ -315,4 +343,3 @@ cards:
               padding-left: 0px !important;
               padding-right: 0px !important;
             }
-

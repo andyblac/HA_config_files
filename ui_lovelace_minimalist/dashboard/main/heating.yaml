@@ -9,7 +9,7 @@ layout:
   grid-template-columns: repeat(5, 1fr)
   grid-template-rows: repeat(4, fit-content(100%))
   grid-template-areas: |
-    "header       flowrates   flowrates     flowrates   .        "
+    "back       flowrates   flowrates     flowrates   .        "
     "graphs       graphs      graphs        graphs      graphs"
     "lounge_stat  media_stat  office_stat   andys_stat  mums_stat"
     "schedule     schedule    schedule      schedule    schedule "
@@ -20,7 +20,7 @@ layout:
       grid-template-columns: repeat(2, 1fr)
       grid-template-rows: repeat(5, fit-content(100%))
       grid-template-areas: |
-        "header       .          "
+        "back         back       "
         "flowrates    flowrates  "
         "graphs       graphs     "
         "lounge_stat  lounge_stat"
@@ -36,7 +36,7 @@ layout:
       grid-template-columns: repeat(3, 1fr)
       grid-template-rows: auto
       grid-template-areas: |
-        "header       . ."
+        "back         back        ."
         "flowrates    flowrates   flowrates     "
         "graphs       graphs      graphs        "
         "lounge_stat  media_stat  office_stat   "
@@ -44,12 +44,19 @@ layout:
         "schedule     schedule    schedule      "
 
 cards:
-  - type: "custom:button-card"
+  - type: horizontal-stack
     view_layout:
-      grid-area: header
-    template: chip_back
-    variables:
-      ulm_chip_back_path: home
+      grid-area: back
+    cards:
+      - type: "custom:button-card"
+        template: chip_back
+        variables:
+          ulm_chip_back_path: home
+      - type: "custom:button-card"
+        template: chip_temperature
+        variables:
+          ulm_chip_temperature_outside: sensor.high_croft_temperature
+          ulm_chip_temperature_weather: weather.high_croft
 
   - type: custom:stack-in-card
     view_layout:
@@ -122,7 +129,7 @@ cards:
           needle: false
           severity:
             green: 0
-            yellow: 50
+            yellow: 34
             red: 70
           max: 90
       - type: conditional
@@ -148,96 +155,139 @@ cards:
       - attributes:
           label: Heating Demand
         card:
-          type: custom:history-explorer-card
-          uiLayout:
-            toolbar: hide
-            selector: hide
-          refresh:
-            automatic: true
-          header: hide
-          decimation: fast
-          showCurrentValues: true
-          lineMode: stepped
-          graphs:
-            - type: line
-              entities:
-                - entity: sensor.wiser_lts_heating_demand_channel_1
-                  name: Heating Demand
-                  hidden: true
-                  color: white
-                - entity: sensor.wiser_lts_heating_demand_lounge
-                  name: Lounge
-                  color: "#3498db"
-                - entity: sensor.wiser_lts_heating_demand_media_room
-                  name: Media Room
-                  color: "#e74b45"
-                - entity: sensor.wiser_lts_heating_demand_office
-                  name: Office
-                  color: "#9b59b6"
-                - entity: sensor.wiser_lts_heating_demand_andys_bedroom
-                  name: Andys Bedroom
-                  color: "#30cc71"
-                - entity: sensor.wiser_lts_heating_demand_mums_bedroom
-                  name: Mums Bedroom
-                  color: "#f1c40f"
+          type: history-graph
+          entities:
+            - entity: sensor.wiser_lts_heating_demand_lounge
+              name: Lounge
+              color: "#3498db"
+            - entity: sensor.wiser_lts_heating_demand_media_room
+              name: Media Room
+              color: "#e74b45"
+            - entity: sensor.wiser_lts_heating_demand_office
+              name: Office
+              color: "#9b59b6"
+            - entity: sensor.wiser_lts_heating_demand_andys_bedroom
+              name: Andys Bedroom
+              color: "#30cc71"
+            - entity: sensor.wiser_lts_heating_demand_mums_bedroom
+              name: Mums Bedroom
+              color: "#f1c40f"
+          hours_to_show: 36
+          min_y_axis: 0
+          # type: custom:history-explorer-card
+          # uiLayout:
+          #   toolbar: hide
+          #   selector: hide
+          # refresh:
+          #   automatic: true
+          # header: hide
+          # decimation: fast
+          # showCurrentValues: true
+          # lineMode: stepped
+          # graphs:
+          #   - type: line
+          #     entities:
+          #       - entity: sensor.wiser_lts_heating_demand_channel_1
+          #         name: Heating Demand
+          #         hidden: true
+          #         color: white
+          #       - entity: sensor.wiser_lts_heating_demand_lounge
+          #         name: Lounge
+          #         color: "#3498db"
+          #       - entity: sensor.wiser_lts_heating_demand_media_room
+          #         name: Media Room
+          #         color: "#e74b45"
+          #       - entity: sensor.wiser_lts_heating_demand_office
+          #         name: Office
+          #         color: "#9b59b6"
+          #       - entity: sensor.wiser_lts_heating_demand_andys_bedroom
+          #         name: Andys Bedroom
+          #         color: "#30cc71"
+          #       - entity: sensor.wiser_lts_heating_demand_mums_bedroom
+          #         name: Mums Bedroom
+          #         color: "#f1c40f"
       - attributes:
           label: Boiler Flow
         card:
-          type: custom:history-explorer-card
-          refresh:
-            automatic: true
-          uiLayout:
-            toolbar: hide
-            selector: hide
-          showCurrentValues: true
-          decimation: fast
-          header: hide
-          defaultTimeRange: 12h
-          lineMode: stepped
-          graphs:
-            - type: line
-              entities:
-                - entity: sensor.ch_water_temp_boiler_otgw
-                  name: Boiler Flow
-                - entity: sensor.return_water_temp_boiler_otgw
-                  name: Boiler Return
-                - entity: sensor.dhw_temp_boiler_otgw
-                  name: Hot Water
+          type: history-graph
+          entities:
+            - entity: sensor.wiser_lts_boiler_flow_temperature
+              name: Boiler Flow
+            - entity: sensor.dhw_temp_boiler_otgw
+              name: Boiler Return
+            - entity: sensor.return_water_temp_boiler_otgw
+              name: Hot Water
+            - entity: sensor.outside_temp_thermostat_otgw
+              name: Outside Temperature
+          hours_to_show: 36
+          # type: custom:history-explorer-card
+          # refresh:
+          #   automatic: true
+          # uiLayout:
+          #   toolbar: hide
+          #   selector: hide
+          # showCurrentValues: true
+          # decimation: fast
+          # header: hide
+          # defaultTimeRange: 12h
+          # lineMode: stepped
+          # graphs:
+          #   - type: line
+          #     entities:
+          #       - entity: sensor.ch_water_temp_boiler_otgw
+          #         name: Boiler Flow
+          #       - entity: sensor.return_water_temp_boiler_otgw
+          #         name: Boiler Return
+          #       - entity: sensor.dhw_temp_boiler_otgw
+          #         name: Hot Water
       - attributes:
           label: Temperatures
         card:
-          type: custom:history-explorer-card
-          refresh:
-            automatic: true
-          uiLayout:
-            toolbar: hide
-            selector: hide
-          showCurrentValues: true
-          decimation: fast
-          header: hide
-          # lineMode: stepped
-          graphs:
-            - type: line
-              entities:
-                - entity: sensor.wiser_lts_temperature_lounge
-                  name: Lounge
-                  color: "#3498db"
-                - entity: sensor.wiser_lts_temperature_media_room
-                  name: Media Room
-                  color: "#e74b45"
-                - entity: sensor.wiser_lts_temperature_office
-                  name: Office
-                  color: "#9b59b6"
-                - entity: sensor.wiser_lts_temperature_andys_bedroom
-                  name: Andys Bedroom
-                  color: "#30cc71"
-                - entity: sensor.wiser_lts_temperature_mums_bedroom
-                  name: Mums Bedroom
-                  color: "#f1c40f"
-                - entity: sensor.outside_temp_thermostat_otgw
-                  name: Outside
-                  color: "#cc953e"
-                  hidden: true
+          type: history-graph
+          entities:
+            - entity: sensor.wiser_lts_temperature_lounge
+              name: Lounge
+            - entity: sensor.wiser_lts_temperature_media_room
+              name: Media Room
+            - entity: sensor.wiser_lts_temperature_office
+              name: Office
+            - entity: sensor.wiser_lts_temperature_andys_bedroom
+              name: Andys Bedroom
+            - entity: sensor.wiser_lts_temperature_mums_bedroom
+              name: Mums Bedroom
+          hours_to_show: 36
+          # type: custom:history-explorer-card
+          # refresh:
+          #   automatic: true
+          # uiLayout:
+          #   toolbar: hide
+          #   selector: hide
+          # showCurrentValues: true
+          # decimation: fast
+          # header: hide
+          # # lineMode: stepped
+          # graphs:
+          #   - type: line
+          #     entities:
+          #       - entity: sensor.wiser_lts_temperature_lounge
+          #         name: Lounge
+          #         color: "#3498db"
+          #       - entity: sensor.wiser_lts_temperature_media_room
+          #         name: Media Room
+          #         color: "#e74b45"
+          #       - entity: sensor.wiser_lts_temperature_office
+          #         name: Office
+          #         color: "#9b59b6"
+          #       - entity: sensor.wiser_lts_temperature_andys_bedroom
+          #         name: Andys Bedroom
+          #         color: "#30cc71"
+          #       - entity: sensor.wiser_lts_temperature_mums_bedroom
+          #         name: Mums Bedroom
+          #         color: "#f1c40f"
+          #       - entity: sensor.outside_temp_thermostat_otgw
+          #         name: Outside
+          #         color: "#cc953e"
+          #         hidden: true
 
   - type: tile
     view_layout:

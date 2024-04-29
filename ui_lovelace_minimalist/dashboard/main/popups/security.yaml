@@ -19,7 +19,7 @@ cards:
               - armed_away
               - disarmed
   - type: tile
-    entity: cover.roller_door
+    entity: cover.garge_roller_door
     vertical: true
     features:
       - type: cover-open-close

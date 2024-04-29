@@ -57,11 +57,11 @@ cards:
             cards:
               - type: tile
                 entity: light.garage_lights
-                name: Garage Lights
+                # name: Garage Lights
                 vertical: true
               - type: tile
                 entity: light.garage_wall_light
-                name: Garage Wall Light
+                # name: Garage Wall Light
                 vertical: true
             card_mod:
               style: |
@@ -72,13 +72,13 @@ cards:
           - type: custom:stack-in-card
             mode: horizontal
             cards:
-              # - type: tile
-              #   entity: light.back_garden_raised_bed_led
-              #   name: Back Garden Raised Bed LED
-              #   vertical: true
+              - type: tile
+                entity: light.back_garden_neon_rope
+                # name: Neon Rope
+                vertical: true
               - type: tile
                 entity: light.front_garden_light
-                name: Front Garden Light
+                # name: Front Garden Light
                 vertical: true
             card_mod:
               style: |
@@ -103,11 +103,13 @@ cards:
             vertical: true
           - type: tile
             entity: light.kitchen_cabinets
+            name: Cabinet LED's
             vertical: true
           - type: tile
             entity: light.kitchen_floor_led
+            name: Floor LED
             vertical: true
-  # Lounge 
+  # Lounge
   - type: vertical-stack
     view_layout:
       grid-area: lounge
@@ -128,7 +130,7 @@ cards:
                 vertical: true
               - type: tile
                 entity: light.lounge_extention_lights
-                # name: Floor LED
+                name: Extention Spots
                 color: amber
                 vertical: true
             card_mod:

@@ -13,7 +13,7 @@ cards:
             tap_action:
               action: more-info
           - type: entity
-            entity: cover.roller_door
+            entity: cover.garge_roller_door
             content_info: none
             tap_action:
               action: more-info
@@ -33,7 +33,7 @@ cards:
               action: more-info
           - type: template
             icon: mdi:lightbulb
-        content: "{{ state_attr('sensor.number_of_lights_on', 'count')['|Garage'] }}"
+            content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Garage'] }}"
 
       - type: horizontal-stack
         cards:
@@ -46,7 +46,7 @@ cards:
                   - armed_away
                   - disarmed
           - type: tile
-            entity: cover.roller_door
+            entity: cover.garge_roller_door
             vertical: true
             features:
               - type: cover-open-close

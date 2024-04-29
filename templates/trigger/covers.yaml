@@ -1,20 +1,20 @@
 - trigger:
     - platform: state
       entity_id: cover.media_room_somfy_window_shade
-      id: "opening"
+      id: opening
       to: opening
     - platform: state
       entity_id: cover.media_room_somfy_window_shade
-      id: "open"
+      id: open
       from: opening
       to: unknown
     - platform: state
       entity_id: cover.media_room_somfy_window_shade
-      id: "closing"
+      id: closing
       to: closing
     - platform: state
       entity_id: cover.media_room_somfy_window_shade
-      id: "closed"
+      id: closed
       from: closing
       to: unknown
   sensor:
@@ -25,20 +25,20 @@
 - trigger:
     - platform: state
       entity_id: cover.kitchen_somfy_window_shade
-      id: "opening"
+      id: opening
       to: opening
     - platform: state
       entity_id: cover.kitchen_somfy_window_shade
-      id: "open"
+      id: open
       from: opening
       to: unknown
     - platform: state
       entity_id: cover.kitchen_somfy_window_shade
-      id: "closing"
+      id: closing
       to: closing
     - platform: state
       entity_id: cover.kitchen_somfy_window_shade
-      id: "closed"
+      id: closed
       from: closing
       to: unknown
   sensor:
@@ -49,20 +49,20 @@
 - trigger:
     - platform: state
       entity_id: cover.office_somfy_window_shade
-      id: "opening"
+      id: opening
       to: opening
     - platform: state
       entity_id: cover.office_somfy_window_shade
-      id: "open"
+      id: open
       from: opening
       to: unknown
     - platform: state
       entity_id: cover.office_somfy_window_shade
-      id: "closing"
+      id: closing
       to: closing
     - platform: state
       entity_id: cover.office_somfy_window_shade
-      id: "closed"
+      id: closed
       from: closing
       to: unknown
   sensor:
@@ -73,20 +73,20 @@
 - trigger:
     - platform: state
       entity_id: cover.mums_bedroom_somfy_window_shade
-      id: "opening"
+      id: opening
       to: opening
     - platform: state
       entity_id: cover.mums_bedroom_somfy_window_shade
-      id: "open"
+      id: open
       from: opening
       to: unknown
     - platform: state
       entity_id: cover.mums_bedroom_somfy_window_shade
-      id: "closing"
+      id: closing
       to: closing
     - platform: state
       entity_id: cover.mums_bedroom_somfy_window_shade
-      id: "closed"
+      id: closed
       from: closing
       to: unknown
   sensor:
@@ -97,20 +97,20 @@
 - trigger:
     - platform: state
       entity_id: cover.andys_bedroom_somfy_window_shade
-      id: "opening"
+      id: opening
       to: opening
     - platform: state
       entity_id: cover.andys_bedroom_somfy_window_shade
-      id: "open"
+      id: open
       from: opening
       to: unknown
     - platform: state
       entity_id: cover.andys_bedroom_somfy_window_shade
-      id: "closing"
+      id: closing
       to: closing
     - platform: state
       entity_id: cover.andys_bedroom_somfy_window_shade
-      id: "closed"
+      id: closed
       from: closing
       to: unknown
   sensor:

@@ -4,10 +4,17 @@
     include_domains:
       # - alarm_control_panel
       # - climate
-      # - cover
+      - cover
       - light
       - switch
       - fan
+    include_entities:
+      # - scene.good_morning
+      - scene.it_s_too_bright
+      - scene.patio_sun
+      # - scene.tea_time
+      - scene.open_mums_bedroom_shade
+      - scene.close_mums_bedroom_shade
     exclude_entity_globs:
       - cover.*_somfy_window_shade
       - light.*_screen
@@ -17,22 +24,21 @@
       - switch.*_window_shade_sw
       - switch.*_water_control
       - light.lounge_lamp_*
+      - light.back_garden_neon_rope_segment_*
     exclude_entities:
       - climate.otgw
-      - cover.roller_door
       - light.back_garden_led_strip_1
       - light.back_garden_led_strip_2
       - light.media_room_sideboard_lamp_left
       - light.media_room_sideboard_lamp_right
-    include_entities:
-      # - scene.good_morning
-      - scene.it_s_too_bright
-      - scene.patio_sun
-      # - scene.tea_time
-      - scene.open_mums_bedroom_shade
-      - scene.close_mums_bedroom_shade
+      - switch.zigbee2mqtt_bridge_permit_join
+      - switch.back_garden_neon_rope_power_switch
+      - switch.back_garden_neon_rope_gradient_toggle
+      - switch.lounge_sockets_1_left
+      - switch.lounge_sockets_5_right
+      - switch.lounge_extension_socket_1
+      - switch.garage_roller_door_trigger
   # entity_config:
-
 # - name: Lounge TV
 #   port: 51829
 #   mode: accessory

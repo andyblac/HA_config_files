@@ -1,5 +1,21 @@
 - platform: template
   covers:
+    garge_roller_door:
+      unique_id: 44c0bb07-3572-4501-aa5f-7cb292dede94
+      device_class: garage
+      friendly_name: "Garage Roller Door"
+      value_template: "{{ is_state('binary_sensor.garage_roller_door_contact', 'on') }}"
+      open_cover:
+        service: switch.turn_on
+        entity_id: switch.garage_roller_door_trigger
+      close_cover:
+        service: switch.turn_off
+        entity_id: switch.garage_roller_door_trigger
+      stop_cover:
+        service: switch.toggle
+        target:
+          entity_id: witch.garage_roller_door_trigger
+
     media_room_window_shade:
       unique_id: b717049e-f5d0-43ba-a6b5-c2f64041b9c4
       device_class: shade

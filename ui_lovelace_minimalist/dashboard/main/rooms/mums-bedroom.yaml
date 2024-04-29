@@ -146,17 +146,22 @@ cards:
     mode: horizontal
     cards:
       - type: tile
-        entity: switch.mums_bedroom_sockets_left
+        entity: switch.mums_bedroom_sockets_2_left
+        name: Mattress
+        vertical: true
+        color: blue
+      - type: tile
+        entity: switch.mums_bedroom_sockets_2_right
+        name: Bed
+        vertical: true
+        color: blue
+      - type: tile
+        entity: switch.mums_bedroom_sockets_3_left
         name: Hair Dryer
         vertical: true
         color: blue
       - type: tile
-        entity: switch.mums_bedroom_sockets_right
+        entity: switch.mums_bedroom_sockets_3_right
         name: Hair Curlers
-        vertical: true
-        color: blue
-      - type: tile
-        entity: switch.mums_bedroom_blanket
-        name: Blanket
         vertical: true
         color: blue

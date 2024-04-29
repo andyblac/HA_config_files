@@ -5,7 +5,6 @@
 #   # unit_prefix: k
 #   round: 3
 
-
 - platform: integration
   name: Lounge Sockets 1 Left energy
   unique_id: c3b3fd9c-03c0-46a7-9bf4-ceeeb0d01efb
@@ -71,8 +70,6 @@
   unit_prefix: k
   round: 3
 
-
-
 - platform: integration
   name: Media Room TV Sockets 1 Left energy
   unique_id: cf7a560e-9ab0-4531-9f52-be7f5d0537d6
@@ -99,7 +96,7 @@
 
 - platform: integration
   name: Media Room TV Sockets 2 Right energy
-  unique_id: c613c779-0c59-42f7-b7dd-ea0fc55bb8d7
+  unique_id: 535d17ef-bfcb-4352-8b4e-d5dab92c8438
   source: sensor.media_room_tv_sockets_2_power_right
   unit_prefix: k
   round: 3
@@ -117,6 +114,22 @@
   name: Media Room TV Sockets 3 Right energy
   unique_id: 1a0aa78a-92c4-4fa5-9bf6-7ea7082123ac
   source: sensor.media_room_tv_sockets_3_power_right
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Mums Bedroom Sockets 2 Left energy
+  unique_id: 8f5cd154-64d3-4be9-b3e8-366d60496aed
+  source: sensor.mums_bedroom_sockets_2_power_left
+  unit_prefix: k
+  round: 3
+  # unit_time: s
+
+- platform: integration
+  name: Mums Bedroom Sockets 2 Right energy
+  unique_id: e4ccdca2-4a98-41d6-b267-d426448bf1c5
+  source: sensor.mums_bedroom_sockets_2_power_right
   unit_prefix: k
   round: 3
   # unit_time: s

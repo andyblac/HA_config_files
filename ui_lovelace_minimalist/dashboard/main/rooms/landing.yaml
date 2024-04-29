@@ -41,3 +41,23 @@ cards:
           - type: tile
             entity: light.landing_lights
             vertical: true
+
+      - type: entities
+        state_color: true
+        show_header_toggle: false
+        title: GAS
+        entities:
+          - entity: binary_sensor.gas_sensor_gas
+            name: Sensor
+          - entity: sensor.gas_sensor_gas_concentration
+            name: Concentration
+          - entity: button.gas_sensor_mute
+            name: Mute
+
+      - type: entities
+        state_color: true
+        show_header_toggle: false
+        title: Smoke
+        entities:
+          - entity: binary_sensor.smoke_detector
+            name: Sensor

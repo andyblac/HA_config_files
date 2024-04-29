@@ -8,10 +8,11 @@ layout:
   grid-template-columns: repeat(4, 1fr)
   grid-template-rows: repeat(6, fit-content(100%))
   grid-template-areas: |
-    "header       header      .          .       "
-    "graphs       graphs      graphs     graphs  "
-    "tv           homepod     shade      lights  "
-    "stat         .           sockets    sockets "
+    "header   header   .        .       "
+    "scene1   scene2   scene3   scene4 "
+    "graphs   graphs   graphs   graphs  "
+    "tv       homepod  shade    lights  "
+    "stat     .        sockets  sockets "
   mediaquery:
     "(max-width: 767px)": #phone
       grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
@@ -53,6 +54,16 @@ cards:
         icon: mdi:lightbulb
         content: "{{ state_attr('sensor.number_of_lights_on', 'count')['Media Room'] }}"
 
+  - type: tile
+    view_layout:
+      grid-area: scene1
+    entity: scene.carer
+    color: blue
+  - type: tile
+    view_layout:
+      grid-area: scene2
+    entity: scene.carers_left
+    color: blue
 
   - type: custom:tabbed-card # iPhone
     view_layout:
@@ -265,7 +276,7 @@ cards:
           - type: tile
             view_layout:
               grid-area: socket7
-            name: Socket 1 Left
+            name: Subwoofer
             entity: switch.media_room_sockets_1_left
             vertical: true
             color: blue
@@ -273,7 +284,7 @@ cards:
             view_layout:
               grid-area: socket8
             entity: switch.media_room_sockets_1_right
-            name: Subwoofer
+            name: Socket 1 Right
             vertical: true
             color: blue
           - type: tile

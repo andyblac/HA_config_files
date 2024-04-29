@@ -24,6 +24,9 @@ utility_meter: !include utility_meter.yaml
 
 homeassistant:
   customize: !include customize.yaml
+  allowlist_external_dirs:
+    - /
+
 bluetooth:
 wake_on_lan:
 
@@ -33,7 +36,7 @@ wake_on_lan:
 #   auto_repack: true
 
 influxdb:
-  host: 192.168.3.3
+  host: 192.168.3.2
   port: 8086
   database: homeassistant
   username: homeassistant
