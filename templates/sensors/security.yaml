@@ -1,0 +1,114 @@
+- sensor:
+    - name: "Security State"
+      unique_id: 84c316cb-2b49-4d12-883c-b4268cf91e6f
+      state: >
+        {%- set doors = namespace(open=[]) -%}
+        {%- set door_entities = [
+          'cover.garage_roller_door',
+          'binary_sensor.garage_door_contact_sensor',
+          'binary_sensor.back_door_contact_sensor',
+          'binary_sensor.front_door_contact_sensor'
+        ] -%}
+        {%- for door in door_entities -%}
+          {%- if states(door) in ['open', 'on'] -%}
+            {%- set open_name = state_attr(door, 'friendly_name') | default(door, true) -%}
+            {%- set open_name = open_name
+              | replace(' Contact Sensor', '')
+              | replace(' Roller Door', ' Door') -%}
+            {%- set doors.open = doors.open + [open_name] -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if doors.open | count > 1 -%}
+          multiple_doors_open
+        {%- elif doors.open | count == 1 -%}
+          {{ doors.open[0] | replace(' ', '_') | lower ~ '_open' }}
+        {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') and is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+          fully_armed
+        {%- elif is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+          garage_armed
+        {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') -%}
+          house_armed
+        {%- else -%}
+          disarmed
+        {%- endif -%}
+      availability: >
+        {{ has_value('cover.garage_roller_door')
+           and has_value('binary_sensor.garage_door_contact_sensor')
+           and has_value('binary_sensor.back_door_contact_sensor')
+           and has_value('binary_sensor.front_door_contact_sensor')
+           and has_value('alarm_control_panel.house_alarm')
+           and has_value('alarm_control_panel.garage_alarm') }}
+      icon: >
+        {%- set doors = namespace(open=false) -%}
+        {%- set door_entities = [
+          'cover.garage_roller_door',
+          'binary_sensor.garage_door_contact_sensor',
+          'binary_sensor.back_door_contact_sensor',
+          'binary_sensor.front_door_contact_sensor'
+        ] -%}
+        {%- for door in door_entities -%}
+          {%- if states(door) in ['open', 'on'] -%}
+            {%- set doors.open = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if doors.open -%}
+          mdi:door-open
+        {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') and is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+          mdi:shield-lock
+        {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') or is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+          mdi:shield-lock-outline
+        {%- else -%}
+          mdi:shield-off
+        {%- endif -%}
+      attributes:
+        navigation: security
+        label: >
+          {%- set doors = namespace(open=[]) -%}
+          {%- set door_entities = [
+            'cover.garage_roller_door',
+            'binary_sensor.garage_door_contact_sensor',
+            'binary_sensor.back_door_contact_sensor',
+            'binary_sensor.front_door_contact_sensor'
+          ] -%}
+          {%- for door in door_entities -%}
+            {%- if states(door) in ['open', 'on'] -%}
+              {%- set open_name = state_attr(door, 'friendly_name') | default(door, true) -%}
+              {%- set open_name = open_name | replace(' Contact Sensor', '') -%}
+              {%- set doors.open = doors.open + [open_name] -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if doors.open | count > 1 -%}
+            {{ doors.open | count }} Doors Open
+          {%- elif doors.open | count == 1 -%}
+            {{ (doors.open[0] ~ ' Open') | title }}
+          {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') and is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+            Fully Armed
+          {%- elif is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+            Garage Armed
+          {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') -%}
+            House Armed
+          {%- else -%}
+            Disarmed
+          {%- endif -%}
+        color: >
+          {%- set doors = namespace(open=false) -%}
+          {%- set door_entities = [
+            'cover.garage_roller_door',
+            'binary_sensor.garage_door_contact_sensor',
+            'binary_sensor.back_door_contact_sensor',
+            'binary_sensor.front_door_contact_sensor'
+          ] -%}
+          {%- for door in door_entities -%}
+            {%- if states(door) in ['open', 'on'] -%}
+              {%- set doors.open = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if doors.open -%}
+            red
+          {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') and is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+            green
+          {%- elif is_state('alarm_control_panel.house_alarm', 'armed_away') or is_state('alarm_control_panel.garage_alarm', 'armed_away') -%}
+            blue
+          {%- else -%}
+            theme
+          {%- endif -%}

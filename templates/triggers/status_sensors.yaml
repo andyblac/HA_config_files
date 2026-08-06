@@ -1,0 +1,228 @@
+# Each status sensor reacts immediately to relevant state_changed events.
+# Its variables are evaluated once per trigger and reused by every property.
+
+- triggers:
+    - trigger: event
+      event_type: state_changed
+    - trigger: homeassistant
+      event: start
+  conditions:
+    - condition: template
+      value_template: >
+        {% set entity_id = trigger.event.data.entity_id
+            if trigger.platform == 'event' else '' %}
+        {{ trigger.platform == 'homeassistant'
+            or entity_id.startswith('light.') }}
+  sensor:
+    - name: "Number of Lights On"
+      unique_id: 3b279d97-e05a-4c8b-9368-2ce58d7fd46c
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import entity_summary %}
+          {{ entity_summary(
+              states.light,
+              state='on',
+              exclude_label='Ignore from Status Sensor'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#lights-on"
+        label: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.count ~ ' On' if data.count > 0 else 'All Off' }}
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ 'mdi:lightbulb-group'
+            if data.count > 0 else 'mdi:lightbulb-group-outline' }}
+
+
+- triggers:
+    - trigger: event
+      event_type: state_changed
+    - trigger: homeassistant
+      event: start
+  conditions:
+    - condition: template
+      value_template: >
+        {% if trigger.platform == 'homeassistant' %}
+          true
+        {% else %}
+          {% set changed =
+              trigger.event.data.new_state
+              or trigger.event.data.old_state %}
+          {{ changed is not none
+              and changed.entity_id.startswith('switch.')
+              and changed.attributes.device_class | default('') == 'outlet' }}
+        {% endif %}
+  sensor:
+    - name: "Number of Sockets On"
+      unique_id: c838cee8-1919-4000-8fc0-d6587433e6fc
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import entity_summary %}
+          {{ entity_summary(
+              states.switch,
+              device_class='outlet',
+              state='on',
+              exclude_label='Ignore from Status Sensor',
+              exclude_summary_area='House'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#sockets-on"
+        label: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.count ~ ' On' if data.count > 0 else 'All Off' }}
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: mdi:power-socket-uk
+
+
+- triggers:
+    - trigger: event
+      event_type: state_changed
+    - trigger: homeassistant
+      event: start
+  conditions:
+    - condition: template
+      value_template: >
+        {% if trigger.platform == 'homeassistant' %}
+          true
+        {% else %}
+          {% set changed =
+              trigger.event.data.new_state
+              or trigger.event.data.old_state %}
+          {{ changed is not none
+              and changed.entity_id.startswith('binary_sensor.')
+              and changed.attributes.device_class | default('') == 'door' }}
+        {% endif %}
+  sensor:
+    - name: "Number of Doors Open"
+      unique_id: 905cf252-7adb-4b68-b696-ae089d96b11f
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import entity_summary %}
+          {{ entity_summary(
+              states.binary_sensor,
+              device_class='door',
+              state='on',
+              exclude_label='Ignore from Status Sensor',
+              exclude_summary_area='House'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#doors-open"
+        label: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.count ~ ' Open' if data.count > 0 else 'All Closed' }}
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ 'mdi:door-open' if data.count > 0 else 'mdi:door' }}
+
+
+- triggers:
+    - trigger: event
+      event_type: state_changed
+    - trigger: homeassistant
+      event: start
+  conditions:
+    - condition: template
+      value_template: >
+        {% if trigger.platform == 'homeassistant' %}
+          true
+        {% else %}
+          {% set changed =
+              trigger.event.data.new_state
+              or trigger.event.data.old_state %}
+          {{ changed is not none
+              and changed.entity_id.startswith('binary_sensor.')
+              and changed.attributes.device_class | default('') == 'motion' }}
+        {% endif %}
+  sensor:
+    - name: "Number of Motion Detected"
+      unique_id: 156e99a5-cdb6-4d6b-9bea-5e05d5a3c548
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import entity_summary %}
+          {{ entity_summary(
+              states.binary_sensor,
+              device_class='motion',
+              state='on',
+              exclude_label='Ignore from Status Sensor',
+              exclude_summary_area='House'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#motion-detected"
+        label: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.count ~ ' Detected' if data.count > 0 else 'All Clear' }}
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: mdi:motion-sensor
+
+
+# Battery levels do not need sub-second updates. One shared scan per minute
+# replaces the previous three domain scans per sensor state change.
+- triggers:
+    - trigger: time_pattern
+      minutes: "/5"
+    - trigger: homeassistant
+      event: start
+  sensor:
+    - name: "Devices with low battery"
+      unique_id: e9da96dc-aa51-47c1-8a6d-435de1ce5149
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import low_battery_summary %}
+          {{ low_battery_summary(
+              states.sensor,
+              battery_level=20,
+              exclude_label='Ignore from Status Sensor',
+              reject='iphone'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#batteries"
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities }}
+      icon: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ 'mdi:battery-alert'
+            if data.count > 0 else 'mdi:battery-outline' }}

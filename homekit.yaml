@@ -24,16 +24,11 @@
       - switch.*_window_shade_sw
       - switch.*_water_control
       - light.lounge_lamp_*
-      - light.back_garden_neon_rope_segment_*
     exclude_entities:
       - climate.otgw
-      - light.back_garden_led_strip_1
-      - light.back_garden_led_strip_2
       - light.media_room_sideboard_lamp_left
       - light.media_room_sideboard_lamp_right
-      - switch.zigbee2mqtt_bridge_permit_join
-      - switch.back_garden_neon_rope_power_switch
-      - switch.back_garden_neon_rope_gradient_toggle
+      - switch.zigbee2mqtt_slzb_06m_bridge_permit_join
       - switch.lounge_sockets_1_left
       - switch.lounge_sockets_5_right
       - switch.lounge_extension_socket_1

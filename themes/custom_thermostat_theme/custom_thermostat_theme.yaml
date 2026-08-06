@@ -1,0 +1,75 @@
+Custom Thermostat Theme:
+  climate-auto-color: var(--green-color)
+  climate-heat-color: var(--deep-orange-color)
+  passive-auto-color: var(--light-green-color)
+  passive-heat-color: var(--amber-color)
+  radial-glow-color: var(--deep-orange-color)
+  label-text-highlight-color: var(--deep-orange-color, inherit)
+  extra-info-text-color: var(--action-color)
+  button-visibility: visible
+  slider-color: var(--disabled-color)
+  slider-opacity: var(--slider-theme-opacity)
+  slider-passive-range-opacity: 1
+  modes:
+    light: { slider-theme-opacity: 0.3 }
+    dark: { slider-theme-opacity: 0.5 }
+  card-mod-theme: Custom Thermostat Theme
+  card-mod-card-yaml: |
+    ha-state-control-climate-temperature:
+        .: |
+            :host {
+                --extra-info-text: "{%- if state_attr(config.entity, 'is_passive') -%}Passive{%- elif is_state(config.entity, 'heat') -%}Manual{%- else -%}{{ states(config.entity) | title }}{%- endif -%}{%- if not is_state(config.entity, 'off') %} ⸱ {{ state_attr(config.entity, 'percentage_demand') }}%{%- endif -%}";
+                --slider-color:var(--disabled-color) !important;
+                --slider-opacity: var(--slider-theme-opacity) !important;
+                {% if state_attr(config.entity, 'is_passive') and is_state(config.entity, 'auto') %}
+                    --slider-color: var(--passive-auto-color) !important;
+                    --state-climate-auto-color: var(--slider-color) !important;
+                    --slider-opacity: var(--slider-passive-range-opacity) !important;
+                {% elif state_attr(config.entity, 'is_passive') and is_state(config.entity, 'heat') %}
+                    --slider-color: var(--passive-heat-color) !important;
+                    --state-climate-heat-color: var(--slider-color) !important;
+                    --slider-opacity: var(--slider-passive-range-opacity) !important;
+                {% endif %}
+            }
+        $:
+            .: |
+                .buttons { visibility: var(--button-visibility); }
+                .info > p:last-of-type::after { content: "\a" var(--extra-info-text); white-space: pre; color: var(--extra-info-text-color) }
+                {% if (state_attr(config.entity,'percentage_demand') | float(0) > 0) %}
+                    div.container {
+                        .label { color: var(--label-text-highlight-color) !important; }
+                    }
+                {% endif %}
+            ha-control-circular-slider $: |
+                :host {
+                    {# Set the slider colours #}
+                    --control-circular-slider-high-color: var(--custom-theme-control-circular-slider-high-color, var(--disabled-color)) !important;
+                    --control-circular-slider-low-color: var(--slider-color) !important;
+                    --control-circular-slider-background: var(--slider-color) !important;
+                    --control-circular-slider-background-opacity: var(--slider-opacity) !important;
+                    {# Set the radial glow colour and show it when there is demand even if it's not actively heating #}
+                    {%- if (state_attr(config.entity, 'percentage_demand') | float(0) > 0) -%}
+                        --action-color: var(--radial-glow-color) !important;
+                    {%- endif -%}
+                }
+                .arc.arc-clear {
+                    stroke-width: var(--custom-theme-slider-high-stroke-width, 25px);
+                }
+                path.arc.arc-colored.high {
+                    stroke-width: 25px;
+                    opacity: var(--custom-theme-control-circular-slider-high-color-opacity, var(--slider-theme-opacity)) !important;
+                }
+                .current {
+                    stroke: color-mix(in srgb,var(--slider-color),#000 50%) !important;
+                }
+                .arc-current {
+                    opacity: 0.5 !important;
+                    stroke: var(--primary-text-color) !important;
+                }
+                .arc.arc-active.high {
+                    opacity: 0 !important;
+                }
+                .target-border.high, .target-border.low {
+                    stroke: var(--slider-color) !important;
+                    opacity: 1 !important;
+                }

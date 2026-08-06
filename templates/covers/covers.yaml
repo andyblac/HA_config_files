@@ -1,0 +1,266 @@
+- cover:
+    - unique_id: 872520ae-ba0b-40ca-bfe4-fcb18474de78
+      name: Kitchen Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.kitchen_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.kitchen_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.kitchen_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.kitchen_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.kitchen_somfy_window_shade
+      default_entity_id: cover.kitchen_window_shade
+      availability: "{{ states('sensor.kitchen_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.kitchen_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.kitchen_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: 39847c0b-6153-46b6-be70-7393848ec36c
+      name: Lounge Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.lounge_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.lounge_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.lounge_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.lounge_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.lounge_somfy_window_shade
+      default_entity_id: cover.lounge_window_shade
+      availability: "{{ states('sensor.lounge_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.lounge_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.lounge_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: 58889bac-66c2-4df2-9fec-67f2ce732d9d
+      name: Lounge Patio Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.lounge_patio_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.lounge_somfy_patio_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.lounge_patio_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.lounge_somfy_patio_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.lounge_somfy_patio_window_shade
+      default_entity_id: cover.lounge_patio_window_shade
+      availability: "{{ states('sensor.lounge_patio_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.lounge_patio_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.lounge_patio_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: b717049e-f5d0-43ba-a6b5-c2f64041b9c4
+      name: Media Room Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.media_room_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.media_room_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.media_room_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.media_room_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.media_room_somfy_window_shade
+      default_entity_id: cover.media_room_window_shade
+      availability: "{{ states('sensor.media_room_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.media_room_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.media_room_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: ea08a123-4c1a-4c68-9575-d14bf21bd34e
+      name: Office Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.office_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.office_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.office_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.office_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.office_somfy_window_shade
+      default_entity_id: cover.office_window_shade
+      availability: "{{ states('sensor.office_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.office_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.office_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: dcb9f6e3-f1f2-46d6-9d06-6f52a3222681
+      name: Andys Bedroom Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.andys_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.andys_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.andys_bedroom_somfy_window_shade
+      default_entity_id: cover.andys_bedroom_window_shade
+      availability: "{{ states('sensor.andys_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.andys_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.andys_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}
+
+    - unique_id: 35e1394a-292e-4a4e-9c06-888c819e27c0
+      name: Spare Bedroom Window Shade
+      device_class: shade
+      open_cover:
+        - condition: state
+          entity_id: sensor.spare_shade_helper
+          state: closed
+        - action: cover.open_cover
+          target:
+            entity_id: cover.spare_bedroom_somfy_window_shade
+      close_cover:
+        - condition: state
+          entity_id: sensor.spare_shade_helper
+          state: open
+        - action: cover.close_cover
+          target:
+            entity_id: cover.spare_bedroom_somfy_window_shade
+      stop_cover:
+        - action: cover.stop_cover
+          target:
+            entity_id: cover.spare_bedroom_somfy_window_shade
+      default_entity_id: cover.spare_bedroom_window_shade
+      availability: "{{ states('sensor.spare_shade_helper') in ['open', 'opening', 'closed', 'closing'] }}"
+      icon: >
+        {%- set shade_state = states('sensor.spare_shade_helper') -%}
+        {%- if shade_state == 'opening' -%}
+          mdi:arrow-up-box
+        {%- elif shade_state == 'closing' -%}
+          mdi:arrow-down-box
+        {%- elif shade_state == 'closed' -%}
+          phu:shutter-100
+        {%- else -%}
+          phu:shutter-20
+        {%- endif -%}
+      state: >
+        {%- set shade_state = states('sensor.spare_shade_helper') -%}
+        {{ shade_state if shade_state in ['open', 'opening', 'closed', 'closing'] else 'closed' }}

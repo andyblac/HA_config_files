@@ -18,3 +18,5 @@ sensor.dhw_temp_boiler_otgw:
   state_class: measurement
 sensor.dhw_flow_rate_boiler_otgw:
   state_class: measurement
+sensor.wetroom_humidity_derivative:
+  state_class: measurement

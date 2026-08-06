@@ -1,0 +1,59 @@
+- sensor:
+    - name: "Heating State"
+      unique_id: 8f8d798f-8e2c-42c2-812c-be4df3548fac
+      state: >
+        {%- set heating_on = is_state('binary_sensor.slave_ch_active_boiler_otgw', 'on') -%}
+        {%- set flow_temp = states('sensor.wetroom_boiler_flow_sensor_temperature') | float(0) -%}
+        {%- if heating_on and flow_temp >= 45 -%}
+          high
+        {%- elif heating_on and flow_temp >= 35 -%}
+          med
+        {%- elif heating_on -%}
+          low
+        {%- else -%}
+          off
+        {%- endif -%}
+      availability: >
+        {{ has_value('binary_sensor.slave_ch_active_boiler_otgw')
+           and (
+             is_state('binary_sensor.slave_ch_active_boiler_otgw', 'off')
+             or has_value('sensor.wetroom_boiler_flow_sensor_temperature')
+           ) }}
+      icon: >
+        {{ 'mdi:radiator' if is_state('binary_sensor.slave_flame_on_boiler_otgw', 'on') else 'mdi:radiator-disabled' }}
+      attributes:
+        navigation: /dashboard-heating/heating-control
+        label: >
+          {%- set heating_on = is_state('binary_sensor.slave_ch_active_boiler_otgw', 'on') -%}
+          {%- set demand = states('sensor.wiser_lts_heating_demand_channel_1') | float(0) | round(0) -%}
+          {%- set flow_temp = states('sensor.wetroom_boiler_flow_sensor_temperature') | float(0) | round(2) -%}
+          {{ demand ~ '% - ' ~ flow_temp ~ '˚C' if heating_on else 'Off' }}
+        color: >
+          {%- set heating_on = is_state('binary_sensor.slave_ch_active_boiler_otgw', 'on') -%}
+          {%- set flow_temp = states('sensor.wetroom_boiler_flow_sensor_temperature') | float(0) -%}
+          {%- if heating_on and flow_temp >= 45 -%}
+            red
+          {%- elif heating_on and flow_temp >= 35 -%}
+            yellow
+          {%- elif heating_on -%}
+            blue
+          {%- endif -%}
+        fault: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(1) else 'off' }}"
+        ch1_mode: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(2) else 'off' }}"
+        dhw_mode: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(4) else 'off' }}"
+        flame_status: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(8) else 'off' }}"
+        cooling_status: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(16) else 'off' }}"
+        diagnostic: "{{ 'on' if state_attr('sensor.wiser_lts_boiler_flow_temperature', 'slave_status') | int(0) | bitwise_and(64) else 'off' }}"
+        flow_temp: "{{ states('sensor.wetroom_boiler_flow_sensor_temperature') }}"
+        delta_t: "{{ states('sensor.delta_t_boiler_otgw') }}"
+        modulation: "{{ states('sensor.relative_mod_level_boiler_otgw') }}"
+# Optional replacement for the commented Wiser Hub Status binary sensor.
+# - binary_sensor:
+#     - name: Wiser Hub Status
+#       unique_id: 8ced4a5b-5e53-4c50-b299-ca6f91ebb07d
+#       device_class: problem
+#       state: >
+#         {{ 'off' if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') else 'on' }}
+#       availability: "{{ has_value('sensor.wiser_heating_operation_mode') }}"
+#       icon: >
+#         {{ 'mdi:router-wireless' if is_state_attr('sensor.wiser_heating_operation_mode', 'last_update_status', 'Success') else 'mdi:router-wireless-off' }}

@@ -1,21 +1,30 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
-http:
-  ssl_certificate: /ssl/fullchain.pem
-  ssl_key: /ssl/privkey.pem
+# http:
+#   ssl_certificate: /ssl/fullchain.pem
+#   ssl_key: /ssl/privkey.pem
 
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
   extra_module_url:
     - /local/community/custom-brand-icons/custom-brand-icons.js
+    - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
+
+recorder:
+  purge_keep_days: 62
+  auto_purge: true
+  auto_repack: true
+  exclude:
+    entities:
+      - sensor.unavailable_entities
+      - sensor.stale_entities
 
 automation: !include automations.yaml
-command_line: !include command_line.yaml
-cover: !include covers.yaml
-homekit: !include homekit.yaml
-lovelace: !include lovelace.yaml
+# command_line: !include command_line.yaml
+# homekit: !include homekit.yaml
+# lovelace: !include lovelace.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 sensor: !include_dir_merge_list sensors/
@@ -25,42 +34,114 @@ utility_meter: !include utility_meter.yaml
 homeassistant:
   customize: !include customize.yaml
   allowlist_external_dirs:
-    - /
+    - /config/
 
-bluetooth:
-wake_on_lan:
+import_statistics:
 
-# recorder:
-#   purge_keep_days: 31
-#   auto_purge: true
-#   auto_repack: true
+# influxdb:
+#   exclude:
+#     domains:
+#       - automation
+#       - binary_sensor
+#       - button
+#       - camera
+#       - device_tracker
+#       - event
+#       - media_player
+#       - person
+#       - scene
+#       - script
+#       - sun
+#       - switch
+#       - update
+#       - weather
+#       - zone
+#       - image
+#       - remote
+#       - timer
+#       - persistent_notification
 
-influxdb:
-  host: 192.168.3.2
-  port: 8086
-  database: homeassistant
-  username: homeassistant
-  password: !secret influxdb_pass
-  max_retries: 5
-  default_measurement: state
+#     entity_globs:
+#       - sensor.*_linkquality
+#       - sensor.*_rssi
+#       - sensor.*_battery
+#       - sensor.*_voltage
+#       - sensor.*_signal
+#       - sensor.*_illuminance
+#       - sensor.*_power
+#       - sensor.*_current
+#       - sensor.*_energy_cost*
+#       - sensor.*_ssid
+#       - sensor.*_bssid
+#       - sensor.*_connection_type
+#       - sensor.*_frontmost_app
+#       - sensor.*_geocoded_location
+#       - sensor.*_steps
+#       - sensor.*_distance*
+#       - sensor.*_storage*
+#       - sensor.*_memory*
+#       - sensor.*_uptime*
+#       - sensor.*_network*
+#       - sensor.*_download*
+#       - sensor.*_upload*
+#       - sensor.*_last_update*
+#       - sensor.*_firmware*
+#       - sensor.*_app_version*
+#       - sensor.*_available*
+#       - sensor.*_source*
+#       - sensor.*_channel*
+#       - sensor.*_ssid*
+#       - sensor.*_ip*
+#       - sensor.*_status
+#       - sensor.*_state
+#       - sensor.*_mode
+#       - sensor.*_source
+#       - sensor.*_preset*
+#       - sensor.*_action
+#   host: 192.168.3.2
+#   port: 8086
+#   database: homeassistant
+#   username: homeassistant
+#   password: !secret influxdb_pass
+#   max_retries: 5
+#   default_measurement: state
 
 # Text to speech
 tts:
   - platform: google_translate
 
-shell_command:
-  send_otgw_command: /bin/bash -c "curl -X POST http://192.168.3.15/api/v1/otgw/command/{{key}}={{value}}"
+# shell_command:
+#   send_otgw_command: /bin/bash -c "curl -X POST http://192.168.3.15/api/v1/otgw/command/{{key}}={{value}}"
 
 panel_custom:
-  - name: Supervisor
-    url_path: hassio/system
-    sidebar_title: Supervisor
-    sidebar_icon: mdi:home-assistant
-    module_url: /local/panel-redirect.js
-
-waste_collection_schedule:
-  sources:
-    - name: durham_gov_uk
-      args:
-        uprn: "100110493335"
-  day_switch_time: "12:30"
+  # - name: Supervisor
+  #   url_path: hassio/system
+  #   sidebar_title: Supervisor
+  #   sidebar_icon: mdi:home-assistant
+  #   module_url: /local/panel-redirect.js
+  - name: Add-ons
+    url_path: config/apps/installed
+    sidebar_title: Apps
+    sidebar_icon: mdi:puzzle
+    module_url: /api/hassio/app/entrypoint.js
+  - name: panel_automations
+    sidebar_title: Automations
+    sidebar_icon: mdi:cogs
+    url_path: "config/automation"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+  - name: panel_backups
+    sidebar_title: Backups
+    sidebar_icon: mdi:backup-restore
+    url_path: "config/backup"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true
+  - name: panel_integrations
+    sidebar_title: Integrations
+    sidebar_icon: mdi:audio-input-rca
+    url_path: "config/integrations"
+    module_url: /api/hassio/app/entrypoint.js
+    embed_iframe: true
+    require_admin: true

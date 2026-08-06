@@ -1,0 +1,33 @@
+---
+AndyBlac-Home:
+  card-mod-theme: "AndyBlac-Home"
+  card-mod-view-yaml: |
+    hui-sections-view$:
+      .: |
+        .content > *[hidden],
+        .content > *[style*="display: none"],
+        .content > card-mod[style*="display: none"] {
+          display: none !important;
+          height: 0 !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .wrapper .container {
+          padding-top: 4px !important;
+          padding-bottom: 0 !important;
+          padding-right: 0 !important;
+          box-sizing: border-box !important;
+          row-gap: 0 !important;
+        }
+
+        .wrapper[style*="--content-column-count: 3"] .content {
+          width: 100% !important;
+          max-width: none !important;
+          margin-left: 0px !important;
+          box-sizing: border-box !important;
+          justify-content: stretch !important;
+          row-gap: 0 !important;
+          grid-template-columns: 29.4% minmax(0, 1fr) minmax(0, 1fr) !important;
+        }

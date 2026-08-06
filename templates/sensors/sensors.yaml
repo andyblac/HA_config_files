@@ -1,0 +1,172 @@
+- sensor:
+    - name: Cleaner Day
+      unique_id: 231d23eb-4cef-450e-ac92-464fab7fee23
+      icon: mdi:vacuum
+      availability: "{{ state_attr('calendar.cleaner', 'start_time') is not none }}"
+      state: >
+        {%- set start = state_attr('calendar.cleaner', 'start_time') | as_datetime -%}
+        {%- set hours_to = (as_timestamp(start) - as_timestamp(now())) / 3600 -%}
+        {{ 'on' if hours_to < 1 else 'off' }}
+      attributes:
+        daysTo: >
+          {%- set start = state_attr('calendar.cleaner', 'start_time') | as_datetime -%}
+          {{ ((as_timestamp(start) - as_timestamp(today_at('00:00'))) / 86400) | int }}
+        hoursTo: >
+          {%- set start = state_attr('calendar.cleaner', 'start_time') | as_datetime -%}
+          {{ ((as_timestamp(start) - as_timestamp(now())) / 3600) | round(2) }}
+
+    - name: Outside - Seasonal Thresholds
+      unique_id: 347def20-141f-4c9d-bf1e-2692a6952de4
+      state: "{{ now().month }}"
+      attributes:
+        # Temperature (°C)
+        cold: "{{ 0 if now().month in [12,1,2] else 5 if now().month in [6,7,8] else 3 }}"
+        ideal: "{{ 8 if now().month in [12,1,2] else 18 if now().month in [6,7,8] else 12 }}"
+        warm: "{{ 12 if now().month in [12,1,2] else 25 if now().month in [6,7,8] else 20 }}"
+
+        temp_color_cold: "#3498db"
+        temp_color_ideal: "#2ecc71"
+        temp_color_warm: "#e74c3c"
+
+        # Humidity (%RH)
+        humidity_dry: "{{ 50 if now().month in [12,1,2] else 35 if now().month in [6,7,8] else 45 }}"
+        humidity_ideal: "{{ 75 if now().month in [12,1,2] else 60 if now().month in [6,7,8] else 70 }}"
+        humidity_humid: "{{ 90 if now().month in [12,1,2] else 80 if now().month in [6,7,8] else 85 }}"
+
+        humidity_color_dry: "#f39c12"
+        humidity_color_ideal: "#2ecc71"
+        humidity_color_humid: "#3498db"
+
+    - name: Poppy Soil Moisture Thresholds
+      unique_id: 2885eebe-63a6-40f7-ae6d-f677c7fef694
+      state: "{{ now().month }}"
+      attributes:
+        dry: >
+          {{ 15 if now().month in [12,1,2]
+          else 20 if now().month in [6,7,8]
+          else 18 }}
+
+        ideal: >
+          {{ 30 if now().month in [12,1,2]
+          else 40 if now().month in [6,7,8]
+          else 35 }}
+
+        wet: >
+          {{ 55 if now().month in [12,1,2]
+          else 65 if now().month in [6,7,8]
+          else 60 }}
+
+        color_dry: "#e74c3c"
+        color_ideal: "#2ecc71"
+        color_wet: "#3498db"
+
+    - name: Rose Tree Soil Moisture Thresholds
+      unique_id: 3d87501f-3f1c-41ff-9f78-871ca554ef4f
+      state: "{{ now().month }}"
+      attributes:
+        dry: >
+          {{ 20 if now().month in [12,1,2]
+          else 30 if now().month in [6,7,8]
+          else 25 }}
+
+        ideal: >
+          {{ 40 if now().month in [12,1,2]
+          else 55 if now().month in [6,7,8]
+          else 50 }}
+
+        wet: >
+          {{ 70 if now().month in [12,1,2]
+          else 80 if now().month in [6,7,8]
+          else 75 }}
+
+        color_dry: "#e74c3c"
+        color_ideal: "#2ecc71"
+        color_wet: "#3498db"
+
+    - name: Cuphea Soil Moisture Thresholds
+      unique_id: cuphea_soil_moisture_thresholds
+      state: "{{ now().month }}"
+      attributes:
+
+        dry: >
+          {{ 20 if now().month in [12,1,2]
+          else 30 if now().month in [6,7,8]
+          else 25 }}
+
+        ideal: >
+          {{ 40 if now().month in [12,1,2]
+          else 55 if now().month in [6,7,8]
+          else 50 }}
+
+        wet: >
+          {{ 70 if now().month in [12,1,2]
+          else 80 if now().month in [6,7,8]
+          else 75 }}
+
+        color_dry: "#e74c3c"
+        color_ideal: "#2ecc71"
+        color_wet: "#3498db"
+
+    - name: Indoor Environmental Thresholds
+      unique_id: 5736d4ff-572a-4c5e-9a5a-4acf9074d68a
+      state: "{{ now().month }}"
+      attributes:
+        # Lounge
+        lounge_temperature_cold: "{{ 16.5 if now().month in [12,1,2] else 18 if now().month in [6,7,8] else 17.5 }}"
+        lounge_temperature_ideal: "{{ 18.5 if now().month in [12,1,2] else 20 if now().month in [6,7,8] else 18.5 }}"
+        lounge_temperature_warm: "{{ 20 if now().month in [12,1,2] else 24 if now().month in [6,7,8] else 20 }}"
+
+        lounge_humidity_dry: "{{ 30 if now().month in [12,1,2] else 40 if now().month in [6,7,8] else 35 }}"
+        lounge_humidity_ideal: "{{ 45 if now().month in [12,1,2] else 55 if now().month in [6,7,8] else 50 }}"
+        lounge_humidity_humid: "{{ 60 if now().month in [12,1,2] else 70 if now().month in [6,7,8] else 65 }}"
+        lounge_humidity_extreme: "75"
+
+        # Media Room
+        media_room_temperature_cold: "{{ 17 if now().month in [12,1,2] else 18 if now().month in [6,7,8] else 17.5 }}"
+        media_room_temperature_ideal: "{{ 18.5 if now().month in [12,1,2] else 19 if now().month in [6,7,8] else 18.5 }}"
+        media_room_temperature_warm: "{{ 21 if now().month in [12,1,2] else 22 if now().month in [6,7,8] else 21 }}"
+
+        media_room_humidity_dry: "{{ 30 if now().month in [12,1,2] else 40 if now().month in [6,7,8] else 35 }}"
+        media_room_humidity_ideal: "{{ 45 if now().month in [12,1,2] else 55 if now().month in [6,7,8] else 50 }}"
+        media_room_humidity_humid: "{{ 60 if now().month in [12,1,2] else 70 if now().month in [6,7,8] else 65 }}"
+        media_room_humidity_extreme: "75"
+
+        # Office
+        office_temperature_cold: "{{ 18 if now().month in [12,1,2] else 18 if now().month in [6,7,8] else 17.5 }}"
+        office_temperature_ideal: "{{ 19.5 if now().month in [12,1,2] else 20 if now().month in [6,7,8] else 19 }}"
+        office_temperature_warm: "{{ 21 if now().month in [12,1,2] else 22 if now().month in [6,7,8] else 21 }}"
+
+        office_humidity_dry: "{{ 30 if now().month in [12,1,2] else 40 if now().month in [6,7,8] else 35 }}"
+        office_humidity_ideal: "{{ 45 if now().month in [12,1,2] else 55 if now().month in [6,7,8] else 50 }}"
+        office_humidity_humid: "{{ 60 if now().month in [12,1,2] else 70 if now().month in [6,7,8] else 65 }}"
+        office_humidity_extreme: "75"
+
+        # Bedroom
+        bedroom_temperature_cold: "{{ 16 if now().month in [12,1,2] else 17 if now().month in [6,7,8] else 16.5 }}"
+        bedroom_temperature_ideal: "{{ 18 if now().month in [12,1,2] else 19 if now().month in [6,7,8] else 18.5 }}"
+        bedroom_temperature_warm: "{{ 20 if now().month in [12,1,2] else 22 if now().month in [6,7,8] else 21 }}"
+
+        bedroom_humidity_dry: "{{ 30 if now().month in [12,1,2] else 40 if now().month in [6,7,8] else 35 }}"
+        bedroom_humidity_ideal: "{{ 45 if now().month in [12,1,2] else 55 if now().month in [6,7,8] else 50 }}"
+        bedroom_humidity_humid: "{{ 60 if now().month in [12,1,2] else 70 if now().month in [6,7,8] else 65 }}"
+        bedroom_humidity_extreme: "75"
+
+        # Wet Room
+        wetroom_temperature_cold: "{{ 20 if now().month in [12,1,2] else 21 if now().month in [6,7,8] else 20.5 }}"
+        wetroom_temperature_ideal: "{{ 22 if now().month in [12,1,2] else 23 if now().month in [6,7,8] else 22.5 }}"
+        wetroom_temperature_warm: "{{ 25 if now().month in [12,1,2] else 26 if now().month in [6,7,8] else 25.5 }}"
+
+        wetroom_humidity_dry: "{{ 40 if now().month in [12,1,2] else 50 if now().month in [6,7,8] else 45 }}"
+        wetroom_humidity_ideal: "{{ 55 if now().month in [12,1,2] else 65 if now().month in [6,7,8] else 60 }}"
+        wetroom_humidity_humid: "{{ 70 if now().month in [12,1,2] else 80 if now().month in [6,7,8] else 75 }}"
+        wetroom_humidity_extreme: "90"
+
+        # Shared colors
+        temp_color_cold: "#3498db"
+        temp_color_ideal: "#2ecc71"
+        temp_color_warm: "#e74c3c"
+
+        humidity_color_dry: "#f39c12"
+        humidity_color_ideal: "#2ecc71"
+        humidity_color_humid: "#3498db"
+        humidity_color_extreme: "#8e44ad"

@@ -1,67 +1,319 @@
+{# Optimized Home Assistant template helpers. #}
+
 {% macro list_entities(type, device_class='', state='off', select='', reject='', area='', exclude_area='', exclude_label='') %}
-{% set ns = namespace(sensors=[]) %}
-{% if device_class and area %}
-  {% for entity in type | selectattr('attributes.device_class', 'eq', device_class) | selectattr('entity_id', 'in', area_entities(area)) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
+  {% set ns = namespace(entities=[]) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set candidates = type | rejectattr('entity_id', 'is_hidden_entity') %}
+
+  {% if excluded_labels %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_labels) %}
+  {% endif %}
+  {% if excluded_areas %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_areas) %}
+  {% endif %}
+
+  {% for entity in candidates %}
+    {% if (not device_class or entity.attributes.device_class | default('') == device_class)
+        and (not area or entity.entity_id in included_area)
+        and (not select or entity.entity_id is search(select))
+        and (not reject or entity.entity_id is not search(reject))
+        and entity.state == state %}
+      {% set ns.entities = ns.entities + [dict(entity_id=entity.entity_id)] %}
+    {% endif %}
   {% endfor %}
-{% elif device_class %}
-  {% for entity in type | selectattr('attributes.device_class', 'eq', device_class) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif area and reject %}
-  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif area and select %}
-  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | selectattr('entity_id', 'match', select) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif area %}
-  {% for entity in type | selectattr('entity_id', 'in', area_entities(area)) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif exclude_area and reject %}
-  {% for entity in type | rejectattr('entity_id', 'in', area_entities(exclude_area)) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif exclude_area %}
-  {% for entity in type | rejectattr('entity_id', 'in', area_entities(exclude_area)) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif exclude_label %}
-  {% for entity in type | rejectattr('entity_id', 'in', label_entities(exclude_label)) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif select and reject %}
-  {% for entity in type | selectattr('entity_id', 'match', select) | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif select %}
-  {% for entity in type | selectattr('entity_id', 'match', select) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% elif reject %}
-  {% for entity in type | rejectattr('entity_id', 'search', reject) | selectattr('state','eq',state) %}
-    {% set ns.sensors = ns.sensors + [dict(entity_id = entity.entity_id, name = entity.name, state = entity.state)] %}
-  {% endfor %}
-{% endif %}
-{{ ns.sensors | to_json }}
+
+  {{ ns.entities | to_json }}
 {% endmacro %}
+
 
 {% macro count_entities(type, device_class='', state='off', select='', reject='', area='', exclude_area='', exclude_label='') %}
-{% from 'tools.jinja' import list_entities %}
-{{ list_entities(type,device_class,state,select,reject,area,exclude_area,exclude_label) | from_json | count }}
+  {% set ns = namespace(count=0) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set candidates = type | rejectattr('entity_id', 'is_hidden_entity') %}
+
+  {% if excluded_labels %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_labels) %}
+  {% endif %}
+  {% if excluded_areas %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_areas) %}
+  {% endif %}
+
+  {% for entity in candidates %}
+    {% if (not device_class or entity.attributes.device_class | default('') == device_class)
+        and (not area or entity.entity_id in included_area)
+        and (not select or entity.entity_id is search(select))
+        and (not reject or entity.entity_id is not search(reject))
+        and entity.state == state %}
+      {% set ns.count = ns.count + 1 %}
+    {% endif %}
+  {% endfor %}
+
+  {{ ns.count }}
 {% endmacro %}
 
+
+{#
+  Builds everything needed by a status sensor in one domain scan:
+  total count, matching entity IDs, and counts grouped by area.
+#}
+{% macro entity_summary(
+    type,
+    device_class='',
+    state='off',
+    select='',
+    reject='',
+    area='',
+    exclude_area='',
+    exclude_label='',
+    exclude_summary_area=''
+  )
+%}
+  {% set ns = namespace(entities=[], areas=[], area_counts=[]) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+
+  {% for entity in type | rejectattr('entity_id', 'is_hidden_entity') %}
+    {% set entity_id = entity.entity_id %}
+    {% set matches_type =
+        (not device_class or entity.attributes.device_class | default('') == device_class)
+        and (not area or entity_id in included_area)
+        and (not select or entity_id is search(select))
+        and (not reject or entity_id is not search(reject)) %}
+
+    {% if matches_type %}
+      {% set entity_area = area_name(entity_id) %}
+      {% if entity_area
+          and entity_area != exclude_summary_area
+          and entity_area not in ns.areas %}
+        {% set ns.areas = ns.areas + [entity_area] %}
+      {% endif %}
+
+      {% if entity_id not in excluded_labels
+          and entity_id not in excluded_areas
+          and entity.state == state %}
+        {% set ns.entities = ns.entities + [dict(entity_id=entity_id)] %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% for area_name_value in ns.areas | sort %}
+    {% set area_entity_ids = area_entities(area_name_value) %}
+    {% set amount = ns.entities
+        | selectattr('entity_id', 'in', area_entity_ids)
+        | list
+        | count %}
+    {% set ns.area_counts = ns.area_counts + [(area_name_value, amount)] %}
+  {% endfor %}
+
+  {{ dict(
+      count=ns.entities | count,
+      entities=ns.entities,
+      areas=dict(ns.area_counts)
+    ) | to_json }}
+{% endmacro %}
+
+
+{% macro low_battery_summary(type, battery_level=20, exclude_label='', reject='iphone') %}
+  {% set ns = namespace(entities=[]) %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set candidates = type
+      | selectattr('attributes.device_class', 'eq', 'battery')
+      | rejectattr('entity_id', 'is_hidden_entity') %}
+
+  {% if excluded_labels %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_labels) %}
+  {% endif %}
+
+  {% for entity in candidates %}
+    {% set level = entity.state | int(-1) %}
+    {% if (not reject or entity.entity_id is not search(reject))
+        and 0 <= level <= battery_level %}
+      {% set ns.entities = ns.entities + [dict(
+          entity_id=entity.entity_id,
+          name=entity.name | replace(' battery', '') | replace(' Battery', ''),
+          state=level
+        )] %}
+    {% endif %}
+  {% endfor %}
+
+  {{ dict(
+      count=ns.entities | count,
+      entities=ns.entities | sort(attribute='state')
+    ) | to_json }}
+{% endmacro %}
+
+
+{% macro stale_summary(
+    type,
+    age=3600,
+    select='',
+    reject='',
+    area='',
+    exclude_area='',
+    exclude_label='',
+    timestamp='last_updated',
+    exclude_summary_area=''
+  )
+%}
+  {% set ns = namespace(entities=[], areas=[], area_counts=[]) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set cutoff = as_timestamp(now()) - age %}
+
+  {% for entity in type | rejectattr('entity_id', 'is_hidden_entity') %}
+    {% set entity_id = entity.entity_id %}
+    {% set matches_type =
+        (not area or entity_id in included_area)
+        and (not select or entity_id is search(select))
+        and (not reject or entity_id is not search(reject)) %}
+
+    {% if matches_type %}
+      {% set entity_area = area_name(entity_id) %}
+      {% if entity_area
+          and entity_area != exclude_summary_area
+          and entity_area not in ns.areas %}
+        {% set ns.areas = ns.areas + [entity_area] %}
+      {% endif %}
+
+      {% set entity_timestamp =
+          entity.last_reported
+          if timestamp == 'last_reported'
+          else entity.last_updated %}
+
+      {% if entity_id not in excluded_labels
+          and entity_id not in excluded_areas
+          and entity.state not in ['unknown', 'unavailable']
+          and as_timestamp(entity_timestamp, default=0) < cutoff %}
+        {% set ns.entities = ns.entities + [dict(entity_id=entity_id)] %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% for area_name_value in ns.areas | sort %}
+    {% set area_entity_ids = area_entities(area_name_value) %}
+    {% set amount = ns.entities
+        | selectattr('entity_id', 'in', area_entity_ids)
+        | list
+        | count %}
+    {% set ns.area_counts = ns.area_counts + [(area_name_value, amount)] %}
+  {% endfor %}
+
+  {{ dict(
+      count=ns.entities | count,
+      entities=ns.entities,
+      areas=dict(ns.area_counts)
+    ) | to_json }}
+{% endmacro %}
+
+
+{% macro list_stale_entities(
+    type,
+    age=3600,
+    select='',
+    reject='',
+    area='',
+    exclude_area='',
+    exclude_label='',
+    timestamp='last_reported'
+  )
+%}
+  {% set ns = namespace(entities=[]) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set cutoff = as_timestamp(now()) - age %}
+  {% set candidates = type | rejectattr('entity_id', 'is_hidden_entity') %}
+
+  {% if excluded_labels %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_labels) %}
+  {% endif %}
+  {% if excluded_areas %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_areas) %}
+  {% endif %}
+
+  {% for entity in candidates %}
+    {% set entity_timestamp =
+        entity.last_reported
+        if timestamp == 'last_reported'
+        else entity.last_updated %}
+
+    {% if (not area or entity.entity_id in included_area)
+        and (not select or entity.entity_id is search(select))
+        and (not reject or entity.entity_id is not search(reject))
+        and entity.state not in ['unknown', 'unavailable']
+        and as_timestamp(entity_timestamp, default=0) < cutoff %}
+      {% set ns.entities = ns.entities + [dict(entity_id=entity.entity_id)] %}
+    {% endif %}
+  {% endfor %}
+
+  {{ ns.entities | to_json }}
+{% endmacro %}
+
+
+{% macro count_stale_entities(
+    type,
+    age=3600,
+    select='',
+    reject='',
+    area='',
+    exclude_area='',
+    exclude_label='',
+    timestamp='last_updated'
+  )
+%}
+  {% set ns = namespace(count=0) %}
+  {% set included_area = area_entities(area) if area else [] %}
+  {% set excluded_areas = area_entities(exclude_area) if exclude_area else [] %}
+  {% set excluded_labels = label_entities(exclude_label) if exclude_label else [] %}
+  {% set cutoff = as_timestamp(now()) - age %}
+  {% set candidates = type | rejectattr('entity_id', 'is_hidden_entity') %}
+
+  {% if excluded_labels %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_labels) %}
+  {% endif %}
+  {% if excluded_areas %}
+    {% set candidates = candidates | rejectattr('entity_id', 'in', excluded_areas) %}
+  {% endif %}
+
+  {% for entity in candidates %}
+    {% set entity_timestamp =
+        entity.last_reported
+        if timestamp == 'last_reported'
+        else entity.last_updated %}
+
+    {% if (not area or entity.entity_id in included_area)
+        and (not select or entity.entity_id is search(select))
+        and (not reject or entity.entity_id is not search(reject))
+        and entity.state not in ['unknown', 'unavailable']
+        and as_timestamp(entity_timestamp, default=0) < cutoff %}
+      {% set ns.count = ns.count + 1 %}
+    {% endif %}
+  {% endfor %}
+
+  {{ ns.count }}
+{% endmacro %}
+
+
 {% macro relative(entity) %}
-{% set time_diff =  (as_timestamp(now()) - as_timestamp(states(entity))) | round(0) %}
-{% if time_diff > 86400 %}
-  {{(time_diff / 86400) | int}} days
-{% elif time_diff > 3600 %}
-  {{(time_diff / 3600) | int}} hours
-{% elif time_diff > 60 %}
-  {{(time_diff / 60) | int}} minutes
-{% else %}
-  {{time_diff}} seconds
-{% endif %}
+  {% set entity_state = states(entity) %}
+  {% if entity_state in ['unknown', 'unavailable', 'none'] %}
+    unknown
+  {% else %}
+    {% set time_diff = (as_timestamp(now()) - as_timestamp(entity_state, default=0)) | round(0) %}
+    {% if time_diff > 86400 %}
+      {{ (time_diff / 86400) | int }} days
+    {% elif time_diff > 3600 %}
+      {{ (time_diff / 3600) | int }} hours
+    {% elif time_diff > 60 %}
+      {{ (time_diff / 60) | int }} minutes
+    {% else %}
+      {{ time_diff | int }} seconds
+    {% endif %}
+  {% endif %}
 {% endmacro %}

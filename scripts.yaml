@@ -1,64 +1,901 @@
-fan_control:
-  alias: Fan Control
+patio_window_shade_evening_position:
+  alias: Patio Window Shade evening position
+  description: ''
+  icon: phu:shutter-50
   sequence:
-  - variables:
-      presets:
-      - 'off'
-      - low
-      - high
-  - if:
-    - condition: template
-      value_template: '{{ presets.index(preset) > 0 }}'
-    then:
-    - service: switch.turn_on
-      data: {}
-      target:
-        entity_id:
-        - switch.wetroom_extractor_low_speed
-    else:
-    - service: switch.turn_off
-      data: {}
-      target:
-        entity_id: switch.wetroom_extractor_low_speed
-  - if:
-    - condition: template
-      value_template: '{{ presets.index(preset) > 1 }}'
-    then:
-    - service: switch.turn_on
-      data: {}
-      target:
-        entity_id:
-        - switch.wetroom_extractor_boost
-    else:
-    - service: switch.turn_off
-      data: {}
-      target:
-        entity_id: switch.wetroom_extractor_boost
-  mode: single
-  icon: mdi:fan
-'1706177885902':
-  alias: Garage Wall Light Off
+  - condition: state
+    entity_id: input_boolean.lounge_patio_shade_evening_position
+    state: 'off'
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - condition: time
+    before: '19:00:00'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 27
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.lounge_patio_shade_evening_position
+garage_wall_light_off:
+  alias: Back Garden Sensor Light Off
+  description: ''
   sequence:
   - if:
     - condition: and
       conditions:
-      - condition: sun
-        after: sunset
+      - condition: state
+        entity_id: input_boolean.evening
+        state: 'on'
       - condition: time
-        before: '21:30:00'
+        before: '22:00:00'
       - condition: time
-        after: '16:00:00'
+        after: '15:45:00'
+        enabled: true
     then:
-    - service: scene.turn_on
+    - action: script.back_garden_sensor_light_low
       metadata: {}
-      target:
-        entity_id: scene.back_garden_sesnor_light_off
+      data: {}
     else:
-    - service: light.turn_off
+    - action: light.turn_off
       metadata: {}
       data: {}
       target:
         entity_id:
-        - light.garage_wall_light
-        - light.back_garden_neon_rope
+        - light.garage_wall_lights
+  mode: single
+lounge_window_shade_sun_position:
+  alias: Lounge Window Shade sun position
+  description: ''
+  icon: phu:shutter-60
+  sequence:
+  - condition: state
+    entity_id: input_boolean.lounge_window_shade_sun_position
+    state: 'off'
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 16
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_window_shade
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.lounge_window_shade_sun_position
+carer_actions:
+  alias: Carer Actions
+  description: ''
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.carer
+        state: 'on'
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 10
+        target:
+          entity_id: light.media_room_lights
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - light.hall_lights
+        enabled: false
+      - condition: state
+        state:
+        - open
+        entity_id: cover.media_room_window_shade
+      - action: cover.close_cover
+        metadata: {}
+        data: {}
+        target:
+          entity_id: cover.media_room_window_shade
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.carer
+        state: 'off'
+      sequence:
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id: climate.lounge_heating
+        data:
+          temperature: 18
+          hvac_mode: auto
+      - action: climate.set_temperature
+        metadata: {}
+        data:
+          temperature: 19
+          hvac_mode: auto
+        target:
+          entity_id: climate.media_room_heating
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.media_room_lights
+      - if:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.evening
+            state:
+            - 'off'
+          - condition: time
+            before: '17:00:00'
+        then:
+        - action: cover.open_cover
+          metadata: {}
+          data: {}
+          target:
+            entity_id: cover.media_room_window_shade
+          enabled: true
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+      - action: light.turn_off
+        metadata: {}
+        target:
+          entity_id: light.lounge_lamps
+        data: {}
+good_night:
+  sequence:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.media_room_streaming
+      - input_boolean.lounge_window_shade_sun_position
+      - input_boolean.lounge_patio_shade_evening_position
+      - input_boolean.office_window_shade_sun_position
+  - if:
+    - condition: state
+      entity_id: input_boolean.evening
+      state: 'off'
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.evening
+    - action: cover.close_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - cover.kitchen_somfy_window_shade
+        - cover.lounge_somfy_window_shade
+        - cover.lounge_somfy_patio_window_shade
+        - cover.media_room_somfy_window_shade
+        - cover.andys_bedroom_somfy_window_shade
+        - cover.office_somfy_window_shade
+        - cover.spare_bedroom_somfy_window_shade
+      continue_on_error: true
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.outside_roof_lights
+      - light.garage_number_sign
+      - light.garage_wall_lights
+      - light.garage_lights
+      - light.front_garden_wall_led
+      - light.house_sign
+      - light.kitchen_lights
+      - light.kitchen_floor_led
+      - light.kitchen_cabinets
+      - light.lounge_table_light
+      - light.lounge_extension_lights
+      - light.lounge_lamps
+      - light.media_room_sideboard_lamps
+      - light.hall_lights
+      - light.landing_lights
+      - light.office_lights
+      - light.electric_cupboard_light
+      - light.kitchen_cabinet_1
+      - light.kitchen_cabinet_2
+      - light.media_room_lights
+      - light.wetroom_lights
+      - light.spare_bedroom_light
+      - light.spare_bedroom_lamp
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.back_garden_outside_sockets_right
+      - switch.garage_sockets_2_left
+      - switch.kitchen_sockets_1_left
+      - switch.kitchen_sockets_3_left
+      - switch.kitchen_sockets_3_right
+      - switch.kitchen_sockets_4_right
+      - switch.kitchen_extractor_fan_plug_outlet
+      - switch.kitchen_washing_machine_plug_outlet
+      - switch.lounge_sockets_1_right
+      - switch.lounge_sockets_2_left
+      - switch.lounge_sockets_2_right
+      - switch.lounge_sockets_3_left
+      - switch.lounge_sockets_4_left
+      - switch.lounge_sockets_5_right
+      - switch.media_room_tv_sockets_1_left
+      - switch.media_room_tv_sockets_1_right
+      - switch.media_room_tv_sockets_2_left
+      - switch.media_room_tv_sockets_2_right
+      - switch.media_room_tv_sockets_3_left
+      - switch.media_room_tv_sockets_3_right
+      - switch.media_room_sockets_1_left
+      - switch.media_room_sockets_1_right
+      - switch.media_room_sofa_outlet
+      - switch.media_room_sockets_2_left
+      - switch.hall_cupboard_sockets_1_left
+      - switch.hall_cupboard_sockets_2_left
+      - switch.hall_cupboard_sockets_2_right
+      - switch.hall_sockets_left
+      - switch.wetroom_extractor_l2
+      - switch.office_sockets_1_left
+      - switch.office_sockets_1_right
+      - switch.office_sockets_2_left
+      - switch.office_sockets_2_right
+      - switch.andys_bedroom_sockets_right
+      - switch.spare_bedroom_sockets_2_left
+      - switch.spare_bedroom_sockets_2_right
+      - switch.spare_bedroom_sockets_3_left
+      - switch.spare_bedroom_sockets_3_right
+      - switch.kitchen_sockets_2_left
+      - switch.kitchen_sockets_2_right
+      - switch.kitchen_smart_plug_outlet
+  - action: climate.set_hvac_mode
+    metadata: {}
+    data:
+      hvac_mode: auto
+    target:
+      device_id:
+      - 9b7f7a238ad4cd5e70159790a8830674
+      - fb0033028210dde2754eb4a4d0d98464
+      - e828a2bb39b60b567066fe9f80ad68b3
+      - 17112f904e684dd36dc4fa24ecfab0e6
+      - bc6d7f66f6bd6462314581a7c42e3802
+    enabled: false
+  - action: number.set_value
+    metadata: {}
+    data:
+      value: '1'
+    target:
+      entity_id: number.andys_bedroom_sockets_brightness
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.andys_bedroom_sockets_left
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.back_garden_outside_sockets_left
+    enabled: true
+  alias: Good Night
+  description: Turn Off entities at bed time
+  icon: mdi:weather-sunset-down
+good_morning:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.andys_bedroom_sockets_left
+      - switch.front_garden_wall_led_switch
+      - switch.garage_light_switch_right
+      - switch.andys_bedroom_sockets_right
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.office_sockets_1_left
+  - action: number.set_value
+    metadata: {}
+    data:
+      value: '30'
+    target:
+      entity_id: number.andys_bedroom_sockets_brightness
+  - if:
+    - condition: time
+      after: 08:00:00
+    then:
+    - action: cover.open_cover
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - cover.andys_bedroom_somfy_window_shade
+        - cover.kitchen_somfy_window_shade
+        - cover.lounge_somfy_patio_window_shade
+        - cover.lounge_somfy_window_shade
+        - cover.media_room_somfy_window_shade
+        - cover.office_somfy_window_shade
+        - cover.spare_bedroom_somfy_window_shade
+      continue_on_error: true
+  - condition: sun
+    after: sunrise
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.evening
+  alias: Good Morning
+  description: Turn On entities for day.
+  icon: mdi:weather-sunset-up
+evening:
+  sequence:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.lounge_window_shade_sun_position
+      - input_boolean.office_window_shade_sun_position
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.evening
+  - action: script.power_on_govee_outside_lights
+    metadata: {}
+    data: {}
+  - if:
+    - condition: state
+      entity_id: binary_sensor.andrews_imac_active
+      attribute: Screen Off
+      state: false
+    then:
+    - data: {}
+      target:
+        entity_id: light.office_lights
+      action: light.turn_on
+  - if:
+    - condition: and
+      conditions:
+      - condition: time
+        before: '21:40:00'
+      - condition: state
+        entity_id: binary_sensor.andrews_imac_active
+        attribute: Screen Off
+        state: true
+      - condition: state
+        entity_id: media_player.media_room_tv
+        state:
+        - unavailable
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.lounge_lamps
+      enabled: true
+  - if:
+    - condition: state
+      entity_id: media_player.media_room_tv
+      state: 'on'
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        brightness_pct: 50
+      target:
+        entity_id: light.media_room_sideboard_lamps
+  - if:
+    - condition: state
+      entity_id: input_boolean.carer
+      state: 'on'
+    then:
+    - choose:
+      - conditions:
+        - condition: or
+          conditions:
+          - condition: time
+            weekday:
+            - tue
+            - wed
+            - thu
+            - fri
+            - sat
+        sequence:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.media_room_lights
+      - conditions:
+        - condition: time
+          weekday:
+          - sun
+          - mon
+        sequence:
+        - action: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.lounge_extension_lights
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - cover.kitchen_somfy_window_shade
+      - cover.lounge_somfy_patio_window_shade
+      - cover.lounge_somfy_window_shade
+      - cover.media_room_somfy_window_shade
+      - cover.andys_bedroom_somfy_window_shade
+      - cover.office_somfy_window_shade
+      - cover.spare_bedroom_somfy_window_shade
+  - condition: time
+    before: '19:50:00'
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.house_sign
+      - light.garage_number_sign
+  - action: script.back_garden_roof_lights_low
+    metadata: {}
+    data: {}
+    enabled: true
+  - action: script.back_garden_sensor_light_low
+    metadata: {}
+    data: {}
+    enabled: true
+  - action: script.front_garden_sensor_light_low
+    metadata: {}
+    data: {}
+    enabled: true
+  alias: Evening
+  description: Turn on Evening entities
+back_garden_sensor_light_low:
+  alias: Back Garden Sensor Light Low
+  description: ''
+  icon: mdi:motion-sensor
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 20
+      color_temp_kelvin: 4300
+    target:
+      entity_id: light.garage_wall_lights
+office_window_shade_sun_position:
+  sequence:
+  - condition: state
+    entity_id: input_boolean.office_window_shade_sun_position
+    state: 'off'
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.office_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 23
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.office_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.office_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.office_window_shade
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.office_window_shade_sun_position
+  alias: Office Window Shade sun position
+  description: ''
+  icon: phu:shutter-60
+patio_window_shade_tv_sun_position:
+  sequence:
+  - condition: state
+    entity_id: input_boolean.lounge_patio_shade_evening_position
+    state: 'off'
+    enabled: true
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: cover.open_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: cover.stop_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.lounge_somfy_patio_window_shade
+  alias: Patio Window Shade TV Sun position
+  description: ''
+  icon: phu:shutter-40
+us_streaming_actions_mr:
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.media_room_streaming
+        state:
+        - 'off'
+      sequence:
+      - metadata: {}
+        data: {}
+        action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.media_room_streaming
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_tv_sockets_1_left
+          - switch.media_room_tv_sockets_1_right
+          - switch.media_room_tv_sockets_2_left
+      - wait_for_trigger:
+        - trigger: state
+          entity_id:
+          - media_player.media_room_tv
+          to:
+          - 'on'
+        timeout:
+          hours: 0
+          minutes: 0
+          seconds: 20
+          milliseconds: 0
+        continue_on_timeout: true
+      - action: media_player.select_source
+        metadata: {}
+        data:
+          source: AppleTV US
+        target:
+          entity_id:
+          - media_player.media_room_tv
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.media_room_streaming
+        state: 'on'
+      sequence:
+      - metadata: {}
+        data: {}
+        action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.media_room_streaming
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_tv_sockets_1_left
+          - switch.media_room_tv_sockets_1_right
+          - switch.media_room_tv_sockets_2_left
+  alias: US Streaming Actions (MR)
+  description: ''
+  icon: phu:apple-tv
+  mode: restart
+front_garden_sensor_light_off:
+  sequence:
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_boolean.evening
+        state: 'on'
+      - condition: time
+        before: '22:00:00'
+      - condition: time
+        after: '15:45:00'
+        enabled: true
+    then:
+    - action: script.front_garden_sensor_light_low
+      metadata: {}
+      data: {}
+    else:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.front_garden_wall_led
+  alias: Front Garden Sensor Light Off
+  description: ''
+  mode: single
+front_garden_sensor_light_low:
+  alias: Front Garden Sensor Light Low
+  description: ''
+  icon: mdi:motion-sensor
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 15
+      color_temp_kelvin: 4300
+    target:
+      entity_id:
+      - light.front_garden_wall_led
+power_on_govee_outside_lights:
+  alias: Power ON Govee Outside Lights
+  description: ''
+  sequence:
+  - if:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: switch.garage_light_switch_right
+        state: 'off'
+      - condition: state
+        entity_id: switch.front_garden_wall_led_switch
+        state: 'off'
+      - condition: state
+        entity_id: switch.back_garden_outside_sockets_left
+        state: 'off'
+    then:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - switch.garage_light_switch_right
+        - switch.front_garden_wall_led_switch
+        - switch.back_garden_outside_sockets_left
+uk_streaming_actions_mr:
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.media_room_streaming
+        state: 'off'
+      sequence:
+      - metadata: {}
+        data: {}
+        action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.media_room_streaming
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_tv_sockets_1_left
+          - switch.media_room_tv_sockets_1_right
+          - switch.media_room_tv_sockets_2_right
+      - wait_for_trigger:
+        - trigger: state
+          entity_id:
+          - media_player.media_room_tv
+          to:
+          - 'on'
+        timeout:
+          hours: 0
+          minutes: 0
+          seconds: 20
+          milliseconds: 0
+        continue_on_timeout: true
+      - action: media_player.select_source
+        metadata: {}
+        data:
+          source: AppleTV UK
+        target:
+          entity_id:
+          - media_player.media_room_tv
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.media_room_streaming
+        state: 'on'
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id:
+          - switch.media_room_tv_sockets_1_left
+          - switch.media_room_tv_sockets_1_right
+          - switch.media_room_tv_sockets_2_right
+      - metadata: {}
+        data: {}
+        action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.media_room_streaming
+  alias: UK Streaming Actions (MR)
+  description: ''
+  icon: phu:apple-tv
+  mode: restart
+back_garden_roof_lights_low:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 10
+    target:
+      entity_id: light.outside_roof_lights
+  alias: Back Garden Roof Lights Low
+  description: ''
+  icon: phu:light-string
+back_garden_sensor_light_high:
+  alias: Back Garden Sensor Light High
+  description: ''
+  icon: mdi:motion-sensor
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 40
+      color_temp_kelvin: 6500
+    target:
+      entity_id: light.garage_wall_lights
+front_garden_sensor_light_high:
+  alias: Front Garden Sensor Light High
+  description: ''
+  icon: mdi:motion-sensor
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 50
+      color_temp_kelvin: 6500
+    target:
+      entity_id:
+      - light.front_garden_wall_led
+kitchen_sensor_light_off:
+  sequence:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.kitchen_cabinets
+      - light.kitchen_floor_led
+  alias: Kitchen Sensor Light Off
+  description: ''
+  mode: single
+kitchen_sensor_light_on:
+  sequence:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      rgbw_color:
+      - 0
+      - 0
+      - 0
+      - 255
+      brightness_pct: 100
+    target:
+      entity_id:
+      - light.kitchen_cabinets
+  - action: light.turn_on
+    metadata: {}
+    data:
+      rgbw_color:
+      - 255
+      - 255
+      - 255
+      - 33
+      brightness_pct: 13
+    target:
+      entity_id:
+      - light.kitchen_floor_led
+  alias: Kitchen Sensor Light On
+  description: ''
   mode: single

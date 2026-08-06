@@ -1,0 +1,146 @@
+- triggers:
+    - trigger: state
+      entity_id: cover.kitchen_somfy_window_shade
+  sensor:
+    - name: Kitchen Shade Helper
+      unique_id: b93e4cd1-d994-4699-91f8-4e6a8022bf0c
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.lounge_somfy_window_shade
+  sensor:
+    - name: Lounge Shade Helper
+      unique_id: 1c4ec205-c873-4888-aa28-8e5976221385
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.lounge_somfy_patio_window_shade
+  sensor:
+    - name: Lounge Patio Shade Helper
+      unique_id: eefb9c42-9143-41fa-9a00-c83d900b05b1
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.media_room_somfy_window_shade
+  sensor:
+    - name: Media Room Shade Helper
+      unique_id: a5c19860-c74d-4b25-8893-982e8b135bcd
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.office_somfy_window_shade
+  sensor:
+    - name: Office Shade Helper
+      unique_id: fdb22f67-2781-4c44-9abb-a2b2d9e57b33
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.andys_bedroom_somfy_window_shade
+  sensor:
+    - name: Andys Shade Helper
+      unique_id: bef6f128-9493-49f1-a61c-d3db57d38af4
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: cover.spare_bedroom_somfy_window_shade
+  sensor:
+    - name: Spare Bedroom Shade Helper
+      unique_id: c852205f-7d19-47f0-9b3d-8aa8cc375862
+      state: >
+        {% if trigger.to_state.state == 'opening' %}
+          opening
+        {% elif trigger.to_state.state == 'closing' %}
+          closing
+        {% elif trigger.from_state.state == 'opening'
+              and trigger.to_state.state == 'unknown' %}
+          open
+        {% elif trigger.from_state.state == 'closing'
+              and trigger.to_state.state == 'unknown' %}
+          closed
+        {% else %}
+          {{ this.state }}
+        {% endif %}

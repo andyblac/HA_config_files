@@ -1,0 +1,37 @@
+- fan:
+    - unique_id: 74700f66-0505-45b0-b096-ff2a886d57e2
+      name: Wetroom Extractor Fan
+      default_entity_id: fan.wetroom_extractor_fan
+      speed_count: 2
+
+      turn_on:
+        - action: switch.turn_on
+          target:
+            entity_id: switch.wetroom_extractor_l1
+
+      turn_off:
+        - action: switch.turn_off
+          target:
+            entity_id:
+              - switch.wetroom_extractor_l1
+              - switch.wetroom_extractor_l2
+
+      set_percentage:
+        - action: "switch.turn_{{ iif(percentage >= 50, 'on', 'off') }}"
+          target:
+            entity_id: switch.wetroom_extractor_l1
+        - action: "switch.turn_{{ iif(percentage == 100, 'on', 'off') }}"
+          target:
+            entity_id: switch.wetroom_extractor_l2
+
+      percentage: >
+        {%- if is_state('switch.wetroom_extractor_l2', 'on') -%}
+          100
+        {%- elif is_state('switch.wetroom_extractor_l1', 'on') -%}
+          50
+        {%- else -%}
+          0
+        {%- endif -%}
+
+      state: >
+        {{ 'on' if is_state('switch.wetroom_extractor_l1', 'on') else 'off' }}

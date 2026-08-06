@@ -1,0 +1,53 @@
+- triggers:
+    - trigger: time_pattern
+      seconds: "/5"
+  sensor:
+    - name: Kitchen Lights Power
+      unique_id: 64b62ca3-dd9a-48ec-97da-b2c6c802a837
+      icon: "mdi:flash"
+      device_class: power
+      unit_of_measurement: "W"
+      state_class: measurement
+      state: >
+        {%- if is_state("light.kitchen_lights", "on") -%}
+          {{ (43.00 + range(-3, 1) | random/100)|round(3) }}
+        {%- else -%}
+          0.00
+        {%- endif %}
+
+- triggers:
+    - trigger: time_pattern
+      seconds: "/5"
+  sensor:
+    - name: Lounge Table Light Power
+      unique_id: ba896cf7-da5c-4de6-aa97-4168dbee2453
+      icon: "mdi:flash"
+      device_class: power
+      unit_of_measurement: "W"
+      state_class: measurement
+      state: >
+        {%- if is_state("light.lounge_table_light", "on") -%}
+          {{ (12.50 + range(-3, 3) | random/100)|round(3) }}
+        {%- else -%}
+          0.00
+        {%- endif %}
+
+- triggers:
+    - trigger: state
+      entity_id: sensor.consumer_unit_power_monitoring_c2_power
+  sensor:
+    - name: Wetroom Toilet Power
+      unique_id: 029465a6-188a-4fce-923c-9ec5c5755558
+      icon: "mdi:flash"
+      device_class: power
+      unit_of_measurement: "W"
+      state_class: measurement
+      state: >
+        {%- if (states('sensor.consumer_unit_power_monitoring_c2_power') | float() - states('sensor.wetroom_boiler_power') | float()) > 1.5 -%}
+          {{'%0.2f'| format(states('sensor.consumer_unit_power_monitoring_c2_power') | float(0) - states('sensor.wetroom_boiler_power') | float(0))}}
+        {%- elif (states('sensor.consumer_unit_power_monitoring_c2_power') | float() - states('sensor.wetroom_boiler_power') | float()) < 0.1 -%}
+          {{0.0}}
+        {%-  else -%}
+          {{ (1.5 + range(-3, 3) | random/100)|round(3) }}
+        {%- endif %}
+

@@ -1,0 +1,65 @@
+# Once every 2 minutes whole-system checks. Each summary is calculated once and
+# reused by the state, entity list, area counts, and icon.
+
+- triggers:
+    - trigger: time_pattern
+      minutes: "/2"
+    - trigger: homeassistant
+      event: start
+  sensor:
+    - name: "Unavailable Entities"
+      unique_id: b6918b28-35a7-434c-828d-b0249e244701
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import entity_summary %}
+          {{ entity_summary(
+              states,
+              state='unavailable',
+              reject='^sensor\\.unavailable_entities$',
+              exclude_label='Ignore from Status Sensor'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#unavailable-entities"
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ 'mdi:alert-circle'
+            if data.count > 0 else 'mdi:alert-circle-outline' }}
+
+    - name: "Stale Entities"
+      unique_id: 0dcfec8f-d02f-45d9-a2cc-b3a3b1127c4a
+      state_class: measurement
+      variables:
+        summary: >
+          {% from 'tools.jinja' import stale_summary %}
+          {{ stale_summary(
+              states,
+              age=3600,
+              reject='^sensor\\.stale_entities$',
+              exclude_label='Ignore from Status Sensor',
+              timestamp='last_updated'
+            ) }}
+      state: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ data.count }}
+      attributes:
+        navigation: "#stale-entities"
+        entities: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.entities | to_json }}
+        count: >
+          {% set data = summary if summary is mapping else summary | from_json %}
+          {{ data.areas }}
+      icon: >
+        {% set data = summary if summary is mapping else summary | from_json %}
+        {{ 'mdi:clock-alert'
+            if data.count > 0 else 'mdi:clock-check-outline' }}
